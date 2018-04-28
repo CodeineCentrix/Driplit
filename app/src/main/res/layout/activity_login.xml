@@ -23,7 +23,6 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/user"
-        android:drawableStart="@drawable/user"
         android:hint="@string/username"
         android:textAlignment="center"
         android:textSize="20sp" />
@@ -68,8 +67,8 @@
         android:layout_height="28dp"
         android:layout_marginLeft="160dp"
         android:background="@android:color/transparent"
-        android:text="Register"
-        android:textColor="@color/darkerblue"
+        android:text="@string/register"
+        android:textColor="@color/blue"
         android:textSize="20sp"
         android:onClick="ToRegisterScreen"/>
 
