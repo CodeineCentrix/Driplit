@@ -6,42 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:background="@drawable/bg">
+    android:background="@drawable/appbg">
 
     <LinearLayout
+        android:id="@+id/l1"
         android:layout_width="match_parent"
-        android:layout_height="428dp"
+        android:layout_height="341dp"
         android:orientation="vertical">
 
 
-        <TextView
-            android:layout_width="290dp"
-            android:layout_height="239dp"
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="277dp"
+            android:layout_height="205dp"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/logo" />
+            android:layout_marginTop="70dp"
+            android:background="@drawable/logohead" />
     </LinearLayout>
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/l2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <Button
-
-            android:layout_width="300dp"
-            android:layout_height="61dp"
+            android:id="@+id/btnWelcome"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/buttonstyle"
             android:fontFamily="@font/disco"
-            android:text="WELCOME"
+            android:text="@string/welcome"
             android:textColor="@color/blue"
-            android:textSize="35sp"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:onClick="ToLoginScreen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.098" />
 
     </android.support.constraint.ConstraintLayout>
 

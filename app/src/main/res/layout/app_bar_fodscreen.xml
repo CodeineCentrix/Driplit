@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.s215131746.driplit.FODScreen">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="Fact Of The Day"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.ContentFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="276dp"
+        android:layout_marginTop="150dp"
+        tools:layout_editor_absoluteY="54dp">
+
+        <TextView
+            android:id="@+id/txtFOD"
+            android:layout_width="357dp"
+            android:layout_height="252dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/blue"
+            android:text="Hello World, I am so tired right now."
+            android:textAlignment="center"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteY="150dp" />
+    </android.support.v7.widget.ContentFrameLayout>
+
+    <Button
+        android:id="@+id/btnMainMenu"
+        android:layout_width="286dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="450dp"
+        android:text="@string/main_menu"
+        tools:layout_editor_absoluteX="62dp"
+        tools:layout_editor_absoluteY="323dp" />
+
+</android.support.design.widget.CoordinatorLayout>
