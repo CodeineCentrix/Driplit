@@ -21,6 +21,10 @@
         <activity
             android:name=".FODScreen"
             android:label="@string/title_activity_fodscreen"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TabMenu"
+            android:label="@string/title_activity_tab_menu"
             android:theme="@style/AppTheme"></activity>
     </application>
 

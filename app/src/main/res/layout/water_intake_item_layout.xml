@@ -16,15 +16,6 @@
         android:layout_marginTop="15dp"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
-    <TextView
-        android:id="@+id/tvItemName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imgItemIcon"
-        android:layout_centerHorizontal="true"
-        android:text="ItemName"
-        android:textSize="24sp" />
-
     <LinearLayout
 
         android:id="@+id/loDropHide"
@@ -32,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imgItemIcon"
         android:layout_alignStart="@+id/imgItemIcon"
-        android:layout_below="@+id/tvItemName"
+        android:layout_below="@+id/imgItemIcon"
         android:background="@color/blue"
         android:backgroundTint="@color/blue"
         android:orientation="vertical">
@@ -148,4 +139,16 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/loDropHide"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_toEndOf="@+id/imgItemIcon"
+        android:layout_toRightOf="@+id/imgItemIcon"
+        android:text="Item Name"
+        android:textSize="24sp" />
 </RelativeLayout>

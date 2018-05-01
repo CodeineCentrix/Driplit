@@ -22,4 +22,5 @@ public class Login extends AppCompatActivity {
         fodScreen = new Intent(getApplicationContext(), FODScreen.class);
         startActivity(fodScreen);
     }
+
 }

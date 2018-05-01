@@ -1,11 +1,13 @@
 package com.example.s215131746.driplit;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,8 +22,8 @@ public class ItemListAdapter extends BaseAdapter {
     private LinearLayout loDropHide;
     private ImageView imgIcons;
 
-
-
+    String[] stringsQTY;
+    LinearLayout[] LoDropHides;
 
 
 
@@ -35,6 +37,9 @@ public class ItemListAdapter extends BaseAdapter {
         ItemName =itemName ;
         ItemUsageAvg = itemUsageAvg;
         mInflater =(LayoutInflater) c.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+        stringsQTY = new String[getCount()];
+        LoDropHides = new LinearLayout[getCount()];
+
     }
     @Override
     public int getCount() {
@@ -44,6 +49,24 @@ public class ItemListAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return ItemName[position];
+    }
+    public String getItemAvg(int position) {
+        return ItemUsageAvg[position];
+    }
+    public int getUsage(int position,int TotalQty)
+    {
+        int qty = Integer.parseInt(stringsQTY[position]);
+        qty = qty*Integer.parseInt(ItemUsageAvg[position]);
+        qty = qty + TotalQty;
+
+        return  qty;
+    }
+    public int getQty(int position)
+    {
+        View v = getView(position,null,null);
+        TextView t = v.findViewById(R.id.tvQty);
+        int i = Integer.parseInt(t.getText().toString());
+        return i;
     }
 
     @Override
@@ -60,21 +83,25 @@ public class ItemListAdapter extends BaseAdapter {
         tvTimesUsedORActual = v.findViewById(R.id.tvLabel);
 
         final TextView tvQty = v.findViewById(R.id.tvQty);
-
+        stringsQTY[position] = tvQty.getText().toString();
         final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
         txtItemUsage.setText(ItemUsageAvg[position]);
 
         //imgIcons = v.findViewById(R.id.imgItemIcon);
         //imgIcons.setImageResource(ItemIcon[position]);
-
-        final TextView tvItemNames = v.findViewById(R.id.tvItemName);
-        tvItemNames.setText(ItemName[position]);
-
         loDropHide = v.findViewById(R.id.loDropHide);
-        if(loDropHide.getVisibility()== v.INVISIBLE)
-            loDropHide.setVisibility(v.VISIBLE);
-        else
-            loDropHide.setVisibility(v.INVISIBLE);
+        LoDropHides[position] = loDropHide;
+        if(loDropHide.getVisibility()==View.INVISIBLE)
+                loDropHide.setVisibility(View.VISIBLE);
+            else
+                loDropHide.setVisibility(View.INVISIBLE);
+
+        final TextView tvItemName = v.findViewById(R.id.tvItemName);
+        tvItemName.setText(ItemName[position]);
+
+
+
+
 
 
      /*buttons____________________________________________________________________________*/
@@ -84,6 +111,7 @@ public class ItemListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 int i =Integer.parseInt( tvQty.getText().toString()) + 1;
                 tvQty.setText(""+i);
+                stringsQTY[position] = ""+i;
                 i =Integer.parseInt( ItemUsageAvg[position]) *i;
                 txtItemUsage.setText(""+i);
             }
@@ -96,6 +124,7 @@ public class ItemListAdapter extends BaseAdapter {
                 int i =Integer.parseInt( tvQty.getText().toString()) - 1;
                 if(i>=0) {
                     tvQty.setText("" + i);
+                    stringsQTY[position] = ""+i;
                     i = Integer.parseInt(ItemUsageAvg[position]) * i;
                     txtItemUsage.setText("" + i);
                 }
@@ -108,6 +137,7 @@ public class ItemListAdapter extends BaseAdapter {
 
             }
         });
+        final TextView tvTotal = parent.findViewById(R.id.tvTotalQty);
         final Button btnDone; btnDone = v.findViewById(R.id.btnDone);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,13 +150,23 @@ public class ItemListAdapter extends BaseAdapter {
 
         return v;
     }
-
-    public void setVisible(View v)
+    public void setVisibility(int position )
     {
-
-        if(loDropHide.getVisibility()== v.INVISIBLE)
-            loDropHide.setVisibility(v.VISIBLE);
+        if(LoDropHides[position].getVisibility()==View.INVISIBLE)
+            LoDropHides[position].setVisibility(View.VISIBLE);
         else
-            loDropHide.setVisibility(v.INVISIBLE);
+            LoDropHides[position].setVisibility(View.INVISIBLE);
     }
+    public boolean isVisibie(int position )
+    {
+        boolean isVisibible = false;
+        if(LoDropHides[position].getVisibility()==View.INVISIBLE)
+        {
+            isVisibible = true;
+        }
+
+
+        return isVisibible;
+    }
+
 }
