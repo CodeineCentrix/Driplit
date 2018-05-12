@@ -25,7 +25,9 @@
         <activity
             android:name=".TabMenu"
             android:label="@string/title_activity_tab_menu"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Mainmenu"
+            android:label="@string/main_menu"/>
     </application>
 
 </manifest>

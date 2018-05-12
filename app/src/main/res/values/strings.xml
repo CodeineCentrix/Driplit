@@ -22,6 +22,10 @@
     <string name="tab_text_2">Tips</string>
     <string name="tab_text_3">Edit Profile</string>
     <string name="report_leak">Report Leak</string>
-    <string name="intake_trend">Intake Trend</string>>
+    <string name="tricks_tips">Tips and Tricks</string>
+    <string name="tipoftheday">Tip Of The Day</string>
+    <string name="intake_trend">Intake Trend</string>
+    <string name="trend">Trends</string>
     <string name="jugjes">Record Intake</string>
+    <string name="report_leak_instruct">Make Sure You Are Where The Leak Is. \n Click The Button Above To Report Leak.</string>
 </resources>
