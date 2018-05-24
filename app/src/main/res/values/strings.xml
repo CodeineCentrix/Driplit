@@ -27,5 +27,8 @@
     <string name="intake_trend">Intake Trend</string>
     <string name="trend">Trends</string>
     <string name="jugjes">Record Intake</string>
+    <string name="home">Home</string>
+    <string name="chart_label">Weeks</string>
+    <string name="show_more">">"</string>
     <string name="report_leak_instruct">Make Sure You Are Where The Leak Is. \n Click The Button Above To Report Leak.</string>
 </resources>

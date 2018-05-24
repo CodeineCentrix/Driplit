@@ -33,8 +33,7 @@ public class IntakeTrendClass extends Fragment {
 
         final Random rNum = new Random();
 
-        TextView noTrend = rootView.findViewById(R.id.textView3);
-        noTrend.setText("Trends");
+
         final List<BarEntry> entries = new ArrayList<>();
         final List<BarEntry> entriesWeeks = new ArrayList<>();
 
@@ -55,17 +54,17 @@ public class IntakeTrendClass extends Fragment {
 
         SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
 
-        Button btnShow = rootView.findViewById(R.id.btnShowMore);
+        Button btnShow = rootView.findViewById(R.id.btnShowMode);
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(tvChartLAbel.getText().toString()!="Weeks")
                 {
-                    SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
+                    SetUpGraph(bcTrend,entriesWeeks,labelWeeks,tvChartLAbel);
                 }
                 else
                 {
-                    SetUpGraph(bcTrend,entriesWeeks,labelWeeks,tvChartLAbel);
+                    SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
                 }
             }
         });
@@ -99,7 +98,7 @@ public class IntakeTrendClass extends Fragment {
         IAxisValueFormatter formatter;
         float distance =0;
         int labelCount = 0;
-        if(tvChartLAbel.getText().toString()!="Weeks")
+        if(tvChartLAbel.getText().toString()=="Days")
         {
             formatter = setYaxis(Labels);
             distance = 0.7f;

@@ -63,7 +63,7 @@ public class bll {
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
             String user = "codecentrix";
              String password = "password";
-            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://10.103.137.7:1433/Codecentrix" , user, password);
+            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix" , user, password);
 
 
         } catch (Exception e) {
@@ -77,7 +77,8 @@ public class bll {
         {
 
             Statement st = connection.createStatement();
-            resultSet = st.executeQuery("SELECT * FROM WaterUsageItem;");
+            resultSet = st.executeQuery("uspGetWaterUsageItmes");
+
         }
         catch (SQLException e)
         {
