@@ -65,7 +65,7 @@
                 android:paddingRight="0dp"
                 android:paddingStart="0dp"
                 android:text="0.0"
-                android:textAlignment="textEnd"
+
                 android:textColor="@color/blue"
                 android:textSize="70sp" />
 
