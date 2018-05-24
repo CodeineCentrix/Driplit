@@ -1,5 +1,7 @@
 package com.example.s215131746.driplit;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ public class RecordWaterIntakeClass extends Fragment {
                              Bundle savedInstanceState) {
         //this line inflate this class with the record water intake layout
         View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
+        ScaleImg(R.id.imgView);
         //here is the attempt to create and n tier architecture
         bll business = new bll();
         String[] ItemName = business.getItemName();
@@ -48,16 +51,16 @@ public class RecordWaterIntakeClass extends Fragment {
                 if(listAdapter.isVisibie(i)==true)
                 {
                     //the following code is to add to the total
-                    int tt = Integer.parseInt(tvTotal.getText().toString());
+                   float tt = Float.parseFloat (tvTotal.getText().toString());
                     tt = listAdapter.getUsage(i,tt);
                     String stt = ""+tt;
                     if(stt.length()==1)
                     {
-                        tvTotal.setText("00"+stt);
+                        tvTotal.setText(""+stt);
                     }
                     else if(stt.length()==2)
                     {
-                        tvTotal.setText("0"+stt);
+                        tvTotal.setText(""+stt);
                     }
                     else
                     {
@@ -71,5 +74,42 @@ public class RecordWaterIntakeClass extends Fragment {
         });
         return rootView;
     }
+    public Bitmap ScaleImg(int pic)
+    {
+        Bitmap scaledImg;
+        BitmapFactory.Options op = new BitmapFactory.Options();
+
+        op.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(getResources(),pic,op);
+
+        int imgWidth = op.outWidth;
+        if(imgWidth>1500)
+        {
+            op.inSampleSize = 20;
+        }
+        else if(imgWidth>500)
+        {
+            op.inSampleSize = 5;
+        }
+        else if(imgWidth>400)
+        {
+            op.inSampleSize = 4;
+        }
+        else if(imgWidth>300)
+        {
+            op.inSampleSize = 3;
+        }
+        else
+        {
+            op.inSampleSize = 2;
+        }
+
+
+        op.inJustDecodeBounds = false;
+        scaledImg = BitmapFactory.decodeResource(getResources(),pic,op);
+
+        return scaledImg;
+    }
+
 
 }
