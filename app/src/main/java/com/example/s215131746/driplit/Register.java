@@ -14,7 +14,7 @@ public class Register extends AppCompatActivity {
     /*Variables to store register details*/
     String fullname, email, password, confirmPassword;
 
-   EditText txtFullName, txtEmail, txtPassword, txtConfirmPassword;
+   EditText txtFullName, txtEmail, txtPassword, txtPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class Register extends AppCompatActivity {
        btnRegister.setOnClickListener(new View.OnClickListener() {//OnClick method for the Register Button
           @Override
           public void onClick(View v) {
-              RegisterUser();
+              ToRegisterUser();
            }
        });
         //OnClick Code Ends Here
@@ -35,18 +35,32 @@ public class Register extends AppCompatActivity {
     /**
      * Code for Registering
      */
-    public boolean RegisterUser()
+    public boolean ToRegisterUser()
     {
         //*Getting values from the controls*//*
-        txtFullName = (EditText)findViewById(R.id.txtRegUsername);
-        txtEmail = (EditText)findViewById(R.id.txtPhoneNumber);
-        txtPassword = (EditText)findViewById(R.id.txtPassword);
-        txtConfirmPassword = (EditText)findViewById(R.id.txtConfirmPass);
+        txtFullName = (EditText)findViewById(R.id.txtRegFullName);
+        txtEmail = (EditText)findViewById(R.id.txtEmail);
+        txtPassword = (EditText)findViewById(R.id.txtRegPassword);
+        txtPhone = (EditText)findViewById(R.id.txtPhone);
         boolean i = false;
         bll businessLogic = new bll();
         try
         {
-          i =  businessLogic.MobAddPerson(txtFullName.getText().toString(), txtEmail.toString(), txtPassword.toString(), txtConfirmPassword.toString());
+            String[] input = new String[4];
+
+            input[0] = txtFullName.getText().toString();
+            input[1] = txtEmail.getText().toString();
+            input[2] = txtPassword.getText().toString();
+            input[3] = txtPhone.getText().toString();
+          i =  businessLogic.MobAddPerson(input[0],input[1] ,input[2] ,input[3] );
+          if(i)
+          {
+              Toast.makeText(this,"Succesfully registered", Toast.LENGTH_SHORT).show();
+          }
+          else
+          {
+              Toast.makeText(this,"Please Enter missing values", Toast.LENGTH_SHORT).show();
+          }
         }
         catch (SQLException e)
         {

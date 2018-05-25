@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/otherbg"
     android:orientation="vertical"
     tools:context="com.example.s215131746.driplit.Register">
@@ -11,12 +11,12 @@
     <LinearLayout
         android:id="@+id/head"
         android:layout_width="311dp"
-
         android:layout_height="214dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/logohead"
-        android:orientation="vertical" android:layout_marginStart="40dp" />
+        android:orientation="vertical" />
 
 
     <EditText
@@ -28,45 +28,56 @@
         android:layout_marginTop="13dp"
         android:backgroundTint="@color/darkerblue"
         android:drawableLeft="@drawable/user"
+        android:drawableStart="@drawable/user"
         android:hint="@string/fullname"
         android:inputType="text"
-        android:textAlignment="center" tools:targetApi="lollipop" android:drawableStart="@drawable/user" />
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
 
     <EditText
         android:id="@+id/txtEmail"
         android:layout_width="294dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="13dp"
         android:backgroundTint="@color/darkerblue"
         android:drawableLeft="@drawable/phone"
+        android:drawableStart="@drawable/phone"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
+
+    <EditText
+        android:id="@+id/txtPhone"
+        android:layout_width="294dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="13dp"
+        android:backgroundTint="@color/darkerblue"
+        android:drawableLeft="@drawable/phone"
+        android:drawableStart="@drawable/phone"
+        android:hint="@string/phonenumber"
         android:inputType="phone"
-        android:textAlignment="center" android:drawableStart="@drawable/phone" tools:targetApi="lollipop" android:layout_marginStart="52dp" />
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
 
     <EditText
         android:id="@+id/txtRegPassword"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="13dp"
         android:backgroundTint="@color/darkerblue"
         android:drawableLeft="@drawable/padlock"
+        android:drawableStart="@drawable/padlock"
         android:hint="@string/password"
         android:inputType="textWebPassword"
-        android:textAlignment="center" android:layout_marginStart="52dp" tools:targetApi="lollipop" android:drawableStart="@drawable/padlock" />
-
-    <EditText
-        android:id="@+id/txtConfirmPass"
-        android:layout_width="296dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="52dp"
-        android:layout_marginTop="13dp"
-        android:backgroundTint="@color/darkerblue"
-        android:drawableLeft="@drawable/padlock"
-        android:hint="@string/confirm"
-        android:inputType="textWebPassword"
-        android:textAlignment="center" android:layout_marginStart="52dp" tools:targetApi="lollipop" android:drawableStart="@drawable/padlock" />
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
 
     <Button
         android:id="@+id/btnRegister"

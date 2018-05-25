@@ -41,7 +41,10 @@
         android:inputType="numberPassword"
         android:textAlignment="center"
         android:textCursorDrawable="@color/darkerblue"
-        android:textSize="20sp" android:drawableEnd="@drawable/help" android:drawableStart="@drawable/padlock" android:layout_marginStart="50dp"/>
+        android:textSize="20sp"
+        android:drawableEnd="@drawable/help"
+        android:drawableStart="@drawable/padlock"
+        android:layout_marginStart="50dp"/>
 
     <Button
         android:id="@+id/btnLogin"
@@ -73,7 +76,8 @@
         android:text="@string/register"
         android:textColor="@color/blue"
         android:textSize="20sp"
-        android:onClick="ToRegisterScreen" android:layout_marginStart="160dp" />
+        android:onClick="ToRegisterScreen"
+        android:layout_marginStart="160dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

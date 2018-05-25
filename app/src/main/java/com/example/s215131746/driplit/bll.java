@@ -22,6 +22,11 @@ public class bll {
     private String errorMassage;
     String[] ItemNames;
     String[] Averages;
+    private String fullName="Shervin";
+    private String email="shervin@gmail.com";
+    private String userPassword="shervin123";
+    private String phoneNumber="07325390";
+
     public bll()
     {
         Select();
@@ -105,19 +110,47 @@ public class bll {
     }
 
     public boolean MobAddPerson(String FullName,String Email,String UserPassword,String PhoneNumber ) throws SQLException {
+
+        boolean done = false;
+        String[] params = {fullName,email,userPassword,phoneNumber};
+         for(int i = 0;i<params.length;i++) {
+             if (params[i] == null || params[i] == "") {
+                 done = false;
+                 break;
+             } else
+                 done = true;
+         }
+
+         if (done==true)
+            return  Insert("uspMobAddPerson",params);
+         else
+             return done;
+    }
+    public boolean MobDeletePerson(int personID, boolean delete) throws SQLException {
+
+        String[] params = {""+personID,""+delete};
+        return  Insert("uspMobAddPerson",params);
+    }
+
+
+
+
+
+
+
+    private boolean Insert(String Query,String[] params ) throws SQLException {
         boolean i = false;
         Connect();
-        String[] params = {FullName,Email,UserPassword,PhoneNumber};
         try
         {
-           Statement st = connection.createStatement();
-           i = st.execute("uspMobAddPerson",params);
+            Statement st = connection.createStatement();
+
+            i = st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
 
         }
         catch (SQLException e)
         {
-            if (connection.isClosed()==false)
-            {
+            if (!connection.isClosed()) {
                 connection.close();
             }
         }
