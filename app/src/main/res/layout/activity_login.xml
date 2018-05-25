@@ -23,11 +23,11 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/user"
-        android:hint="@string/username"
+        android:hint="@string/fullname"
         android:textAlignment="center"
         android:textColorHint="@android:color/darker_gray"
         android:textColorLink="@color/blue"
-        android:textSize="20sp" />
+        android:textSize="20sp" android:drawableStart="@drawable/user" />
 
     <EditText
         android:id="@+id/txtPassword"
@@ -40,7 +40,8 @@
         android:hint="@string/password"
         android:inputType="numberPassword"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textCursorDrawable="@color/darkerblue"
+        android:textSize="20sp" android:drawableEnd="@drawable/help" android:drawableStart="@drawable/padlock" android:layout_marginStart="50dp"/>
 
     <Button
         android:id="@+id/btnLogin"
@@ -60,11 +61,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="9dp"
-        android:text="Don't have an account ?"
-        android:textSize="22sp" />
+        android:text="@string/don_t_have_an_account"
+        android:textSize="22sp" android:layout_marginStart="100dp"/>
 
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/lnkRegister"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginLeft="160dp"
@@ -72,7 +73,7 @@
         android:text="@string/register"
         android:textColor="@color/blue"
         android:textSize="20sp"
-        android:onClick="ToRegisterScreen"/>
+        android:onClick="ToRegisterScreen" android:layout_marginStart="160dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

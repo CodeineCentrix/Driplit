@@ -31,7 +31,7 @@
             android:backgroundTint="@color/darkerblue"
             android:drawableRight="@drawable/ic_edit_24dp"
             android:ems="10"
-            android:hint="@string/username"
+            android:hint="@string/fullname"
             android:inputType="textPersonName"
             android:lineSpacingExtra="8sp"
             android:textAlignment="center"
