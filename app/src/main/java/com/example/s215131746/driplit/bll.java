@@ -102,7 +102,25 @@ public class bll {
         ItemNames = name.toArray(ItemName);
         String[] Average = new String[Avg.size()];
         Averages = Avg.toArray(Average);
-
     }
 
+    public boolean MobAddPerson(String FullName,String Email,String UserPassword,String PhoneNumber ) throws SQLException {
+        boolean i = false;
+        Connect();
+        String[] params = {FullName,Email,UserPassword,PhoneNumber};
+        try
+        {
+           Statement st = connection.createStatement();
+           i = st.execute("uspMobAddPerson",params);
+
+        }
+        catch (SQLException e)
+        {
+            if (connection.isClosed()==false)
+            {
+                connection.close();
+            }
+        }
+        return  i;
+    }
 }
