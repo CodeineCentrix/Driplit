@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 public class EditProfileClass extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_register, container, false);
+        View rootView = inflater.inflate(R.layout.activity_edit_profile, container, false);
 
         return rootView;
     }

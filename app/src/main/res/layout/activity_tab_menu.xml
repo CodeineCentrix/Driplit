@@ -40,31 +40,31 @@
             android:background="@color/blue">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem5"
+                android:id="@+id/tiIntakeTrend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/intake_trend" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem"
+                android:id="@+id/tiRecordIntake"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/record_intake" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem2"
+                android:id="@+id/tiTips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_2" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem3"
+                android:id="@+id/tiReportLeak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/report_leak" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem4"
+                android:id="@+id/tiEditProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_profile" />

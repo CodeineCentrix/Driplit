@@ -25,6 +25,8 @@
         android:drawableLeft="@drawable/user"
         android:hint="@string/username"
         android:textAlignment="center"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColorLink="@color/blue"
         android:textSize="20sp" />
 
     <EditText
