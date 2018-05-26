@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Driplit</string>
+    <string name="app_name">DRIPLIT</string>
     <string name="fullname">FULLNAME</string>
     <string name="password">PASSWORD</string>
     <string name="login">LOGIN</string>
@@ -26,7 +26,6 @@
     <string name="tipoftheday">Tip Of The Day</string>
     <string name="intake_trend">Intake Trend</string>
     <string name="trend">Trends</string>
-    <string name="jugjes">Record Intake</string>
     <string name="home">Home</string>
     <string name="chart_label">Weeks</string>
     <string name="show_more">">"</string>

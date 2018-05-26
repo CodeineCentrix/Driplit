@@ -1,6 +1,7 @@
 package com.example.s215131746.driplit;
 
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import java.net.ConnectException;
 import java.sql.Connection;
@@ -22,10 +23,10 @@ public class bll {
     private String errorMassage;
     String[] ItemNames;
     String[] Averages;
-    private String fullName="Shervin";
-    private String email="shervin@gmail.com";
-    private String userPassword="shervin123";
-    private String phoneNumber="07325390";
+    private String fullName;
+    private String email;
+    private String userPassword;
+    private String phoneNumber;
 
     public bll()
     {
@@ -109,7 +110,7 @@ public class bll {
         Averages = Avg.toArray(Average);
     }
 
-    public boolean MobAddPerson(String FullName,String Email,String UserPassword,String PhoneNumber ) throws SQLException {
+    public boolean MobAddPerson(String fullName,String email,String userPassword,String phoneNumber ) throws SQLException {
 
         boolean done = false;
         String[] params = {fullName,email,userPassword,phoneNumber};
@@ -131,12 +132,6 @@ public class bll {
         String[] params = {""+personID,""+delete};
         return  Insert("uspMobAddPerson",params);
     }
-
-
-
-
-
-
 
     private boolean Insert(String Query,String[] params ) throws SQLException {
         boolean i = false;

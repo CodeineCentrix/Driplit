@@ -14,12 +14,17 @@
 
         <TextView
             android:id="@+id/txtGrid"
-            android:text="DRIPLIT"
-            android:textSize="34sp"
-            android:textColor="@color/lightdarkerorange"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/disco"
+            android:text="@string/app_name"
+            android:textAllCaps="false"
+            android:textColor="@color/lightdarkerorange"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            tools:targetApi="jelly_bean" />
 
 </RelativeLayout>
 
@@ -42,14 +47,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp" tools:targetApi="lollipop">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+            <Button
+                android:id="@+id/btnRecordIntake"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shade1"
                 android:text="@string/record_intake"
-                android:textSize="20sp"/>
+                />
         </android.support.v7.widget.CardView>
         <!--Column 1 -->
         <!--Row 1-->
@@ -61,14 +67,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp" tools:targetApi="lollipop">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+            <Button
+                android:id="@+id/btnReportLeak"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shade2"
                 android:text="@string/report_leak"
-                android:textSize="20sp"/>
+                />
         </android.support.v7.widget.CardView>
         <!--Column 2 -->
         <!--Row2-->
@@ -80,14 +87,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp" tools:targetApi="lollipop">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+            <Button
+                android:id="@+id/btnEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shade4"
                 android:text="@string/edit_profile"
-                android:textSize="20sp"/>
+                android:onClick="EditProfileScreen"/>
         </android.support.v7.widget.CardView>
         <!--Column1-->
         <!--Row2-->
@@ -99,13 +107,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp" tools:targetApi="lollipop">
 
             <Button
                 android:id="@+id/btnTrend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Trend" />
+                android:background="@color/shade5"
+                android:text="@string/trend"
+                />
         </android.support.v7.widget.CardView>
         <!--Column2-->
         <!--Row3-->
@@ -117,14 +127,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp" tools:targetApi="lollipop">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+            <Button
+                android:id="@+id/btnTipsTricks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shade6"
                 android:text="@string/tricks_tips"
-                android:textSize="20sp"/>
+                />
         </android.support.v7.widget.CardView>
         <!--Column1-->
         <!--Row3-->
@@ -136,29 +147,20 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp" tools:targetApi="lollipop">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
+            <Button
+                android:id="@+id/btnTOfDay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/holo_blue_bright"
                 android:text="@string/tipoftheday"
-                android:textSize="20sp"/>
+                />
         </android.support.v7.widget.CardView>
         <!--Column2-->
 
 
     </GridLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
-
-
-
-    </LinearLayout>
 
 
 </LinearLayout>

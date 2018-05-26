@@ -12,4 +12,12 @@
     <color name="white">#f2f2f2</color>
     <color name="aImaginary">#b9cbd2</color>
     <color name="darkerblue">#2091c6</color>
+
+    <!--Main menu colors-->
+    <color name="shade1">#9ad3e4</color>
+    <color name="shade2">#53a4c1</color>
+    <color name="shade3">#00c5ff</color>
+    <color name="shade4">#3298bc</color>
+    <color name="shade5">#1691bd</color>
+    <color name="shade6">#71bed9</color>
 </resources>

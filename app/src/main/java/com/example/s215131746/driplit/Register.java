@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class Register extends AppCompatActivity {
     /*Variables to store register details*/
-    String fullname, email, password, confirmPassword;
+    String fullname, email, password, phoneNumber;
 
    EditText txtFullName, txtEmail, txtPassword, txtPhone;
 
@@ -21,12 +21,41 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //*Getting values from the controls*//*
+        txtFullName = findViewById(R.id.txtRegFullName);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtPassword = findViewById(R.id.txtRegPassword);
+        txtPhone = findViewById(R.id.txtPhone);
 
        Button btnRegister = findViewById(R.id.btnRegister);
        btnRegister.setOnClickListener(new View.OnClickListener() {//OnClick method for the Register Button
           @Override
           public void onClick(View v) {
-              ToRegisterUser();
+              fullname = txtFullName.getText().toString();
+              email = txtEmail.getText().toString();
+              password = txtPassword.getText().toString();
+              phoneNumber = txtPhone.getText().toString();
+
+              bll bus_logic = new bll();
+              boolean i;
+              try
+              {
+                  i = bus_logic.MobAddPerson(fullname, email, password, phoneNumber);
+                  if (i)
+                  {
+                      Toast.makeText(Register.this, "Shit finally WORKS", Toast.LENGTH_SHORT).show();
+                  }
+                  else
+                  {
+                      Toast.makeText(Register.this,  "Shit still won't WORK", Toast.LENGTH_SHORT).show();
+                  }
+              }
+              catch(SQLException s)
+              {
+                  Toast.makeText(Register.this, s+"", Toast.LENGTH_SHORT).show();
+              }
+
+
            }
        });
         //OnClick Code Ends Here
@@ -37,22 +66,16 @@ public class Register extends AppCompatActivity {
      */
     public boolean ToRegisterUser()
     {
-        //*Getting values from the controls*//*
-        txtFullName = (EditText)findViewById(R.id.txtRegFullName);
-        txtEmail = (EditText)findViewById(R.id.txtEmail);
-        txtPassword = (EditText)findViewById(R.id.txtRegPassword);
-        txtPhone = (EditText)findViewById(R.id.txtPhone);
+
         boolean i = false;
         bll businessLogic = new bll();
         try
         {
-            String[] input = new String[4];
-
-            input[0] = txtFullName.getText().toString();
-            input[1] = txtEmail.getText().toString();
-            input[2] = txtPassword.getText().toString();
-            input[3] = txtPhone.getText().toString();
-          i =  businessLogic.MobAddPerson(input[0],input[1] ,input[2] ,input[3] );
+            fullname = txtFullName.getText().toString();
+            email = txtEmail.getText().toString();
+            password = txtPassword.getText().toString();
+            phoneNumber = txtPhone.getText().toString();
+          i =  businessLogic.MobAddPerson(fullname, email, password, phoneNumber);
           if(i)
           {
               Toast.makeText(this,"Succesfully registered", Toast.LENGTH_SHORT).show();
