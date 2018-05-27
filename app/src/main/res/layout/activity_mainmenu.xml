@@ -55,6 +55,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/shade1"
                 android:text="@string/record_intake"
+                android:onClick="RecordScreen"
                 />
         </android.support.v7.widget.CardView>
         <!--Column 1 -->
@@ -75,6 +76,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/shade2"
                 android:text="@string/report_leak"
+                android:onClick="ReportScreen"
                 />
         </android.support.v7.widget.CardView>
         <!--Column 2 -->
@@ -95,7 +97,9 @@
                 android:layout_height="match_parent"
                 android:background="@color/shade4"
                 android:text="@string/edit_profile"
-                android:onClick="EditProfileScreen"/>
+                android:onClick="EditProfileScreen" />
+
+
         </android.support.v7.widget.CardView>
         <!--Column1-->
         <!--Row2-->
@@ -115,6 +119,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/shade5"
                 android:text="@string/trend"
+                android:onClick="TrendScreen"
                 />
         </android.support.v7.widget.CardView>
         <!--Column2-->
@@ -135,6 +140,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/shade6"
                 android:text="@string/tricks_tips"
+                android:onClick="TipScreen"
                 />
         </android.support.v7.widget.CardView>
         <!--Column1-->
@@ -155,6 +161,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/holo_blue_bright"
                 android:text="@string/tipoftheday"
+                android:onClick="FactOfTheDayScreen"
                 />
         </android.support.v7.widget.CardView>
         <!--Column2-->

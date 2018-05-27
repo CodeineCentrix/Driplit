@@ -39,6 +39,7 @@ Intent mainMenu;
             @Override
             public void onClick(View v) {
                 Intent mainMenu = new Intent(getApplicationContext(), Mainmenu.class);
+
                 startActivity(mainMenu);
             }
         });

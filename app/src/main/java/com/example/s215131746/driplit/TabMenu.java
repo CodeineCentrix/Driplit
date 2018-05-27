@@ -51,6 +51,7 @@ public class TabMenu extends AppCompatActivity {
                 startActivity(showHomeMenu);
             }
         });
+
         //_____________________
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +62,20 @@ public class TabMenu extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        Bundle tab = getIntent().getExtras();
+        String tabName = tab.getString("Tab");
+        String[] tabs = {"Trend","Record","Tips","Report","Edit"};
+
+        for(int i = 0; i <tabs.length;i++)
+        {
+            if(tabName.equalsIgnoreCase(tabs[i]) )
+            {
+                mViewPager.setCurrentItem(i);
+            }
+        }
+
+
+
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
@@ -70,7 +85,11 @@ public class TabMenu extends AppCompatActivity {
 
 
     }
-
+    public void Home()
+    {
+        Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
+        startActivity(showHomeMenu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -148,7 +167,7 @@ public class TabMenu extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 5 total pages.
             return 5;
         }
     }

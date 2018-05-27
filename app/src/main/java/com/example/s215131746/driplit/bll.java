@@ -69,12 +69,78 @@ public class bll {
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
             String user = "codecentrix";
              String password = "password";
+
             connection = DriverManager.getConnection("jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix" , user, password);
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public String[] Person(String email)
+    {
+        String[] personDetais = new String[4];
+
+
+        try
+        {
+            Connect();
+            Statement st = connection.createStatement();
+            resultSet = st.executeQuery("SELECT * FROM Person WHERE Email = '"+email+"' AND Deleted = 'false' ");
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        try {
+        while(resultSet.next())
+        {
+            personDetais[0] = (resultSet.getString("FullName").toString());
+            personDetais[1] = (resultSet.getString("PhoneNumber"));
+            personDetais[2] = (resultSet.getString("Email"));
+            personDetais[3] = (resultSet.getString("UserPassword"));
+        }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return personDetais;
+    }
+    private void SelectParas(String query,String[] params)
+    {
+        Connect();
+        try
+        {
+
+            Statement st = connection.createStatement();
+            resultSet = st.executeQuery("SELECT * FROM Person WHERE Email = "+params[0]+" AND Deleted = 'false' ");
+            resultSet = st.executeQuery("uspGetWaterUsageItmes");
+
+        }
+        catch (SQLException e)
+        {
+        }
+        ArrayList<String> name = new ArrayList<>();
+        ArrayList<String> Avg = new ArrayList<>();
+
+        try {
+            while(resultSet.next())
+            {
+
+                name.add(resultSet.getString("ItemDescription").toString());
+                Avg.add(""+resultSet.getFloat("ItemAverageAmount"));
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        String[] ItemName = new String[name.size()];
+        ItemNames = name.toArray(ItemName);
+        String[] Average = new String[Avg.size()];
+        Averages = Avg.toArray(Average);
     }
     private void Select()
     {
