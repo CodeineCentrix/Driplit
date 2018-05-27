@@ -53,10 +53,10 @@ public class ItemListAdapter extends BaseAdapter {
     public String getItemAvg(int position) {
         return ItemUsageAvg[position];
     }
-    public int getUsage(int position,int TotalQty)
+    public float getUsage(int position,float TotalQty)
     {
-        int qty = Integer.parseInt(stringsQTY[position]);
-        qty = qty*Integer.parseInt(ItemUsageAvg[position]);
+       float qty = Float.parseFloat (stringsQTY[position]);
+        qty = qty*Float.parseFloat (ItemUsageAvg[position]);
         qty = qty + TotalQty;
 
         return  qty;
@@ -78,14 +78,16 @@ public class ItemListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        View v = mInflater.inflate(R.layout.water_intake_item_layout,null);
+        View v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
 
         tvTimesUsedORActual = v.findViewById(R.id.tvLabel);
-
+        //text view
         final TextView tvQty = v.findViewById(R.id.tvQty);
         stringsQTY[position] = tvQty.getText().toString();
+        //text edit
         final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
-        txtItemUsage.setText(ItemUsageAvg[position]);
+        float i = Float.parseFloat(ItemUsageAvg[position])*Integer.parseInt(stringsQTY[position]);
+        txtItemUsage.setText(""+i);
 
         //imgIcons = v.findViewById(R.id.imgItemIcon);
         //imgIcons.setImageResource(ItemIcon[position]);
@@ -100,7 +102,7 @@ public class ItemListAdapter extends BaseAdapter {
         tvItemName.setText(ItemName[position]);
 
 
-
+        final TextView tvUsed = v.findViewById(R.id.tvUsedToday);
 
 
 
@@ -109,42 +111,47 @@ public class ItemListAdapter extends BaseAdapter {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i =Integer.parseInt( tvQty.getText().toString()) + 1;
+                float i =Float.parseFloat ( tvQty.getText().toString()) + 1;
                 tvQty.setText(""+i);
                 stringsQTY[position] = ""+i;
-                i =Integer.parseInt( ItemUsageAvg[position]) *i;
+                i =Float.parseFloat ( ItemUsageAvg[position]) *i;
                 txtItemUsage.setText(""+i);
+                float previous = Float.parseFloat (tvUsed.getText().toString())+i;
+                tvUsed.setText(""+previous);
             }
         });
+
         final Button btnMinus = v.findViewById(R.id.btnMinus);
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                int i =Integer.parseInt( tvQty.getText().toString()) - 1;
-                if(i>=0) {
+                float i = Float.parseFloat ( tvQty.getText().toString()) - 1;
+
                     tvQty.setText("" + i);
                     stringsQTY[position] = ""+i;
-                    i = Integer.parseInt(ItemUsageAvg[position]) * i;
+                    i = Float.parseFloat(ItemUsageAvg[position]) * i;
                     txtItemUsage.setText("" + i);
-                }
+                    float previous = Float.parseFloat (tvUsed.getText().toString())+i;
+                    tvUsed.setText(""+previous);
+                
             }
         });
-        final Button btnEdit = v.findViewById(R.id.btnEdit);
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+     //final Button btnEdit = v.findViewById(R.id.btnEdit);
+     //btnEdit.setOnClickListener(new View.OnClickListener() {
+     //    @Override
+     //    public void onClick(View v) {
 
-            }
-        });
+     //    }
+     //});
         final TextView tvTotal = parent.findViewById(R.id.tvTotalQty);
-        final Button btnDone; btnDone = v.findViewById(R.id.btnDone);
-        btnDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+       //final Button btnDone; btnDone = v.findViewById(R.id.btnDone);
+       //btnDone.setOnClickListener(new View.OnClickListener() {
+       //    @Override
+       //    public void onClick(View v) {
 
-            }
-        });
+       //    }
+       //});
         /*End buttons____________________________________________________________________________*/
 
 

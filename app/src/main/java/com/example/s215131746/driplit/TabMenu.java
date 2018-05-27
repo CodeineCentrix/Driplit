@@ -1,5 +1,6 @@
 package com.example.s215131746.driplit;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 public class TabMenu extends AppCompatActivity {
@@ -40,7 +42,17 @@ public class TabMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_menu);
+        //Home button__________
+        final Button btnHome = findViewById(R.id.btnHome);
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
+                startActivity(showHomeMenu);
+            }
+        });
 
+        //_____________________
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -50,6 +62,20 @@ public class TabMenu extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        Bundle tab = getIntent().getExtras();
+        String tabName = tab.getString("Tab");
+        String[] tabs = {"Trend","Record","Tips","Report","Edit"};
+
+        for(int i = 0; i <tabs.length;i++)
+        {
+            if(tabName.equalsIgnoreCase(tabs[i]) )
+            {
+                mViewPager.setCurrentItem(i);
+            }
+        }
+
+
+
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
@@ -59,7 +85,11 @@ public class TabMenu extends AppCompatActivity {
 
 
     }
-
+    public void Home()
+    {
+        Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
+        startActivity(showHomeMenu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,7 +167,7 @@ public class TabMenu extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 5 total pages.
             return 5;
         }
     }

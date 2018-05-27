@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Driplit</string>
-    <string name="username">USERNAME</string>
+    <string name="app_name">DRIPLIT</string>
+    <string name="fullname">FULLNAME</string>
     <string name="password">PASSWORD</string>
     <string name="login">LOGIN</string>
     <string name="welcome">WELCOME</string>
@@ -22,6 +22,17 @@
     <string name="tab_text_2">Tips</string>
     <string name="tab_text_3">Edit Profile</string>
     <string name="report_leak">Report Leak</string>
-    <string name="intake_trend">Intake Trend</string>>
-    <string name="jugjes">Record Intake</string>
+    <string name="tricks_tips">Tips and Tricks</string>
+    <string name="tipoftheday">Tip Of The Day</string>
+    <string name="intake_trend">Intake Trend</string>
+    <string name="trend">Trends</string>
+    <string name="home">Home</string>
+    <string name="chart_label">Weeks</string>
+    <string name="show_more">">"</string>
+    <string name="report_leak_instruct">Make Sure You Are Where The Leak Is. \n Click The Button Above To Report Leak.</string>
+
+    <string name="done">Done</string>
+    <string name="back">Back</string>
+    <string name="email">EMAIL</string>
+    <string name="don_t_have_an_account">Don\'t have an account ?</string>
 </resources>

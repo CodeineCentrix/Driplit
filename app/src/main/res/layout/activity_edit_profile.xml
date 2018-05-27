@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="291dp"
+        android:layout_height="337dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/txtUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="2dp"
+            android:backgroundTint="@color/darkerblue"
+            android:drawableEnd="@drawable/ic_edit_24dp"
+            android:drawableRight="@drawable/ic_edit_24dp"
+            android:ems="10"
+            android:hint="@string/fullname"
+            android:inputType="textPersonName"
+            android:lineSpacingExtra="8sp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/txtPhoneNumber"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.906"
+            tools:layout_editor_absoluteX="63dp"
+            tools:targetApi="lollipop" />
+
+        <EditText
+            android:id="@+id/txtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/darkerblue"
+            android:drawableEnd="@drawable/ic_edit_24dp"
+            android:drawableRight="@drawable/ic_edit_24dp"
+            android:ems="10"
+            android:hint="@string/phonenumber"
+            android:inputType="phone"
+            android:textAlignment="center"
+            tools:layout_editor_absoluteX="63dp"
+            tools:layout_editor_absoluteY="286dp"
+            tools:targetApi="lollipop" />
+
+        <EditText
+            android:id="@+id/txtUserEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/darkerblue"
+            android:drawableEnd="@drawable/ic_edit_24dp"
+            android:drawableRight="@drawable/ic_edit_24dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:text="@string/email"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/darker_gray"
+            tools:targetApi="lollipop" />
+
+        <EditText
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/darkerblue"
+            android:drawableEnd="@drawable/ic_edit_24dp"
+            android:drawableRight="@drawable/ic_edit_24dp"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPersonName|textPassword"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPhoneNumber"
+            app:layout_constraintVertical_bias="0.094"
+            tools:layout_editor_absoluteX="63dp"
+            tools:targetApi="lollipop" />
+
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@color/darkerblue"
+            android:elevation="0dp"
+            android:text="@string/done"
+            tools:targetApi="lollipop" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

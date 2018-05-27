@@ -2,75 +2,97 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/otherbg"
     android:orientation="vertical"
     tools:context="com.example.s215131746.driplit.Register">
 
     <LinearLayout
         android:id="@+id/head"
-        android:layout_width="309dp"
-
+        android:layout_width="311dp"
         android:layout_height="214dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/logohead"
         android:orientation="vertical" />
 
 
     <EditText
-        android:id="@+id/txtRegUsername"
+        android:id="@+id/txtRegFullName"
         android:layout_width="293dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="13dp"
+        android:backgroundTint="@color/darkerblue"
         android:drawableLeft="@drawable/user"
-        android:hint="@string/username"
-        android:textAlignment="center" />
+        android:drawableStart="@drawable/user"
+        android:hint="@string/fullname"
+        android:inputType="text"
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
 
     <EditText
-        android:id="@+id/txtPhonenumber"
+        android:id="@+id/txtEmail"
         android:layout_width="294dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="13dp"
+        android:backgroundTint="@color/darkerblue"
         android:drawableLeft="@drawable/phone"
+        android:drawableStart="@drawable/phone"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
+
+    <EditText
+        android:id="@+id/txtPhone"
+        android:layout_width="294dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="13dp"
+        android:backgroundTint="@color/darkerblue"
+        android:drawableLeft="@drawable/phone"
+        android:drawableStart="@drawable/phone"
         android:hint="@string/phonenumber"
-        android:textAlignment="center" />
+        android:inputType="phone"
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
 
     <EditText
         android:id="@+id/txtRegPassword"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="13dp"
+        android:backgroundTint="@color/darkerblue"
         android:drawableLeft="@drawable/padlock"
+        android:drawableStart="@drawable/padlock"
         android:hint="@string/password"
-        android:textAlignment="center" />
-
-    <EditText
-        android:id="@+id/txtConfirmPass"
-        android:layout_width="296dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="52dp"
-        android:layout_marginTop="13dp"
-        android:drawableLeft="@drawable/padlock"
-        android:hint="@string/confirm"
-        android:textAlignment="center" />
+        android:inputType="textWebPassword"
+        android:textAlignment="center"
+        tools:targetApi="lollipop" />
 
     <Button
+        android:id="@+id/btnRegister"
         android:layout_width="275dp"
         android:layout_height="47dp"
         android:layout_marginLeft="62dp"
+        android:layout_marginStart="62dp"
         android:layout_marginTop="25dp"
-        android:background="@color/blue"
+        android:background="@color/darkerblue"
         android:text="@string/register"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/footer"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        android:background="@drawable/footer" />
 </LinearLayout>

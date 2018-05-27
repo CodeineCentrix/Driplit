@@ -4,46 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_editor_absoluteY="25dp">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:baselineAligned="false"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical"
+        android:gravity="center"
+        android:text="@string/report_leak"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09" />
+
+    <ImageButton
+        android:id="@+id/imgRLImage"
+        android:layout_width="230dp"
+        android:layout_height="245dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginVertical="180dp"
+        android:background="@drawable/rlbuttonstyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/report" />
+
+
+    <TextView
+        android:id="@+id/txtRLInstruct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/report_leak_instruct"
         android:textAlignment="center"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.898">
+        app:layout_constraintVertical_bias="0.85" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:text="Report Leak"
-            android:textAlignment="center"
-            android:textSize="36sp" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="315dp"
-            android:layout_height="196dp"
-            app:srcCompat="@drawable/logohead" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="make sure you are where the leak is. \nClick the button with the drop to report the leak"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
