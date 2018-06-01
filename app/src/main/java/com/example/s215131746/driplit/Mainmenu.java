@@ -28,21 +28,14 @@ public class Mainmenu extends AppCompatActivity {
     //Trying to link onClick of EditProfile button to Fragment EditProfile to display EditProfile intent.
     public void EditProfileScreen(View view)
     {
-       // TabLayout menu = findViewById(R.id.tabs);
-       // TabItem ti_editProfile = findViewById(R.id.tiEditProfile);
-       // int i = menu.getTabCount();
-       // menu.getChildAt(i);
-//
-       // Fragment editProfile = null;
-       // editProfile.getFragmentManager().findFragmentById(R.id.tiEditProfile);
-       // editProfile.getActivity().getIntent();
+
         Intent showEditProfile = new Intent(getApplicationContext(),TabMenu.class);
         SetBundel(showEditProfile,"Edit");
     }
     public void TrendScreen(View view)
     {
         Intent showTrend = new Intent(getApplicationContext(),TabMenu.class);
-        showTrend.putExtras(getIntent().getBundleExtra("emailAddress"));
+
         SetBundel(showTrend,"Tend");
     }
     public void TipScreen(View view)

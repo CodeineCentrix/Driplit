@@ -17,7 +17,7 @@ public class EditProfile extends AppCompatActivity {
         if (business!=null)
         business = new bll();
 
-            String[] person = business.Person("anathi.roux@gmail.com");
+            String[] person = business.Person("anathi.roux@gmail.com","anathi");
 
 
             txtFullname.setText(person[0]);

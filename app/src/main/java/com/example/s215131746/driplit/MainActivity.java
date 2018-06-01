@@ -1,6 +1,7 @@
 package com.example.s215131746.driplit;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 private static final String TAG = "MainActivity";
+private static  int timeOUt = 3000;
+
     LinearLayout l1;
     ConstraintLayout l2;
     Animation upToDown, downToUp;
@@ -19,11 +22,11 @@ private static final String TAG = "MainActivity";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         LaunchMain();
     }
     public void LaunchMain()
     {
+
         l1 = (LinearLayout) findViewById(R.id.l1);
         l2 = (ConstraintLayout) findViewById(R.id.l2);
         upToDown = AnimationUtils.loadAnimation(this,R.anim.uptodown);
@@ -31,10 +34,16 @@ private static final String TAG = "MainActivity";
 
         downToUp = AnimationUtils.loadAnimation(this,R.anim.downtoup);
         l2.setAnimation(downToUp);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                loginScreen = new Intent(getApplicationContext(), Login.class);
+                startActivity(loginScreen);
+            }
+
+        },timeOUt);
+
     }
-    public void ToLoginScreen(View view)
-    {
-        loginScreen = new Intent(getApplicationContext(), Login.class);
-        startActivity(loginScreen);
-    }
+
 }

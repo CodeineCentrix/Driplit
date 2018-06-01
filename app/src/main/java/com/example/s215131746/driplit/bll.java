@@ -1,21 +1,28 @@
 package com.example.s215131746.driplit;
 
+import android.app.DownloadManager;
+import android.icu.text.DateFormat;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.Toast;
 
 import java.net.ConnectException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.lang.reflect.*;
+
 
 /**
  * Created by s216127904 on 2018/05/01.
  */
 
-public class bll {
+public class  bll {
 
     private Connection connection;
     private Statement statement;
@@ -53,6 +60,10 @@ public class bll {
     {
         return  null;
     }
+    public void LoadConnection()
+    {
+        Connect();
+    }
     private void Connect()
     {
 
@@ -77,16 +88,20 @@ public class bll {
             e.printStackTrace();
         }
     }
-    public String[] Person(String email)
+    public String[] Person(String email,String password)
     {
         String[] personDetais = new String[4];
 
 
         try
         {
-            Connect();
-            Statement st = connection.createStatement();
-            resultSet = st.executeQuery("SELECT * FROM Person WHERE Email = '"+email+"' AND Deleted = 'false' ");
+
+
+            PreparedStatement st = connection.prepareStatement("{CALL uspMobGetPerson (?,?)}");
+            st.setString(1,email);
+            st.setString(2,password);
+
+            resultSet = st.executeQuery();
 
         }
         catch (SQLException e)
@@ -113,11 +128,8 @@ public class bll {
         Connect();
         try
         {
-
             Statement st = connection.createStatement();
-            resultSet = st.executeQuery("SELECT * FROM Person WHERE Email = "+params[0]+" AND Deleted = 'false' ");
             resultSet = st.executeQuery("uspGetWaterUsageItmes");
-
         }
         catch (SQLException e)
         {
@@ -144,10 +156,10 @@ public class bll {
     }
     private void Select()
     {
-        Connect();
+
         try
         {
-
+            Connect();
             Statement st = connection.createStatement();
             resultSet = st.executeQuery("uspGetWaterUsageItmes");
 
@@ -176,38 +188,76 @@ public class bll {
         Averages = Avg.toArray(Average);
     }
 
+
+
+
+
+
+
+
+
+
+
+
     public boolean MobAddPerson(String fullName,String email,String userPassword,String phoneNumber ) throws SQLException {
 
-        boolean done = false;
-        String[] params = {fullName,email,userPassword,phoneNumber};
-         for(int i = 0;i<params.length;i++) {
-             if (params[i] == null || params[i] == "") {
-                 done = false;
-                 break;
-             } else
-                 done = true;
-         }
+        //boolean done = false;
+        //SqlParameter p = new SqlParameter
+        PersonModel person = new PersonModel();
 
-         if (done==true)
-            return  Insert("uspMobAddPerson",params);
-         else
-             return done;
+        Field[] para = person.getClass().getDeclaredFields();
+        if(para==null)
+            return Insert("uspMobAddPerson", para);
+        else
+            return false;
+
     }
-    public boolean MobDeletePerson(int personID, boolean delete) throws SQLException {
+    public boolean MobDeletePerson() throws SQLException {
 
-        String[] params = {""+personID,""+delete};
-        return  Insert("uspMobAddPerson",params);
+       // Field[] params = {""+personID,""+delete};
+       // return  Insert("uspMobAddPerson",params);
+        return false;
     }
 
-    private boolean Insert(String Query,String[] params ) throws SQLException {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private boolean Insert(String Query,Field[] params ) throws SQLException {
         boolean i = false;
         Connect();
         try
         {
-            Statement st = connection.createStatement();
+            PreparedStatement st = connection.prepareStatement(Query);
 
-            i = st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
-
+            st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
+            i = true;
         }
         catch (SQLException e)
         {
@@ -217,4 +267,18 @@ public class bll {
         }
         return  i;
     }
+
+    public class backGround extends AsyncTask<URL,String,String>{
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
 }
+

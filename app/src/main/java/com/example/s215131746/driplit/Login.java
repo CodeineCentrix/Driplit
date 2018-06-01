@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
     Intent registerScreen, fodScreen;
+    public static final String EXTRAEmail = "com.example.s215131746.driplit.email";
+    public static final String EXTRAPassword = "com.example.s215131746.driplit.password";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +27,17 @@ public class Login extends AppCompatActivity {
     {
         bll business = new bll();
         EditText email = findViewById(R.id.txtUsername);
-
-        String value = email.getText().toString();
-        String[] loginDetaisl = business.Person(value);
-        if(loginDetaisl[0]!=null)
+        EditText password = findViewById(R.id.txtPassword);
+        //email.setText("kanye@gmail.com");
+        //password.setText("kanye");
+        String Semail = email.getText().toString();
+        String Spassword = password.getText().toString();
+        String[] loginDetaisl = business.Person(Semail,Spassword);
+        if(loginDetaisl[0]!=null && loginDetaisl[0]!="")
         {
+            Intent intent = new Intent(this,TabMenu.class);
+            intent.putExtra(EXTRAEmail,Semail);
+            intent.putExtra(EXTRAPassword,Spassword);
             fodScreen = new Intent(getApplicationContext(), FODScreen.class);
             startActivity(fodScreen);
 

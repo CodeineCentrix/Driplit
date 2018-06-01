@@ -1,5 +1,6 @@
 package com.example.s215131746.driplit;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +44,9 @@ public class Register extends AppCompatActivity {
                   i = bus_logic.MobAddPerson(fullname, email, password, phoneNumber);
                   if (i)
                   {
-                      Toast.makeText(Register.this, "Shit finally WORKS", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(Register.this, "hello"+fullname, Toast.LENGTH_SHORT).show();
+                      Intent showMainMene = new Intent(getApplicationContext(),Mainmenu.class);
+                      startActivity(showMainMene);
                   }
                   else
                   {
@@ -66,15 +69,18 @@ public class Register extends AppCompatActivity {
      */
     public boolean ToRegisterUser()
     {
-
+        PersonModel person = new PersonModel();
         boolean i = false;
         bll businessLogic = new bll();
         try
         {
-            fullname = txtFullName.getText().toString();
-            email = txtEmail.getText().toString();
-            password = txtPassword.getText().toString();
-            phoneNumber = txtPhone.getText().toString();
+            person.fullName = txtFullName.getText().toString();
+            person.email = txtEmail.getText().toString();
+            person.userPassword = txtPassword.getText().toString();
+            person.phoneNumber = txtPhone.getText().toString();
+
+
+
           i =  businessLogic.MobAddPerson(fullname, email, password, phoneNumber);
           if(i)
           {
