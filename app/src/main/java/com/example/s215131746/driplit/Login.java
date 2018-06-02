@@ -40,7 +40,8 @@ public class Login extends AppCompatActivity {
             intent.putExtra(EXTRAPassword,Spassword);
             fodScreen = new Intent(getApplicationContext(), FODScreen.class);
             startActivity(fodScreen);
-
+            email.setText("");
+            password.setText("");
             Toast.makeText(this,"Hello "+loginDetaisl[0],Toast.LENGTH_LONG).show();
         }
         else

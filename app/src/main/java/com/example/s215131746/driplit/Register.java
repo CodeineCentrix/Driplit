@@ -44,13 +44,13 @@ public class Register extends AppCompatActivity {
                   i = bus_logic.MobAddPerson(fullname, email, password, phoneNumber);
                   if (i)
                   {
-                      Toast.makeText(Register.this, "hello"+fullname, Toast.LENGTH_SHORT).show();
-                      Intent showMainMene = new Intent(getApplicationContext(),Mainmenu.class);
-                      startActivity(showMainMene);
+                      Toast.makeText(Register.this, "Hello "+fullname, Toast.LENGTH_SHORT).show();
+                      Intent showMainMenu = new Intent(getApplicationContext(),Mainmenu.class);
+                      startActivity(showMainMenu);
                   }
                   else
                   {
-                      Toast.makeText(Register.this,  "Shit still won't WORK", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(Register.this,  "This is ", Toast.LENGTH_SHORT).show();
                   }
               }
               catch(SQLException s)

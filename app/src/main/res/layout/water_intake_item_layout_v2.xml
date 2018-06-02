@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:descendantFocusability="blocksDescendants">
 
 
@@ -10,167 +12,179 @@
         android:id="@+id/imgItemIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintStart_toStartOf="@+id/loDropHide"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <LinearLayout
 
         android:id="@+id/loDropHide"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imgItemIcon"
-        android:layout_alignStart="@+id/imgItemIcon"
-        android:layout_below="@+id/imgItemIcon"
-        android:background="@color/blue"
+        android:layout_width="0dp"
+        android:layout_height="139dp"
+        android:background="@color/darkerblue"
         android:backgroundTint="@color/blue"
-        android:orientation="vertical">
+        android:baselineAligned="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgItemIcon"
+        tools:targetApi="lollipop">
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <LinearLayout
+            android:layout_width="85dp"
+            android:layout_height="77dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            <EditText
+
+                android:id="@+id/txtItemUsage"
+                android:layout_width="97dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:ems="10"
+                android:hint="@string/_0"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/litres_used_today"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvUnit"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="cursive"
+                android:text="@string/litre"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tvUsedToday"
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:text="@string/_0"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btnRecord"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="clip_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="@string/record"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="142dp"
+            android:layout_height="68dp"
+            android:gravity="center|end"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="47dp"
+                android:layout_height="22dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:background="?attr/colorButtonNormal"
+                android:text="@string/increment"
+                android:textColor="@color/black" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <EditText
-
-                    android:id="@+id/txtItemUsage"
-                    android:layout_width="96dp"
+                <TextView
+                    android:id="@+id/tvLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="0"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginRight="40dp"
+                    android:text="@string/times_used"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvQty"
+                    android:layout_width="15dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="Liters used today"
-                    android:textAlignment="textStart" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="139dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvUnit"
-                    android:layout_width="match_parent"
-                    android:layout_height="21dp"
-                    android:layout_weight="1"
-                    android:fontFamily="cursive"
-                    android:text="l"
+                    android:text="@string/_0"
                     android:textColor="@color/black"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/tvUsedToday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
+
+            <Button
+                android:id="@+id/btnMinus"
+                android:layout_width="47dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="vertical">
+                android:background="?attr/colorButtonNormal"
+                android:paddingBottom="1dp"
+                android:paddingEnd="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingStart="1dp"
+                android:paddingTop="1dp"
+                android:text="@string/dash"
+                android:textColor="@color/black" />
 
-                <Button
-                    android:id="@+id/btnAdd"
-                    android:layout_width="47dp"
-                    android:layout_height="20dp"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/darker_gray"
-                    android:text="+"
-                    android:textColor="@color/black" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Times Used: "
-
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/tvQty"
-                        android:layout_width="36dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="0"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/black"
-                        android:gravity="end" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnMinus"
-                    android:layout_width="47dp"
-                    android:layout_height="22dp"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/darker_gray"
-                    android:paddingBottom="1dp"
-                    android:paddingEnd="1dp"
-                    android:paddingLeft="1dp"
-                    android:paddingRight="1dp"
-                    android:paddingStart="1dp"
-                    android:paddingTop="1dp"
-                    android:text="-"
-                    android:textColor="@color/black" />
-            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
+
+
     <TextView
         android:id="@+id/tvItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loDropHide"
         android:layout_marginLeft="24dp"
         android:layout_marginStart="24dp"
-        android:layout_toEndOf="@+id/imgItemIcon"
-        android:layout_toRightOf="@+id/imgItemIcon"
-        android:text="Item Name"
-        android:textSize="24sp" />
+        android:text="@string/item_name"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/loDropHide"
+        app:layout_constraintStart_toEndOf="@+id/imgItemIcon" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

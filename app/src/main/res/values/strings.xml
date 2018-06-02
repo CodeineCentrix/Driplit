@@ -36,4 +36,18 @@
     <string name="email">EMAIL</string>
     <string name="don_t_have_an_account">Don\'t have an account ?</string>
     <string name="error_star">*</string>
+    <string name="litre">l</string>
+    <string name="usage_values">0.0</string>
+    <string name="times_used">Times Used:</string>
+    <string name="dash">-</string>
+    <string name="_0">0</string>
+    <string name="increment">+</string>
+
+    <string name="edit">Edit</string>
+    <string name="item_name">Item Name</string>
+
+
+    <string name="litres_used_today">Litres used today</string>
+    <string name="todo">TODO</string>
+    <string name="record">Record</string>
 </resources>

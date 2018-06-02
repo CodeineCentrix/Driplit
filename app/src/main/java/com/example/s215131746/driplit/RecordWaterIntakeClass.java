@@ -67,9 +67,8 @@ public class RecordWaterIntakeClass extends Fragment {
                         tvTotal.setText(stt);
                     }
 
-                    Toast.makeText(getContext(),"Record successfull",Toast.LENGTH_LONG).show();
                 }
-
+                Toast.makeText(getContext(),"Intake Record Successful",Toast.LENGTH_LONG).show();
             }
         });
         return rootView;
