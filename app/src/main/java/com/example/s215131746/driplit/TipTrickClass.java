@@ -11,8 +11,7 @@ import android.view.ViewGroup;
  */
 
 public class TipTrickClass extends Fragment {
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tip_trick, container, false);
 
         return rootView;

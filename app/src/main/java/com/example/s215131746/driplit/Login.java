@@ -8,15 +8,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class Login extends AppCompatActivity {
     Intent registerScreen, fodScreen;
-    public static final String EXTRAEmail = "com.example.s215131746.driplit.email";
-    public static final String EXTRAPassword = "com.example.s215131746.driplit.password";
+    public  EditText email;
+    public  EditText password;
+    bll business;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
+        setContentView(R.layout.activity_login);
+        email = findViewById(R.id.txtUsername);
+        password = findViewById(R.id.txtPassword);
+        //should be taken out before judging
+        email.setText("kanye@gmail.com");
+        password.setText("kanye");
+        business = new bll();
     }
     public void ToRegisterScreen(View view)
     {
@@ -25,29 +34,23 @@ public class Login extends AppCompatActivity {
     }
     public void ToFODScreen(View view)
     {
-        bll business = new bll();
-        EditText email = findViewById(R.id.txtUsername);
-        EditText password = findViewById(R.id.txtPassword);
-        //email.setText("kanye@gmail.com");
-        //password.setText("kanye");
-        String Semail = email.getText().toString();
-        String Spassword = password.getText().toString();
-        String[] loginDetaisl = business.Person(Semail,Spassword);
-        if(loginDetaisl[0]!=null && loginDetaisl[0]!="")
+        PersonModel person = new PersonModel();
+        person.email = email.getText().toString();
+        person.userPassword = password.getText().toString();
+        person = business.Person(person);
+
+        if(person.fullName!=null && !person.fullName.equals(""))
         {
-            Intent intent = new Intent(this,TabMenu.class);
-            intent.putExtra(EXTRAEmail,Semail);
-            intent.putExtra(EXTRAPassword,Spassword);
-            fodScreen = new Intent(getApplicationContext(), FODScreen.class);
-            startActivity(fodScreen);
             email.setText("");
             password.setText("");
-            Toast.makeText(this,"Hello "+loginDetaisl[0],Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Hello "+person.fullName,Toast.LENGTH_LONG).show();
+            fodScreen = new Intent(getApplicationContext(), FODScreen.class);
+            startActivity(fodScreen);
         }
         else
         {
             TextView tvError = findViewById(R.id.tvError);
-            tvError.setText("You have entered an invalid email or password");
+            tvError.setText(R.string.login_error);
             Toast.makeText(this,"You have enter an invalid email or password",Toast.LENGTH_LONG).show();
         }
 

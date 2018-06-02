@@ -56,8 +56,6 @@ public class TabMenu extends AppCompatActivity {
 
         //_____________________
         Intent intent = getIntent();
-        String emailAddress = intent.getStringExtra(Login.EXTRAPassword);
-        String password = intent.getStringExtra(Login.EXTRAPassword);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);

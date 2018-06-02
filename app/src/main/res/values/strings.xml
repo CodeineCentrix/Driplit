@@ -30,7 +30,6 @@
     <string name="chart_label">Weeks</string>
     <string name="show_more">">"</string>
     <string name="report_leak_instruct">Make Sure You Are Where The Leak Is. \n Click The Button Above To Report Leak.</string>
-
     <string name="done">Done</string>
     <string name="back">Back</string>
     <string name="email">EMAIL</string>
@@ -45,9 +44,11 @@
 
     <string name="edit">Edit</string>
     <string name="item_name">Item Name</string>
-
-
+    <string name="loginpassword">password</string>
+    <string name="username">codecentrix</string>
     <string name="litres_used_today">Litres used today</string>
     <string name="todo">TODO</string>
     <string name="record">Record</string>
+    <string name="login_error">You have entered an invalid email or password</string>
+    <string name="connectionString">jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix</string>
 </resources>

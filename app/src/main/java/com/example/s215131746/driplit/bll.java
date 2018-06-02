@@ -6,7 +6,10 @@ import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +19,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.lang.reflect.*;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 /**
@@ -30,14 +35,10 @@ public class  bll {
     private String errorMassage;
     String[] ItemNames;
     String[] Averages;
-    private String fullName;
-    private String email;
-    private String userPassword;
-    private String phoneNumber;
+
 
     public bll()
     {
-        Select();
     }
     public String[] getItemName()
     {
@@ -52,54 +53,57 @@ public class  bll {
         int[] icon = {5,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,1};
         return  icon;
     }
-    public String getPassword()
-    {
-        return null;
-    }
-    public String getUsername()
-    {
-        return  null;
-    }
+
     public void LoadConnection()
     {
-        Connect();
+        Select();
     }
     private void Connect()
     {
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-            String user = "codecentrix";
-             String password = "password";
-
-            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix" , user, password);
-
-
+            String us = "codecentrix";
+            String password="password";
+            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix",us,password);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public String[] Person(String email,String password)
+    //public void Con()
+    //{
+
+     //   StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+     //   StrictMode.setThreadPolicy(policy);
+     //   try {
+     //   //     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+     //      // URL url = new URL("https","sict-iis.nmmu.ac.za",445,"View");
+     //       URL url = new URL("http://sict-iis.nmmu.ac.za/codecentrix/View/");
+     //       HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+     //       try {
+     //           InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+     //       } finally {
+     //           urlConnection.disconnect();
+     //       }
+
+
+     //    } catch (Exception e) {
+     //        e.printStackTrace();
+     //    }
+
+
+    //}
+    //This method should be called login because its for login
+    public PersonModel Person(PersonModel person)
     {
-        String[] personDetais = new String[4];
-
-
         try
         {
-
-
+            Connect();
             PreparedStatement st = connection.prepareStatement("{CALL uspMobGetPerson (?,?)}");
-            st.setString(1,email);
-            st.setString(2,password);
+            st.setString(1,person.email);
+            st.setString(2,person.userPassword);
 
             resultSet = st.executeQuery();
 
@@ -111,17 +115,20 @@ public class  bll {
         try {
         while(resultSet.next())
         {
-            personDetais[0] = (resultSet.getString("FullName").toString());
-            personDetais[1] = (resultSet.getString("PhoneNumber"));
-            personDetais[2] = (resultSet.getString("Email"));
-            personDetais[3] = (resultSet.getString("UserPassword"));
+            person.fullName = (resultSet.getString("FullName").toString());
+            person.phoneNumber = (resultSet.getString("PhoneNumber"));
+            person.email = (resultSet.getString("Email"));
+            person.userPassword = (resultSet.getString("UserPassword"));
         }
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
-        return personDetais;
+        finally {
+            connection =null;
+        }
+        return person;
     }
     private void SelectParas(String query,String[] params)
     {
@@ -154,15 +161,14 @@ public class  bll {
         String[] Average = new String[Avg.size()];
         Averages = Avg.toArray(Average);
     }
+    //this Select method is for the fields foe water intake
     private void Select()
     {
-
         try
         {
             Connect();
             Statement st = connection.createStatement();
             resultSet = st.executeQuery("uspGetWaterUsageItmes");
-
         }
         catch (SQLException e)
         {
@@ -173,7 +179,6 @@ public class  bll {
         try {
             while(resultSet.next())
             {
-
                 name.add(resultSet.getString("ItemDescription").toString());
                 Avg.add(""+resultSet.getFloat("ItemAverageAmount"));
             }
@@ -188,29 +193,25 @@ public class  bll {
         Averages = Avg.toArray(Average);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    public boolean MobAddPerson(String fullName,String email,String userPassword,String phoneNumber ) throws SQLException {
-
-        //boolean done = false;
-        //SqlParameter p = new SqlParameter
-        PersonModel person = new PersonModel();
-
-        Field[] para = person.getClass().getDeclaredFields();
-        if(para==null)
-            return Insert("uspMobAddPerson", para);
-        else
-            return false;
-
+    public boolean MobAddPerson(PersonModel person ) throws SQLException {
+        Connect();
+        int i=0;
+        try {
+            PreparedStatement st = connection.prepareStatement("{CALL uspMobAddPerson(?.?,?,?)}");
+            int count = 1;
+            for (Object p : person.getClass().getDeclaredFields()) {
+                st.setString(count, p.toString());
+            }
+            i = st.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            connection = null;
+        }
+            return i==0;
     }
     public boolean MobDeletePerson() throws SQLException {
 
@@ -218,56 +219,25 @@ public class  bll {
        // return  Insert("uspMobAddPerson",params);
         return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private boolean Insert(String Query,Field[] params ) throws SQLException {
-        boolean i = false;
-        Connect();
-        try
-        {
-            PreparedStatement st = connection.prepareStatement(Query);
-
-            st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
-            i = true;
-        }
-        catch (SQLException e)
-        {
-            if (!connection.isClosed()) {
-                connection.close();
-            }
-        }
-        return  i;
-    }
-
+    //private boolean Insert(String Query,Field[] params ) throws SQLException {
+    //    boolean i = false;
+    //    Connect();
+    //    try
+    //    {
+    //        PreparedStatement st = connection.prepareStatement(Query);
+    //        st.setString(1,params[0]);
+    //        st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
+    //        i = true;
+    //    }
+    //    catch (SQLException e)
+    //    {
+    //        if (!connection.isClosed()) {
+    //            connection.close();
+    //        }
+    //    }
+    //    connection.close();
+    //    return  i;
+    //}
     public class backGround extends AsyncTask<URL,String,String>{
 
         @Override

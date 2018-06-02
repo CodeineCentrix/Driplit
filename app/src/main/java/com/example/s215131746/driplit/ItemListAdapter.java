@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ItemListAdapter extends BaseAdapter {
 
@@ -24,21 +25,20 @@ public class ItemListAdapter extends BaseAdapter {
 
     String[] stringsQTY;
     LinearLayout[] LoDropHides;
-
-
-
-
+    Context context;
     private TextView tvTimesUsedORActual;
     LayoutInflater mInflater;
-
-    public ItemListAdapter(Context c,int[] itemIcon,String[] itemName,String[] itemUsageAvg)
+    ImplementChange parentCange;
+    public ItemListAdapter(Context c,int[] itemIcon,String[] itemName,String[] itemUsageAvg,RecordWaterIntakeClass rwic)
     {
+        parentCange = rwic;
         ItemIcon = itemIcon;
         ItemName =itemName ;
         ItemUsageAvg = itemUsageAvg;
         mInflater =(LayoutInflater) c.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
+
 
     }
     @Override
@@ -144,19 +144,25 @@ public class ItemListAdapter extends BaseAdapter {
 
      //    }
      //});
-        final TextView tvTotal = parent.findViewById(R.id.tvTotalQty);
-       //final Button btnDone; btnDone = v.findViewById(R.id.btnDone);
-       //btnDone.setOnClickListener(new View.OnClickListener() {
-       //    @Override
-       //    public void onClick(View v) {
 
-       //    }
-       //});
+
+       final Button  btnRecord = v.findViewById(R.id.btnRecord);
+        btnRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float tt = Float.parseFloat (parentCange.GetValue());
+                tt = getUsage(position,tt);
+                String stt = ""+tt;
+                parentCange.DoChanges(stt);
+                Toast.makeText(v.getContext(),"Intake Record Successful",Toast.LENGTH_LONG).show();
+
+            }
+        });
         /*End buttons____________________________________________________________________________*/
-
 
         return v;
     }
+
     public void setVisibility(int position )
     {
         if(LoDropHides[position].getVisibility()==View.INVISIBLE)
@@ -164,6 +170,7 @@ public class ItemListAdapter extends BaseAdapter {
         else
             LoDropHides[position].setVisibility(View.INVISIBLE);
     }
+
     public boolean isVisibie(int position )
     {
         boolean isVisibible = false;
@@ -171,8 +178,6 @@ public class ItemListAdapter extends BaseAdapter {
         {
             isVisibible = true;
         }
-
-
         return isVisibible;
     }
 
