@@ -38,7 +38,7 @@
         android:drawableLeft="@drawable/padlock"
         android:drawableRight="@drawable/help"
         android:hint="@string/password"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         android:textAlignment="center"
         android:textCursorDrawable="@color/darkerblue"
         android:textSize="20sp"

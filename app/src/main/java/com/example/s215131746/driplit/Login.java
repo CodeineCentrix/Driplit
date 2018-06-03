@@ -8,13 +8,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class Login extends AppCompatActivity {
     Intent registerScreen, fodScreen;
+    public  EditText email;
+    public  EditText password;
+    bll business;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
+        setContentView(R.layout.activity_login);
+        email = findViewById(R.id.txtUsername);
+        password = findViewById(R.id.txtPassword);
+        //should be taken out before judging
+        email.setText("kanye@gmail.com");
+        password.setText("kanye");
+        business = new bll();
     }
     public void ToRegisterScreen(View view)
     {
@@ -23,22 +34,23 @@ public class Login extends AppCompatActivity {
     }
     public void ToFODScreen(View view)
     {
-        bll business = new bll();
-        EditText email = findViewById(R.id.txtUsername);
+        PersonModel person = new PersonModel();
+        person.email = email.getText().toString();
+        person.userPassword = password.getText().toString();
+        person = business.Person(person);
 
-        String value = email.getText().toString();
-        String[] loginDetaisl = business.Person(value);
-        if(loginDetaisl[0]!=null)
+        if(person.fullName!=null && !person.fullName.equals(""))
         {
+            email.setText("");
+            password.setText("");
+            Toast.makeText(this,"Hello "+person.fullName,Toast.LENGTH_LONG).show();
             fodScreen = new Intent(getApplicationContext(), FODScreen.class);
             startActivity(fodScreen);
-
-            Toast.makeText(this,"Hello "+loginDetaisl[0],Toast.LENGTH_LONG).show();
         }
         else
         {
             TextView tvError = findViewById(R.id.tvError);
-            tvError.setText("You have entered an invalid email or password");
+            tvError.setText(R.string.login_error);
             Toast.makeText(this,"You have enter an invalid email or password",Toast.LENGTH_LONG).show();
         }
 

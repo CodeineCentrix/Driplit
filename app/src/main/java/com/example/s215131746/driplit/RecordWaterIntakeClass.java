@@ -21,7 +21,8 @@ import android.widget.Toast;
  * CodeCentrix this class inherits from the fragment class because it is a tab. All tabs must inherit from this close
  *
 **/
-public class RecordWaterIntakeClass extends Fragment {
+public class RecordWaterIntakeClass extends Fragment implements ImplementChange {
+     TextView tvTotal;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line inflate this class with the record water intake layout
@@ -29,12 +30,13 @@ public class RecordWaterIntakeClass extends Fragment {
         ScaleImg(R.id.imgView);
         //here is the attempt to create and n tier architecture
         bll business = new bll();
+        business.LoadConnection();
         String[] ItemName = business.getItemName();
         String[] Avg = business.getItemAverageUse();
         int[] icon = business.getItemIcon();
 
-        final TextView tvTotal = rootView.findViewById(R.id.tvTotalQty);
-        final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),icon,ItemName,Avg);
+        tvTotal = rootView.findViewById(R.id.tvTotalQty);
+        final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),icon,ItemName,Avg,this);
         ListView lvItemList = rootView.findViewById(R.id.lvItemList);
 
         //this line is to inflate the listview with the list view adapter
@@ -48,27 +50,6 @@ public class RecordWaterIntakeClass extends Fragment {
 
                 //after an item has been clicked the the following line will either make the bottom controllers visible or invisible
                 listAdapter.setVisibility(i);
-                if(listAdapter.isVisibie(i)==true)
-                {
-                    //the following code is to add to the total
-                   float tt = Float.parseFloat (tvTotal.getText().toString());
-                    tt = listAdapter.getUsage(i,tt);
-                    String stt = ""+tt;
-                    if(stt.length()==1)
-                    {
-                        tvTotal.setText(""+stt);
-                    }
-                    else if(stt.length()==2)
-                    {
-                        tvTotal.setText(""+stt);
-                    }
-                    else
-                    {
-                        tvTotal.setText(stt);
-                    }
-
-                    Toast.makeText(getContext(),"Record successfull",Toast.LENGTH_LONG).show();
-                }
 
             }
         });
@@ -110,6 +91,13 @@ public class RecordWaterIntakeClass extends Fragment {
 
         return scaledImg;
     }
+    @Override
+    public void DoChanges(String value) {
+        tvTotal.setText(value);
+    }
 
-
+    @Override
+    public String GetValue() {
+        return tvTotal.getText().toString();
+    }
 }

@@ -30,24 +30,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnWelcome"
-            android:layout_width="245dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/buttonstyle"
-            android:fontFamily="@font/disco"
-            android:text="@string/welcome"
-            android:textColor="@color/blue"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:onClick="ToLoginScreen"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="@android:integer/status_bar_notification_info_maxnum"
+            android:progress="@android:integer/config_longAnimTime"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.098" />
-
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
 

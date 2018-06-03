@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:gravity="top"
             android:paddingTop="0dp"
-            android:text="Record Water Intake"
+            android:text="@string/record_intake"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
@@ -64,10 +64,12 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
                 android:paddingStart="0dp"
-                android:text="0.0"
+                android:text="@string/usage_values"
 
+                android:textAlignment="textEnd"
                 android:textColor="@color/blue"
-                android:textSize="70sp" />
+                android:textSize="70sp"
+                tools:targetApi="jelly_bean" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -75,10 +77,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="cursive"
-                android:text="l"
+                android:text="@string/litre"
 
                 android:textColor="@color/blue"
-                android:textSize="80sp" />
+                android:textSize="80sp"
+                tools:targetApi="jelly_bean" />
 
         </LinearLayout>
 

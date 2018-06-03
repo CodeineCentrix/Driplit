@@ -1,21 +1,33 @@
 package com.example.s215131746.driplit;
 
+import android.app.DownloadManager;
+import android.icu.text.DateFormat;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.lang.reflect.*;
+
+import javax.net.ssl.HttpsURLConnection;
+
 
 /**
  * Created by s216127904 on 2018/05/01.
  */
 
-public class bll {
+public class  bll {
 
     private Connection connection;
     private Statement statement;
@@ -23,14 +35,10 @@ public class bll {
     private String errorMassage;
     String[] ItemNames;
     String[] Averages;
-    private String fullName;
-    private String email;
-    private String userPassword;
-    private String phoneNumber;
+
 
     public bll()
     {
-        Select();
     }
     public String[] getItemName()
     {
@@ -45,48 +53,59 @@ public class bll {
         int[] icon = {5,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,1};
         return  icon;
     }
-    public String getPassword()
+
+    public void LoadConnection()
     {
-        return null;
-    }
-    public String getUsername()
-    {
-        return  null;
+        Select();
     }
     private void Connect()
     {
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-            String user = "codecentrix";
-             String password = "password";
-
-            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix" , user, password);
-
-
+            String us = "codecentrix";
+            String password="password";
+            connection = DriverManager.getConnection("jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix",us,password);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public String[] Person(String email)
+    //public void Con()
+    //{
+
+     //   StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+     //   StrictMode.setThreadPolicy(policy);
+     //   try {
+     //   //     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+     //      // URL url = new URL("https","sict-iis.nmmu.ac.za",445,"View");
+     //       URL url = new URL("http://sict-iis.nmmu.ac.za/codecentrix/View/");
+     //       HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+     //       try {
+     //           InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+     //       } finally {
+     //           urlConnection.disconnect();
+     //       }
+
+
+     //    } catch (Exception e) {
+     //        e.printStackTrace();
+     //    }
+
+
+    //}
+    //This method should be called login because its for login
+    public PersonModel Person(PersonModel person)
     {
-        String[] personDetais = new String[4];
-
-
         try
         {
             Connect();
-            Statement st = connection.createStatement();
-            resultSet = st.executeQuery("SELECT * FROM Person WHERE Email = '"+email+"' AND Deleted = 'false' ");
+            PreparedStatement st = connection.prepareStatement("{CALL uspMobGetPerson (?,?)}");
+            st.setString(1,person.email);
+            st.setString(2,person.userPassword);
+
+            resultSet = st.executeQuery();
 
         }
         catch (SQLException e)
@@ -96,28 +115,28 @@ public class bll {
         try {
         while(resultSet.next())
         {
-            personDetais[0] = (resultSet.getString("FullName").toString());
-            personDetais[1] = (resultSet.getString("PhoneNumber"));
-            personDetais[2] = (resultSet.getString("Email"));
-            personDetais[3] = (resultSet.getString("UserPassword"));
+            person.fullName = (resultSet.getString("FullName").toString());
+            person.phoneNumber = (resultSet.getString("PhoneNumber"));
+            person.email = (resultSet.getString("Email"));
+            person.userPassword = (resultSet.getString("UserPassword"));
         }
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
-        return personDetais;
+        finally {
+            connection =null;
+        }
+        return person;
     }
     private void SelectParas(String query,String[] params)
     {
         Connect();
         try
         {
-
             Statement st = connection.createStatement();
-            resultSet = st.executeQuery("SELECT * FROM Person WHERE Email = "+params[0]+" AND Deleted = 'false' ");
             resultSet = st.executeQuery("uspGetWaterUsageItmes");
-
         }
         catch (SQLException e)
         {
@@ -142,15 +161,14 @@ public class bll {
         String[] Average = new String[Avg.size()];
         Averages = Avg.toArray(Average);
     }
+    //this Select method is for the fields foe water intake
     private void Select()
     {
-        Connect();
         try
         {
-
+            Connect();
             Statement st = connection.createStatement();
             resultSet = st.executeQuery("uspGetWaterUsageItmes");
-
         }
         catch (SQLException e)
         {
@@ -161,7 +179,6 @@ public class bll {
         try {
             while(resultSet.next())
             {
-
                 name.add(resultSet.getString("ItemDescription").toString());
                 Avg.add(""+resultSet.getFloat("ItemAverageAmount"));
             }
@@ -176,45 +193,62 @@ public class bll {
         Averages = Avg.toArray(Average);
     }
 
-    public boolean MobAddPerson(String fullName,String email,String userPassword,String phoneNumber ) throws SQLException {
-
-        boolean done = false;
-        String[] params = {fullName,email,userPassword,phoneNumber};
-         for(int i = 0;i<params.length;i++) {
-             if (params[i] == null || params[i] == "") {
-                 done = false;
-                 break;
-             } else
-                 done = true;
-         }
-
-         if (done==true)
-            return  Insert("uspMobAddPerson",params);
-         else
-             return done;
-    }
-    public boolean MobDeletePerson(int personID, boolean delete) throws SQLException {
-
-        String[] params = {""+personID,""+delete};
-        return  Insert("uspMobAddPerson",params);
-    }
-
-    private boolean Insert(String Query,String[] params ) throws SQLException {
-        boolean i = false;
+    public boolean MobAddPerson(PersonModel person ) throws SQLException {
         Connect();
-        try
-        {
-            Statement st = connection.createStatement();
-
-            i = st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
-
+        int i=0;
+        try {
+            PreparedStatement st = connection.prepareStatement("{CALL uspMobAddPerson(?.?,?,?)}");
+            int count = 1;
+            for (Object p : person.getClass().getDeclaredFields()) {
+                st.setString(count, p.toString());
+            }
+            i = st.executeUpdate();
         }
         catch (SQLException e)
         {
-            if (!connection.isClosed()) {
-                connection.close();
-            }
+            e.printStackTrace();
         }
-        return  i;
+        finally {
+            connection = null;
+        }
+            return i==0;
+    }
+    public boolean MobDeletePerson() throws SQLException {
+
+       // Field[] params = {""+personID,""+delete};
+       // return  Insert("uspMobAddPerson",params);
+        return false;
+    }
+    //private boolean Insert(String Query,Field[] params ) throws SQLException {
+    //    boolean i = false;
+    //    Connect();
+    //    try
+    //    {
+    //        PreparedStatement st = connection.prepareStatement(Query);
+    //        st.setString(1,params[0]);
+    //        st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
+    //        i = true;
+    //    }
+    //    catch (SQLException e)
+    //    {
+    //        if (!connection.isClosed()) {
+    //            connection.close();
+    //        }
+    //    }
+    //    connection.close();
+    //    return  i;
+    //}
+    public class backGround extends AsyncTask<URL,String,String>{
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 }
+

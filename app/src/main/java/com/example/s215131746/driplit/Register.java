@@ -1,95 +1,86 @@
 package com.example.s215131746.driplit;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.String;
 import java.sql.SQLException;
 
 public class Register extends AppCompatActivity {
-    /*Variables to store register details*/
-    String fullname, email, password, phoneNumber;
-
    EditText txtFullName, txtEmail, txtPassword, txtPhone;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         //*Getting values from the controls*//*
         txtFullName = findViewById(R.id.txtRegFullName);
         txtEmail = findViewById(R.id.txtEmail);
         txtPassword = findViewById(R.id.txtRegPassword);
         txtPhone = findViewById(R.id.txtPhone);
-
-       Button btnRegister = findViewById(R.id.btnRegister);
-       btnRegister.setOnClickListener(new View.OnClickListener() {//OnClick method for the Register Button
-          @Override
-          public void onClick(View v) {
-              fullname = txtFullName.getText().toString();
-              email = txtEmail.getText().toString();
-              password = txtPassword.getText().toString();
-              phoneNumber = txtPhone.getText().toString();
-
-              bll bus_logic = new bll();
-              boolean i;
-              try
-              {
-                  i = bus_logic.MobAddPerson(fullname, email, password, phoneNumber);
-                  if (i)
-                  {
-                      Toast.makeText(Register.this, "Shit finally WORKS", Toast.LENGTH_SHORT).show();
-                  }
-                  else
-                  {
-                      Toast.makeText(Register.this,  "Shit still won't WORK", Toast.LENGTH_SHORT).show();
-                  }
-              }
-              catch(SQLException s)
-              {
-                  Toast.makeText(Register.this, s+"", Toast.LENGTH_SHORT).show();
-              }
-
-
-           }
-       });
-        //OnClick Code Ends Here
     }
-
     /**
      * Code for Registering
      */
-    public boolean ToRegisterUser()
+    public void ToRegisterUser(View view)
     {
+        PersonModel person = new PersonModel();
+        person.fullName = txtFullName.getText().toString();
+        person.email = txtEmail.getText().toString();
+        person.userPassword = txtPassword.getText().toString();
+        person.phoneNumber = txtPhone.getText().toString();
+        //Validation missing
+        bll bus_logic = new bll();
 
-        boolean i = false;
-        bll businessLogic = new bll();
         try
         {
-            fullname = txtFullName.getText().toString();
-            email = txtEmail.getText().toString();
-            password = txtPassword.getText().toString();
-            phoneNumber = txtPhone.getText().toString();
-          i =  businessLogic.MobAddPerson(fullname, email, password, phoneNumber);
-          if(i)
-          {
-              Toast.makeText(this,"Succesfully registered", Toast.LENGTH_SHORT).show();
-          }
-          else
-          {
-              Toast.makeText(this,"Please Enter missing values", Toast.LENGTH_SHORT).show();
-          }
+            //validate EditText if they are not empty
+            if (ValidPerson(person))
+            {
+                if (bus_logic.MobAddPerson(person))
+                {
+                    Toast.makeText(Register.this, "hello"+person.fullName, Toast.LENGTH_SHORT).show();
+                    Intent showMainMene = new Intent(getApplicationContext(),Mainmenu.class);
+                    startActivity(showMainMene);
+                }
+            }
+            else
+            {
+                Toast.makeText(Register.this,  "One or more fields are empty ", Toast.LENGTH_LONG).show();
+            }
         }
-        catch (SQLException e)
+        catch(SQLException s)
         {
-            Toast.makeText(this,"Something went wrong", Toast.LENGTH_SHORT).show();
+            s.printStackTrace();
         }
 
-        return i;
+    }
+
+    public boolean ValidPerson(PersonModel person)
+    {
+        boolean error = true;
+        TextView[] tvError = {findViewById(R.id.tvErrorFullName),findViewById(R.id.tvErrorEmail),findViewById(R.id.tvErrorPassword),findViewById(R.id.tvErrorPhone)};
+        String[] values = {person.fullName,person.email,person.userPassword,person.phoneNumber};
+        for(int i = 0; i<tvError.length;i++)
+        {
+            if(values[i].equalsIgnoreCase(""))
+            {
+                error = false;
+                tvError[i].setText("*");
+                tvError[i].setTextColor(Color.RED);
+            }
+            else
+            {
+                tvError[i].setTextColor(Color.TRANSPARENT);
+            }
+        }
+        return  error;
     }
 }
