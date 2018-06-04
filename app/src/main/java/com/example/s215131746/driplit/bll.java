@@ -54,10 +54,6 @@ public class  bll {
         return  icon;
     }
 
-    public void LoadConnection()
-    {
-        Select();
-    }
     private void Connect()
     {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -162,37 +158,55 @@ public class  bll {
         Averages = Avg.toArray(Average);
     }
     //this Select method is for the fields foe water intake
-    private void Select()
+
+    public ArrayList<ItemUsageModel> GetItems()
     {
+        ArrayList<ItemUsageModel> itemUsageModel = new ArrayList<>();
         try
         {
             Connect();
-            Statement st = connection.createStatement();
-            resultSet = st.executeQuery("uspGetWaterUsageItmes");
-        }
-        catch (SQLException e)
-        {
-        }
-        ArrayList<String> name = new ArrayList<>();
-        ArrayList<String> Avg = new ArrayList<>();
-
-        try {
+            PreparedStatement st = connection.prepareCall("{CALL uspMobGetWaterUsageItmes}");
+            resultSet = st.executeQuery();
             while(resultSet.next())
             {
-                name.add(resultSet.getString("ItemDescription").toString());
-                Avg.add(""+resultSet.getFloat("ItemAverageAmount"));
+                ItemUsageModel item = new ItemUsageModel();
+                item.ItemID = resultSet.getInt("ItemID");
+                item.ItemDiscriotn = resultSet.getString("ItemDescription");
+                item.ItemAverage =resultSet.getFloat("ItemAverageAmount");
+                //item.ItemIcon = resultSet.getByte();
+                itemUsageModel.add(item);
             }
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
-        String[] ItemName = new String[name.size()];
-        ItemNames = name.toArray(ItemName);
-        String[] Average = new String[Avg.size()];
-        Averages = Avg.toArray(Average);
+        finally {
+            connection = null;
+        }
+        return itemUsageModel;
     }
 
+    public float GetUserTotalUsage(String userEmail)
+    {
+        float TotalUsage =0;
+        try
+        {
+            Connect();
+            PreparedStatement st = connection.prepareCall("{CALL uspMobGetWaterUsageItmes}");
+            resultSet = st.executeQuery();
+            resultSet.next();
+            TotalUsage = resultSet.getFloat("TotalUsage");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            connection = null;
+        }
+        return TotalUsage;
+    }
     public boolean MobAddPerson(PersonModel person ) throws SQLException {
         Connect();
         int i=0;
@@ -219,25 +233,7 @@ public class  bll {
        // return  Insert("uspMobAddPerson",params);
         return false;
     }
-    //private boolean Insert(String Query,Field[] params ) throws SQLException {
-    //    boolean i = false;
-    //    Connect();
-    //    try
-    //    {
-    //        PreparedStatement st = connection.prepareStatement(Query);
-    //        st.setString(1,params[0]);
-    //        st.execute("INSERT INTO Person (FullName,Email,UserPassword,PhoneNumber) VALUES ('"+params[0]+"','"+params[1]+"','"+params[2]+"','"+params[3]+"')");
-    //        i = true;
-    //    }
-    //    catch (SQLException e)
-    //    {
-    //        if (!connection.isClosed()) {
-    //            connection.close();
-    //        }
-    //    }
-    //    connection.close();
-    //    return  i;
-    //}
+
     public class backGround extends AsyncTask<URL,String,String>{
 
         @Override

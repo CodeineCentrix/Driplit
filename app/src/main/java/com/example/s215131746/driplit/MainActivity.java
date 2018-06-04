@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 private static final String TAG = "MainActivity";
-private static  int timeOUt = 3000;
+private static  int timeOUt = 2000;
 
     LinearLayout l1;
     ConstraintLayout l2;
@@ -38,7 +38,7 @@ private static  int timeOUt = 3000;
             @Override
             public void run() {
 
-                loginScreen = new Intent(getApplicationContext(), Login.class);
+                loginScreen = new Intent(getApplicationContext(), Mainmenu.class);
                 startActivity(loginScreen);
             }
 
