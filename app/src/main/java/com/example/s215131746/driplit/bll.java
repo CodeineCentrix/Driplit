@@ -4,10 +4,13 @@ import android.app.DownloadManager;
 import android.icu.text.DateFormat;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.renderscript.Element;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,6 +20,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.lang.reflect.*;
 
@@ -30,32 +35,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class  bll {
 
     private Connection connection;
-    private Statement statement;
+    private PreparedStatement statement;
     private ResultSet resultSet;
     private String errorMassage;
-    String[] ItemNames;
-    String[] Averages;
-
-
-    public bll()
-    {
-    }
-    public String[] getItemName()
-    {
-        return ItemNames;
-    }
-    public String[] getItemAverageUse()
-    {
-        return  Averages;
-    }
-    public int[] getItemIcon()
-    {
-        int[] icon = {5,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,15,6,2,2,5,8,1};
-        return  icon;
-    }
-
-    private void Connect()
-    {
+    private void Connect(){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         try {
@@ -67,55 +50,20 @@ public class  bll {
             e.printStackTrace();
         }
     }
-    //public void Con()
-    //{
-
-     //   StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-     //   StrictMode.setThreadPolicy(policy);
-     //   try {
-     //   //     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-     //      // URL url = new URL("https","sict-iis.nmmu.ac.za",445,"View");
-     //       URL url = new URL("http://sict-iis.nmmu.ac.za/codecentrix/View/");
-     //       HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-     //       try {
-     //           InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
-     //       } finally {
-     //           urlConnection.disconnect();
-     //       }
-
-
-     //    } catch (Exception e) {
-     //        e.printStackTrace();
-     //    }
-
-
-    //}
     //This method should be called login because its for login
-    public PersonModel Person(PersonModel person)
-    {
+    public PersonModel LoginPerson(PersonModel person){
         try
         {
             Connect();
             PreparedStatement st = connection.prepareStatement("{CALL uspMobGetPerson (?,?)}");
             st.setString(1,person.email);
             st.setString(2,person.userPassword);
-
             resultSet = st.executeQuery();
-
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        try {
-        while(resultSet.next())
-        {
-            person.fullName = (resultSet.getString("FullName").toString());
-            person.phoneNumber = (resultSet.getString("PhoneNumber"));
-            person.email = (resultSet.getString("Email"));
-            person.userPassword = (resultSet.getString("UserPassword"));
-        }
+            resultSet.next();//Moves from row of Heading to row record
+            person.fullName = resultSet.getString("FullName");
+            person.phoneNumber = resultSet.getString("PhoneNumber");
+            person.email = resultSet.getString("Email");
+            person.userPassword = resultSet.getString("UserPassword");
         }
         catch (SQLException e)
         {
@@ -126,49 +74,12 @@ public class  bll {
         }
         return person;
     }
-    private void SelectParas(String query,String[] params)
-    {
-        Connect();
-        try
-        {
-            Statement st = connection.createStatement();
-            resultSet = st.executeQuery("uspGetWaterUsageItmes");
-        }
-        catch (SQLException e)
-        {
-        }
-        ArrayList<String> name = new ArrayList<>();
-        ArrayList<String> Avg = new ArrayList<>();
-
-        try {
-            while(resultSet.next())
-            {
-
-                name.add(resultSet.getString("ItemDescription").toString());
-                Avg.add(""+resultSet.getFloat("ItemAverageAmount"));
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        String[] ItemName = new String[name.size()];
-        ItemNames = name.toArray(ItemName);
-        String[] Average = new String[Avg.size()];
-        Averages = Avg.toArray(Average);
-    }
-    //this Select method is for the fields foe water intake
-
-    public ArrayList<ItemUsageModel> GetItems()
-    {
+    public ArrayList<ItemUsageModel> GetItems(){
         ArrayList<ItemUsageModel> itemUsageModel = new ArrayList<>();
         try
         {
-            Connect();
-            PreparedStatement st = connection.prepareCall("{CALL uspMobGetWaterUsageItmes}");
-            resultSet = st.executeQuery();
-            while(resultSet.next())
-            {
+            resultSet = GetAll("{CALL uspMobGetWaterUsageItmes}");
+            while(resultSet.next()){
                 ItemUsageModel item = new ItemUsageModel();
                 item.ItemID = resultSet.getInt("ItemID");
                 item.ItemDiscriotn = resultSet.getString("ItemDescription");
@@ -181,22 +92,19 @@ public class  bll {
         {
             e.printStackTrace();
         }
-        finally {
-            connection = null;
-        }
         return itemUsageModel;
     }
-
-    public float GetUserTotalUsage(String userEmail)
-    {
+    public float uspMobGetPersonItemTotal(String userEmail,int itemID){
         float TotalUsage =0;
         try
         {
             Connect();
-            PreparedStatement st = connection.prepareCall("{CALL uspMobGetWaterUsageItmes}");
+            PreparedStatement st = connection.prepareStatement("{CALL uspMobGetPersonItemTotal (?,?)}");
+            st.setString(1,userEmail);
+            st.setInt(2,itemID);
             resultSet = st.executeQuery();
             resultSet.next();
-            TotalUsage = resultSet.getFloat("TotalUsage");
+            TotalUsage = resultSet.getFloat("TotalUsageForItem");
         }
         catch (SQLException e)
         {
@@ -206,6 +114,28 @@ public class  bll {
             connection = null;
         }
         return TotalUsage;
+    }
+    public ArrayList<TipModel> GetTips(){
+        ArrayList<TipModel> Tips = new ArrayList<>();
+        try
+        {
+            resultSet = GetAll("{CALL uspMobGetTips}");
+            while(resultSet.next())
+            {
+                TipModel tip = new TipModel();
+                tip.ID = resultSet.getInt("TTID");
+                tip.CatID = resultSet.getInt("CatID");
+                tip.PersonID =resultSet.getInt("PersonID");
+                tip.TipDescription = resultSet.getString("TTdescription");
+                //item.ItemIcon = resultSet.getByte();
+                Tips.add(tip);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return Tips;
     }
     public boolean MobAddPerson(PersonModel person ) throws SQLException {
         Connect();
@@ -234,6 +164,107 @@ public class  bll {
         return false;
     }
 
+    private boolean NonQuery(String sql,Object[] parameters){
+        Connect();
+        int i=0;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int count = 1;
+            for (Object para : parameters) {
+                setObject(i,para,st);
+            }
+            i = st.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            connection = null;
+        }
+        return i==0;
+    }
+    private ResultSet GetAll(String sql){
+        try
+        {
+            Connect();
+            PreparedStatement st = connection.prepareStatement(sql);
+            resultSet = st.executeQuery();
+            st.close();
+            connection.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+
+        }
+        return resultSet;
+    }
+    private ResultSet GetAllWithPara(String sql,Object[] parameters){
+        try
+        {
+            Connect();
+            PreparedStatement st = connection.prepareStatement(sql);
+            int i = 1;
+            for (Object para: parameters) {
+                setObject(i,para,st);
+                i++;
+            }
+            resultSet = st.executeQuery();
+            st.close();
+            connection.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+
+        }
+        return resultSet;
+    }
+    private void setObject(int parameterIndex, Object parameterObj,PreparedStatement preparedStatement) throws SQLException {
+        //Hate this, I really do But the is no other way
+            if (parameterObj == null) {
+                preparedStatement.setNull(parameterIndex, java.sql.Types.OTHER);
+            } else {
+                if (parameterObj instanceof Byte) {
+                    preparedStatement.setInt(parameterIndex, ((Byte) parameterObj).intValue());
+                } else if (parameterObj instanceof String) {
+                    preparedStatement.setString(parameterIndex, (String) parameterObj);
+                } else if (parameterObj instanceof BigDecimal) {
+                    preparedStatement.setBigDecimal(parameterIndex, (BigDecimal) parameterObj);
+                } else if (parameterObj instanceof Short) {
+                    preparedStatement.setShort(parameterIndex, ((Short) parameterObj).shortValue());
+                } else if (parameterObj instanceof Integer) {
+                    preparedStatement.setInt(parameterIndex, ((Integer) parameterObj).intValue());
+                } else if (parameterObj instanceof Long) {
+                    preparedStatement.setLong(parameterIndex, ((Long) parameterObj).longValue());
+                } else if (parameterObj instanceof Float) {
+                    preparedStatement.setFloat(parameterIndex, ((Float) parameterObj).floatValue());
+                } else if (parameterObj instanceof Double) {
+                    preparedStatement.setDouble(parameterIndex, ((Double) parameterObj).doubleValue());
+                } else if (parameterObj instanceof byte[]) {
+                    preparedStatement.setBytes(parameterIndex, (byte[]) parameterObj);
+                } else if (parameterObj instanceof java.sql.Date) {
+                    preparedStatement.setDate(parameterIndex, (java.sql.Date) parameterObj);
+                } else if (parameterObj instanceof Time) {
+                    preparedStatement.setTime(parameterIndex, (Time) parameterObj);
+                } else if (parameterObj instanceof Timestamp) {
+                    preparedStatement.setTimestamp(parameterIndex, (Timestamp) parameterObj);
+                } else if (parameterObj instanceof Boolean) {
+                    preparedStatement.setBoolean(parameterIndex, ((Boolean) parameterObj).booleanValue());
+                } else if (parameterObj instanceof BigInteger) {
+                    preparedStatement.setString(parameterIndex, parameterObj.toString());
+                } else {
+                    preparedStatement.setObject(parameterIndex, parameterObj);
+                }
+            }
+        }
+
+    //This background class is needed to stop the app from freezing every time we retrieve data
     public class backGround extends AsyncTask<URL,String,String>{
 
         @Override

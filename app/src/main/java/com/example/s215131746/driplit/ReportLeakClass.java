@@ -17,15 +17,7 @@ public class ReportLeakClass extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.report_leak, container, false);
-        ImageButton imgReport = rootView.findViewById(R.id.imageButton);
-        bll b = new bll();
-        imgReport.setImageBitmap(b.ScaleImg(R.drawable.tontsi,getResources()));
-        imgReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"Leak reported",Toast.LENGTH_LONG);
-            }
-        });
+
         return rootView;
     }
 

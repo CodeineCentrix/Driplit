@@ -150,8 +150,11 @@ public class ItemListAdapter extends BaseAdapter {
     }
     public void RecordUsage(View v,int position,EditText txtItemUsage,TextView tvUsed )
     {
+        ResidentUsageModel usagForItem = new ResidentUsageModel();
+
         //itemRecorded value must be saved to the database
         float itemRecorded = Float.parseFloat (tvUsed.getText().toString());
+
         tvUsed.setText(""+getUsage(position,itemRecorded));
         //TT must be a value from the database
         float totalValue = Float.parseFloat (parentCange.GetValue());

@@ -12,6 +12,6 @@ public class ResidentUsageModel {
     public int PersonID;
     public Time ResTime;
     public Date ResDate;
-    public float AmountUDed;
+    public float AmountUsed;
     public int ItemID;
 }
