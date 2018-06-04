@@ -133,17 +133,16 @@
                     android:id="@+id/tvLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="40dp"
-                    android:layout_marginRight="40dp"
                     android:text="@string/times_used"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvQty"
-                    android:layout_width="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/_0"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

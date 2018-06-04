@@ -1,9 +1,12 @@
 package com.example.s215131746.driplit;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by s216127904 on 2018/04/30.
@@ -29,14 +34,15 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
         ScaleImg(R.id.imgView);
         //here is the attempt to create and n tier architecture
+        ArrayList<ItemUsageModel> listOfIFtem = new ArrayList<>();
         bll business = new bll();
-        business.LoadConnection();
-        String[] ItemName = business.getItemName();
-        String[] Avg = business.getItemAverageUse();
-        int[] icon = business.getItemIcon();
+        listOfIFtem = business.GetItems();
+       // float sumTotal = business.GetUserTotalUsage("kanye@gmail.com");
+
 
         tvTotal = rootView.findViewById(R.id.tvTotalQty);
-        final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),icon,ItemName,Avg,this);
+       // tvTotal.setText(""+sumTotal);
+        final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),this,listOfIFtem);
         ListView lvItemList = rootView.findViewById(R.id.lvItemList);
 
         //this line is to inflate the listview with the list view adapter
@@ -45,9 +51,6 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         lvItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-
                 //after an item has been clicked the the following line will either make the bottom controllers visible or invisible
                 listAdapter.setVisibility(i);
 
@@ -99,5 +102,40 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
     @Override
     public String GetValue() {
         return tvTotal.getText().toString();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ToHome();
+    }
+    public void ToHome()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setMessage("Do you want to save usage")
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Write code to save new recodings to the database
+                        Toast.makeText(getContext(),"Recorded usage",Toast.LENGTH_SHORT).show();
+
+                    }
+                })
+                .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        AlertDialog startSaving = builder.create();
+        startSaving.show();
+
     }
 }

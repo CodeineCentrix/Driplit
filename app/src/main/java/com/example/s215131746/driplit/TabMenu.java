@@ -1,9 +1,11 @@
 package com.example.s215131746.driplit;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static android.content.Intent.getIntent;
 
@@ -44,16 +47,6 @@ public class TabMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_menu);
-        //Home button__________
-        final Button btnHome = findViewById(R.id.btnHome);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
-                startActivity(showHomeMenu);
-            }
-        });
-
         //_____________________
         Intent intent = getIntent();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,19 +70,11 @@ public class TabMenu extends AppCompatActivity {
                 mViewPager.setCurrentItem(i);
             }
         }
-
-
-
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
-
     }
-    public void Home()
+    public void ToHome(View v)
     {
         Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
         startActivity(showHomeMenu);
@@ -175,4 +160,5 @@ public class TabMenu extends AppCompatActivity {
             return 5;
         }
     }
+
 }
