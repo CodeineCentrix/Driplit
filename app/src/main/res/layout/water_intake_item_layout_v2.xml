@@ -8,24 +8,42 @@
     android:descendantFocusability="blocksDescendants">
 
 
-    <ImageView
-        android:id="@+id/imgItemIcon"
+    <LinearLayout
+        android:id="@+id/loHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:contentDescription="@string/todo"
-        app:layout_constraintStart_toStartOf="@+id/loDropHide"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        android:gravity="left"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imgItemIcon"
+            android:layout_width="53dp"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/todo"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/tvItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/item_name"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="77dp"
+            tools:layout_editor_absoluteY="9dp" />
+    </LinearLayout>
 
     <LinearLayout
 
         android:id="@+id/loDropHide"
         android:layout_width="0dp"
-        android:layout_height="139dp"
+        android:layout_height="wrap_content"
         android:background="@color/darkerblue"
         android:backgroundTint="@color/blue"
         android:baselineAligned="false"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +116,6 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="clip_horizontal"
-                android:layout_marginTop="10dp"
                 android:text="@string/record"
                 android:textColor="@color/black" />
 
@@ -174,16 +191,5 @@
         </LinearLayout>
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/tvItemName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:text="@string/item_name"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/loDropHide"
-        app:layout_constraintStart_toEndOf="@+id/imgItemIcon" />
 
 </android.support.constraint.ConstraintLayout>

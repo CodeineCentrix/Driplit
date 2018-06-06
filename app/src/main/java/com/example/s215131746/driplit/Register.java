@@ -37,10 +37,8 @@ public class Register extends AppCompatActivity {
         person.userPassword = txtPassword.getText().toString();
         person.phoneNumber = txtPhone.getText().toString();
         //Validation missing
-        bll bus_logic = new bll();
+        DBAccess bus_logic = new DBAccess();
 
-        try
-        {
             //validate EditText if they are not empty
             if (ValidPerson(person))
             {
@@ -56,11 +54,6 @@ public class Register extends AppCompatActivity {
             {
                 Toast.makeText(Register.this,  "One or more fields are empty ", Toast.LENGTH_LONG).show();
             }
-        }
-        catch(SQLException s)
-        {
-            s.printStackTrace();
-        }
 
     }
 

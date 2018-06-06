@@ -16,7 +16,7 @@ import static android.content.Intent.getIntentOld;
  */
 
 public class EditProfileClass extends Fragment {
-    bll business;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_edit_profile, container, false);
@@ -26,18 +26,7 @@ public class EditProfileClass extends Fragment {
         EditText txtEmail = rootView.findViewById(R.id.txtUserEmail);
         EditText txtPhoneNumber =rootView.findViewById(R.id.txtPhoneNumber);
         EditText txtPassword = rootView.findViewById(R.id.txtPassword);
-        if (business==null)
-            business = new bll();
-        try {
 
-            //String emailAddress = intent.getStringExtra(Login.EXTRAPassword);
-            //String password = intent.getStringExtra(Login.EXTRAPassword);
-            //String[] person = business.Person(emailAddress,password);
-        }
-        catch (Exception e)
-        {
-
-        }
 
 
 

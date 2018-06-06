@@ -35,9 +35,11 @@ public class ItemListAdapter extends BaseAdapter {
     private String[] ItemName;
     private String[] ItemUsageAvg;
     private String[] ItemID;
-    private LinearLayout loDropHide;
+    private float[] personUsage;
+
     String[] stringsQTY;
     LinearLayout[] LoDropHides;
+    private LinearLayout[] loHeading;
     Context context;
     private TextView tvTimesUsedORActual;
     LayoutInflater mInflater;
@@ -57,16 +59,23 @@ public class ItemListAdapter extends BaseAdapter {
         ItemUsageAvg = new String[i];
         ItemID = new String[i];
         for (ItemUsageModel item:itemUsage) {
-            i--;
-            //ItemIcon must be bytes
-            ItemIcon[i] = i;
-            ItemID[i] = ""+item.ItemID;
-            ItemName[i] = item.ItemDiscriotn;
-            ItemUsageAvg[i] = ""+item.ItemAverage;
-        }
+        i--;
+        //ItemIcon must be bytes
+        ItemIcon[i] = i;
+        ItemID[i] = ""+item.ItemID;
+        ItemName[i] = item.ItemDiscriotn;
+        ItemUsageAvg[i] = ""+item.ItemAverage;
+            for (ResidentUsageModel prev:previousUsage) {
+                if(ItemID[i].equals(prev.ItemID )){
+                    personUsage[i] = prev.AmountUsed;
+                    break;
+                }
+            }
+    }
         mInflater =(LayoutInflater) c.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
+        loHeading = new LinearLayout[getCount()];
     }
     @Override
     public int getCount() {
@@ -107,9 +116,9 @@ public class ItemListAdapter extends BaseAdapter {
         SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
         //imgIcons = v.findViewById(R.id.imgItemIcon);
         //imgIcons.setImageResource(ItemIcon[position]);
-        loDropHide = v.findViewById(R.id.loDropHide);
-        LoDropHides[position] = loDropHide;
-       setVisibility(position);
+        LoDropHides[position] = v.findViewById(R.id.loDropHide);
+        loHeading[position] = v.findViewById(R.id.loHeading);
+        setVisibility(position);
      //Buttons
         final Button btnAdd = v.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -142,38 +151,39 @@ public class ItemListAdapter extends BaseAdapter {
         return v;
     }
 
-    public void setVisibility(int position )
-    {
+    public void setVisibility(int position ){
         if(LoDropHides[position].getVisibility()==View.INVISIBLE)
+        {
             LoDropHides[position].setVisibility(View.VISIBLE);
+            loHeading[position].setVisibility(View.INVISIBLE);
+        }
         else
+        {
+            loHeading[position].setVisibility(View.VISIBLE);
             LoDropHides[position].setVisibility(View.INVISIBLE);
+        }
     }
-    private float GetAllUsage()
-    {
+    private float GetAllUsage(){
         float all=0;
         for (ResidentUsageModel res: PreviousUsage) {
             all+=res.AmountUsed;
         }
         return all;
     }
-    public void SetUsageEditText(EditText txtItemUsage,int position,int Quatity)
-    {
+    public void SetUsageEditText(EditText txtItemUsage,int position,int Quatity){
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
         float i = Float.parseFloat(ItemUsageAvg[position])*Quatity;
         txtItemUsage.setText(""+df.format(i));
     }
-    public void ChangeUsage(TextView tvQty,int position,EditText txtItemUsage,TextView tvUsed,int value)
-    {
+    public void ChangeUsage(TextView tvQty,int position,EditText txtItemUsage,TextView tvUsed,int value){
         tvQty.setText("" + value);
         stringsQTY[position] = ""+value;
         float i = Float.parseFloat(ItemUsageAvg[position]) * value;
         txtItemUsage.setText(""+i);
 
     }
-    public void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed )
-    {
+    public void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed ){
         final Login l = new Login();
         l.writeToFile("do",context.getApplicationContext(),"Recording.txt");
         final int duration = 7000;

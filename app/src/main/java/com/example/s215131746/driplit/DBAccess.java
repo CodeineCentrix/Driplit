@@ -20,13 +20,13 @@ import java.util.Properties;
 
 public class DBAccess {
 
-    private ResultSet resultSet;
+    private ResultSet outerResultSet;
     private static class DBHelper{
 
         private static String conString ;
         private static Connection connection;
         private static PreparedStatement st;
-        private static ResultSet resultSet;
+        private static ResultSet innerResultSet;
         private static String forName ;
         static String us ;
         static String password;
@@ -49,7 +49,7 @@ public class DBAccess {
         private static void Close(){
 
             try {
-                resultSet.close();
+                innerResultSet.close();
                 st.close();
                 connection.close();
             } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class DBAccess {
             {
                 Connect();
                  st = connection.prepareStatement(sql);
-                resultSet = st.executeQuery();
+                innerResultSet = st.executeQuery();
             }
             catch (SQLException e)
             {
@@ -89,7 +89,7 @@ public class DBAccess {
             finally {
 
             }
-            return resultSet;
+            return innerResultSet;
         }
         public static ResultSet SelectPara(String sql,Object[] parameters){
             try
@@ -101,7 +101,8 @@ public class DBAccess {
                     setObject(i,para,st);
                     i++;
                 }
-                resultSet = st.executeQuery();
+                ResultSet r =  st.executeQuery();
+                innerResultSet = r;
 
             }
             catch (SQLException e)
@@ -111,7 +112,7 @@ public class DBAccess {
             finally {
 
             }
-            return resultSet;
+            return innerResultSet;
         }
         private static void setObject(int parameterIndex, Object parameterObj,PreparedStatement preparedStatement) throws SQLException {
             //Hate this, I really do But the is no other way
@@ -155,14 +156,14 @@ public class DBAccess {
 
     public PersonModel LoginPerson(PersonModel person){
         Object[] paras = {person.email,person.userPassword};
-        resultSet = DBHelper.SelectPara("{CALL uspMobGetPerson (?,?)}",paras);
+        outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPerson (?,?)}",paras);
         try{
-            resultSet.next();//Moves from row of Heading to row record
-            person.id = resultSet.getInt("PersonID");
-            person.fullName = resultSet.getString("FullName");
-            person.phoneNumber = resultSet.getString("PhoneNumber");
-            person.email = resultSet.getString("Email");
-            person.userPassword = resultSet.getString("UserPassword");
+            outerResultSet.next();//Moves from row of Heading to row record
+            person.id = outerResultSet.getInt("PersonID");
+            person.fullName = outerResultSet.getString("FullName");
+
+            person.email = outerResultSet.getString("Email");
+            person.userPassword = outerResultSet.getString("UserPassword");
             DBHelper.Close();
         }catch (SQLException e){
             e.printStackTrace();
@@ -172,12 +173,12 @@ public class DBAccess {
     public ArrayList<ItemUsageModel> GetItems(){
         ArrayList<ItemUsageModel> itemUsageModel = new ArrayList<>();
         try{
-            resultSet = DBHelper.Select("{CALL uspMobGetWaterUsageItmes}");
-            while(resultSet.next()){
+            outerResultSet = DBHelper.Select("{CALL uspMobGetWaterUsageItmes}");
+            while(outerResultSet.next()){
                 ItemUsageModel item = new ItemUsageModel();
-                item.ItemID = resultSet.getInt("ItemID");
-                item.ItemDiscriotn = resultSet.getString("ItemDescription");
-                item.ItemAverage =resultSet.getFloat("ItemAverageAmount");
+                item.ItemID = outerResultSet.getInt("ItemID");
+                item.ItemDiscriotn = outerResultSet.getString("ItemDescription");
+                item.ItemAverage =outerResultSet.getFloat("ItemAverageAmount");
                 //item.ItemIcon = resultSet.getByte();
                 itemUsageModel.add(item);
             }
@@ -193,11 +194,11 @@ public class DBAccess {
         ResidentUsageModel use = new ResidentUsageModel();
         try{
             Object[] paras = {userEmail};
-            resultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotal (?)}",paras);
-            while (resultSet.next())
+            outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotal (?)}",paras);
+            while (outerResultSet.next())
             {
-                use.ItemID =resultSet.getInt("ItemID");
-                use.AmountUsed = resultSet.getFloat("TotalUsageForItem");
+                use.ItemID =outerResultSet.getInt("ItemID");
+                use.AmountUsed = outerResultSet.getFloat("TotalUsageForItem");
                 TotalUsage.add(use);
             }
 
@@ -211,14 +212,14 @@ public class DBAccess {
         ArrayList<TipModel> Tips = new ArrayList<>();
         try
         {
-            resultSet = DBHelper.Select("{CALL uspMobGetTips}");
-            while(resultSet.next())
+            outerResultSet = DBHelper.Select("{CALL uspMobGetTips}");
+            while(outerResultSet.next())
             {
                 TipModel tip = new TipModel();
-                tip.ID = resultSet.getInt("TTID");
-                tip.CatID = resultSet.getInt("CatID");
-                tip.PersonID =resultSet.getInt("PersonID");
-                tip.TipDescription = resultSet.getString("TTdescription");
+                tip.ID = outerResultSet.getInt("TipID");
+                tip.CatID = outerResultSet.getInt("PersonID");
+                tip.PersonID =outerResultSet.getInt("PersonID");
+                tip.TipDescription = outerResultSet.getString("Tip");
                 //item.ItemIcon = resultSet.getByte();
                 Tips.add(tip);
             }

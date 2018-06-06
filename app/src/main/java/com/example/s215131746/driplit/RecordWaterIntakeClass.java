@@ -21,20 +21,30 @@ import java.util.ArrayList;
  *
 **/
 public class RecordWaterIntakeClass extends Fragment implements ImplementChange {
+    Login l = new Login();
     TextView tvTotal;
-    ArrayList<ItemUsageModel> listOfIFtem;
+    ArrayList<ItemUsageModel> listOfItem;
     DBAccess business = new DBAccess();
     ArrayList<ResidentUsageModel> usagForItem;
+    String[] value;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line inflate this class with the record water intake layout
         View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
+
         ScaleImg(R.id.imgView);
-        listOfIFtem = business.GetItems();
-        usagForItem = business.uspMobGetPersonItemTotal("kanye@gmail.com");
+        listOfItem = business.GetItems();
+        value = l.readFromFile(getContext(),"person.txt").split(",");
+        usagForItem = business.uspMobGetPersonItemTotal(value[2]);
+        float totalUsage =0;
+        for (ResidentUsageModel prev:usagForItem) {
+                totalUsage = prev.AmountUsed;
+        }
+
         tvTotal = rootView.findViewById(R.id.tvTotalQty);
+        tvTotal.setText(""+totalUsage);
         final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),this,
-                listOfIFtem,usagForItem);
+                listOfItem,usagForItem);
         //finding and inflating list view
         ListView lvItemList = rootView.findViewById(R.id.lvItemList);
         lvItemList.setAdapter(listAdapter);

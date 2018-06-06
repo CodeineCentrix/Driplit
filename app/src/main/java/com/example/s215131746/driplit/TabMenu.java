@@ -63,7 +63,7 @@ public class TabMenu extends AppCompatActivity {
         String tabName = tab.getString("Tab");
         String[] tabs = {"Trend","Record","Tips","Report","Edit"};
 
-        for(int i = 0; i <tabs.length;i++)
+        for(int i = 0; i <tabs.length-1;i++)
         {
             if(tabName.equalsIgnoreCase(tabs[i]) )
             {
@@ -149,7 +149,7 @@ public class TabMenu extends AppCompatActivity {
                           new RecordWaterIntakeClass(),
                           new TipTrickClass(),
                           new ReportLeakClass(),
-                          new EditProfileClass()
+                         // new EditProfileClass()
                   } ;
 
             return f[position];
@@ -158,7 +158,7 @@ public class TabMenu extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 5 total pages.
-            return 5;
+            return 4;
         }
     }
 

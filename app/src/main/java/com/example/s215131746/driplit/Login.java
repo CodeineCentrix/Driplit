@@ -39,11 +39,12 @@ public class Login extends AppCompatActivity {
     }
     public void ToRegisterScreen(View view)
     {
-openWebPage("iis");
+        openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/Resources/View/Register.php?from=mobile");
         //registerScreen = new Intent(getApplicationContext(), Register.class);
         //startActivity(registerScreen);
     }
     public void openWebPage(String url) {
+
          Uri webpage = Uri.parse(url);
           Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if (intent.resolveActivity(getPackageManager()) != null) {

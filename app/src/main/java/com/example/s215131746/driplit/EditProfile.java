@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 public class EditProfile extends AppCompatActivity {
-    bll business;
+
     EditText txtFullname;
     EditText txtEmail;
     EditText txtPhoneNumber;
