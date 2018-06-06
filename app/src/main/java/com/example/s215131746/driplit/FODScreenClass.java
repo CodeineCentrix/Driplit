@@ -16,7 +16,7 @@ public class FODScreenClass extends Fragment {
     Intent mainMenu;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_fodscreen, container, false);
+        View rootView = inflater.inflate(R.layout.app_bar_fodscreen, container, false);
 
         return rootView;
     }

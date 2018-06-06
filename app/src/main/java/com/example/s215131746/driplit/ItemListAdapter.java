@@ -1,6 +1,10 @@
 package com.example.s215131746.driplit;
 
 import android.content.Context;
+import android.content.Intent;
+import android.opengl.GLException;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +18,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import static java.lang.String.*;
 
 public class ItemListAdapter extends BaseAdapter {
 
@@ -31,9 +42,13 @@ public class ItemListAdapter extends BaseAdapter {
     private TextView tvTimesUsedORActual;
     LayoutInflater mInflater;
     ImplementChange parentCange;
+    private ArrayList<ResidentUsageModel> PreviousUsage;
 
-    public ItemListAdapter(Context c,RecordWaterIntakeClass rwic,ArrayList<ItemUsageModel> itemUsage)
+    public ItemListAdapter(Context c,RecordWaterIntakeClass rwic,ArrayList<ItemUsageModel> itemUsage,
+                           ArrayList<ResidentUsageModel> previousUsage)
     {
+        context = c;
+        PreviousUsage = previousUsage;
         ItemUsage = itemUsage;
         parentCange = rwic;
         int i =itemUsage.size();
@@ -121,6 +136,7 @@ public class ItemListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 RecordUsage(v,position,txtItemUsage,tvUsed);
                 tvQty.setText("0");
+                setVisibility(position);
             }
         });
         return v;
@@ -132,6 +148,14 @@ public class ItemListAdapter extends BaseAdapter {
             LoDropHides[position].setVisibility(View.VISIBLE);
         else
             LoDropHides[position].setVisibility(View.INVISIBLE);
+    }
+    private float GetAllUsage()
+    {
+        float all=0;
+        for (ResidentUsageModel res: PreviousUsage) {
+            all+=res.AmountUsed;
+        }
+        return all;
     }
     public void SetUsageEditText(EditText txtItemUsage,int position,int Quatity)
     {
@@ -148,22 +172,73 @@ public class ItemListAdapter extends BaseAdapter {
         txtItemUsage.setText(""+i);
 
     }
-    public void RecordUsage(View v,int position,EditText txtItemUsage,TextView tvUsed )
+    public void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed )
     {
-        ResidentUsageModel usagForItem = new ResidentUsageModel();
-
-        //itemRecorded value must be saved to the database
-        float itemRecorded = Float.parseFloat (tvUsed.getText().toString());
-
-        tvUsed.setText(""+getUsage(position,itemRecorded));
-        //TT must be a value from the database
-        float totalValue = Float.parseFloat (parentCange.GetValue());
-        totalValue += getUsage(position,itemRecorded);
-        if(totalValue>0)
+        final Login l = new Login();
+        l.writeToFile("do",context.getApplicationContext(),"Recording.txt");
+        final int duration = 7000;
+        final float Used = Float.parseFloat(txtItemUsage.getText().toString());
+        if(Used>0)
         {
-            parentCange.DoChanges(""+totalValue);
-            Toast.makeText(v.getContext(),"Intake Record Successful",Toast.LENGTH_LONG).show();
-        }
-        SetUsageEditText(txtItemUsage,position,0);
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            String date = df.format(Calendar.getInstance().getTime());
+                final DecimalFormat dc = new DecimalFormat("0.0");
+            final DBAccess business = new DBAccess();
+            final ResidentUsageModel resUsing = new ResidentUsageModel();
+            resUsing.ItemID =Integer.parseInt( ItemID[position]);
+            resUsing.AmountUsed = Used;
+            float x = Float.parseFloat(tvUsed.getText().toString());
+            x+=resUsing.AmountUsed;
+            tvUsed.setText(""+x);
+            txtItemUsage.setText("0");
+            String value = dc.format(Float.parseFloat(parentCange.GetValue())+Used);
+            parentCange.DoChanges(value);
+            try {
+                resUsing.ResDate = new Date(df.parse(date).getTime());
+                df = new SimpleDateFormat("hh:mm:ss");
+                date = df.format(Calendar.getInstance().getTime());
+                resUsing.ResTime = new Time(df.parse(date).getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            String[] person = l.readFromFile(context.getApplicationContext(),"person.txt").split(",");
+            resUsing.PersonID = Integer.parseInt(person[0]);
+            Handler h = new Handler();
+            Snackbar mySnackbar = Snackbar.make(v,R.string.record_successful, duration);
+            mySnackbar.setAction(R.string.undo, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    l.writeToFile("undo",context.getApplicationContext(),"Recording.txt");
+                    String value = dc.format(Float.parseFloat(parentCange.GetValue())-Used);
+                    parentCange.DoChanges(value);
+                    tvUsed.setText(""+Used);
+                    float x = Float.parseFloat(tvUsed.getText().toString());
+                    x-=resUsing.AmountUsed;
+                    tvUsed.setText(""+x);
+                }
+
+
+            });
+            mySnackbar.show();
+
+
+           h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(l.readFromFile(context.getApplicationContext(),"Recording.txt").equals("do"))
+                    {
+                        business.MobAddResidentUsage(resUsing);
+                    }
+
+                }
+                //1 second wait before saving to the database
+            },duration);
+
+           }
+
+
     }
+
+
 }

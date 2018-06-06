@@ -1,21 +1,15 @@
 package com.example.s215131746.driplit;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,33 +21,28 @@ import java.util.ArrayList;
  *
 **/
 public class RecordWaterIntakeClass extends Fragment implements ImplementChange {
-     TextView tvTotal;
+    TextView tvTotal;
+    ArrayList<ItemUsageModel> listOfIFtem;
+    DBAccess business = new DBAccess();
+    ArrayList<ResidentUsageModel> usagForItem;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line inflate this class with the record water intake layout
         View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
         ScaleImg(R.id.imgView);
-        //here is the attempt to create and n tier architecture
-        ArrayList<ItemUsageModel> listOfIFtem = new ArrayList<>();
-        bll business = new bll();
         listOfIFtem = business.GetItems();
-       // float sumTotal = business.GetUserTotalUsage("kanye@gmail.com");
-
-
+        usagForItem = business.uspMobGetPersonItemTotal("kanye@gmail.com");
         tvTotal = rootView.findViewById(R.id.tvTotalQty);
-       // tvTotal.setText(""+sumTotal);
-        final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),this,listOfIFtem);
+        final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),this,
+                listOfIFtem,usagForItem);
+        //finding and inflating list view
         ListView lvItemList = rootView.findViewById(R.id.lvItemList);
-
-        //this line is to inflate the listview with the list view adapter
         lvItemList.setAdapter(listAdapter);
-        //this is when someone clicks on the item on the list view
         lvItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //after an item has been clicked the the following line will either make the bottom controllers visible or invisible
                 listAdapter.setVisibility(i);
-
             }
         });
         return rootView;
@@ -104,38 +93,33 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         return tvTotal.getText().toString();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        ToHome();
-    }
     public void ToHome()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+       // AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setMessage("Do you want to save usage")
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Write code to save new recodings to the database
-                        Toast.makeText(getContext(),"Recorded usage",Toast.LENGTH_SHORT).show();
+       // builder.setMessage("Do you want to save usage")
+       //         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+       //             @Override
+       //             public void onClick(DialogInterface dialog, int which) {
+       //                 //Write code to save new recodings to the database
+       //                 Toast.makeText(getContext(),"Recorded usage",Toast.LENGTH_SHORT).show();
 
-                    }
-                })
-                .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+       //             }
+       //         })
+       //         .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
+       //             @Override
+       //             public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+       //             }
+       //         })
+       //         .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+       //             @Override
+       //             public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                });
-        AlertDialog startSaving = builder.create();
-        startSaving.show();
+       //             }
+       //         });
+       // AlertDialog startSaving = builder.create();
+       // startSaving.show();
 
     }
 }

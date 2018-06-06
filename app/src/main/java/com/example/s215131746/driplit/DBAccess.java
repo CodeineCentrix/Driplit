@@ -1,7 +1,10 @@
 package com.example.s215131746.driplit;
 
 import android.app.AppOpsManager;
+import android.content.res.Resources;
 import android.os.StrictMode;
+import android.support.annotation.XmlRes;
+import android.util.Xml;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,35 +16,56 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Properties;
 
-public class BDAccess {
+public class DBAccess {
 
     private ResultSet resultSet;
     private static class DBHelper{
-        private static String conString =  "jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix";
+
+        private static String conString ;
         private static Connection connection;
+        private static PreparedStatement st;
         private static ResultSet resultSet;
-        private static String forName = "net.sourceforge.jtds.jdbc.Driver";
-         static String us = "codecentrix";
-         static String password="password";
+        private static String forName ;
+        static String us ;
+        static String password;
         private static void Connect(){
+            BackGroundConnection connectionProperties = new BackGroundConnection();
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             try {
+                String[] properties = connectionProperties.conntion();
+                conString = properties[0];
+                forName =  properties[1];
+                us =  properties[2];
+                password =properties[3];
                 Class.forName(forName).newInstance();
                 connection = DriverManager.getConnection(conString,us,password);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        private static void Close(){
+
+            try {
+                resultSet.close();
+                st.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
         public static boolean NonQuery(String sql,Object[] parameters){
             Connect();
             int i=0;
             try {
-                PreparedStatement st = connection.prepareStatement(sql);
+                 st = connection.prepareStatement(sql);
                 int count = 1;
                 for (Object para : parameters) {
-                    setObject(i,para,st);
+                    setObject(count,para,st);
+                    count++;
                 }
                 i = st.executeUpdate();
             }
@@ -49,19 +73,14 @@ public class BDAccess {
             {
                 e.printStackTrace();
             }
-            finally {
-                connection = null;
-            }
             return i==0;
         }
         public static ResultSet Select(String sql){
             try
             {
                 Connect();
-                PreparedStatement st = connection.prepareStatement(sql);
+                 st = connection.prepareStatement(sql);
                 resultSet = st.executeQuery();
-                st.close();
-                connection.close();
             }
             catch (SQLException e)
             {
@@ -76,15 +95,14 @@ public class BDAccess {
             try
             {
                 Connect();
-                PreparedStatement st = connection.prepareStatement(sql);
+                st = connection.prepareStatement(sql);
                 int i = 1;
                 for (Object para: parameters) {
                     setObject(i,para,st);
                     i++;
                 }
                 resultSet = st.executeQuery();
-                st.close();
-                connection.close();
+
             }
             catch (SQLException e)
             {
@@ -133,7 +151,6 @@ public class BDAccess {
                 }
             }
         }
-
     }
 
     public PersonModel LoginPerson(PersonModel person){
@@ -141,10 +158,12 @@ public class BDAccess {
         resultSet = DBHelper.SelectPara("{CALL uspMobGetPerson (?,?)}",paras);
         try{
             resultSet.next();//Moves from row of Heading to row record
+            person.id = resultSet.getInt("PersonID");
             person.fullName = resultSet.getString("FullName");
             person.phoneNumber = resultSet.getString("PhoneNumber");
             person.email = resultSet.getString("Email");
             person.userPassword = resultSet.getString("UserPassword");
+            DBHelper.Close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -162,18 +181,27 @@ public class BDAccess {
                 //item.ItemIcon = resultSet.getByte();
                 itemUsageModel.add(item);
             }
+            DBHelper.Close();
         }catch (SQLException e){
             e.printStackTrace();
         }
         return itemUsageModel;
     }
-    public float uspMobGetPersonItemTotal(String userEmail,int itemID){
-        float TotalUsage =0;
+
+    public ArrayList<ResidentUsageModel> uspMobGetPersonItemTotal(String userEmail){
+        ArrayList<ResidentUsageModel> TotalUsage = new ArrayList<>();
+        ResidentUsageModel use = new ResidentUsageModel();
         try{
-            Object[] paras = {userEmail,itemID};
-            resultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotal (?,?)}",paras);
-            resultSet.next();
-            TotalUsage = resultSet.getFloat("TotalUsageForItem");
+            Object[] paras = {userEmail};
+            resultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotal (?)}",paras);
+            while (resultSet.next())
+            {
+                use.ItemID =resultSet.getInt("ItemID");
+                use.AmountUsed = resultSet.getFloat("TotalUsageForItem");
+                TotalUsage.add(use);
+            }
+
+            DBHelper.Close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -194,6 +222,7 @@ public class BDAccess {
                 //item.ItemIcon = resultSet.getByte();
                 Tips.add(tip);
             }
+            DBHelper.Close();
         }
         catch (SQLException e)
         {
@@ -203,10 +232,22 @@ public class BDAccess {
     }
     public boolean MobAddPerson(PersonModel person ){
         Object[] paras = {person.fullName,person.email,person.userPassword,person.phoneNumber};
-        return DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?,?)}",paras);
+        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?,?)}",paras);
+        DBHelper.Close();
+        return isWorking;
     }
     public boolean MobDeletePerson(String email){
         Object[] paras = {email};
-        return DBHelper.NonQuery("{CALL uspMobAddPerson(?)}",paras);
+        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?)}",paras);
+        DBHelper.Close();
+        return isWorking;
     }
+    boolean MobAddResidentUsage(ResidentUsageModel ResUsage)
+    {
+        Object[] paras = {ResUsage.PersonID,ResUsage.ResDate,ResUsage.ResTime,ResUsage.AmountUsed,ResUsage.ItemID};
+        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddResidentUsage(?,?,?,?,?)}",paras);
+        DBHelper.Close();
+        return isWorking;
+    }
+
 }

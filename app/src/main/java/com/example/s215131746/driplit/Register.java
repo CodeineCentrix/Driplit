@@ -49,6 +49,7 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "hello"+person.fullName, Toast.LENGTH_SHORT).show();
                     Intent showMainMene = new Intent(getApplicationContext(),Mainmenu.class);
                     startActivity(showMainMene);
+                    finish();
                 }
             }
             else

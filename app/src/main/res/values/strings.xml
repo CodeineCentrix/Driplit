@@ -41,7 +41,8 @@
     <string name="dash">-</string>
     <string name="_0">0</string>
     <string name="increment">+</string>
-
+    <string name="record_successful">Record successful</string>
+    <string name="undo">Undo</string>
     <string name="edit">Edit</string>
     <string name="item_name">Item Name</string>
     <string name="loginpassword">password</string>
@@ -51,4 +52,9 @@
     <string name="record">Record</string>
     <string name="login_error">You have entered an invalid email or password</string>
     <string name="connectionString">jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix</string>
+    <string name="help">Help</string>
+    <string name="about_us">About us</string>
+    <string name="sing_out">Sing out</string>
+    <string name="new_password">New password (optional)</string>
+    <string name="old_password">Old password</string>
 </resources>

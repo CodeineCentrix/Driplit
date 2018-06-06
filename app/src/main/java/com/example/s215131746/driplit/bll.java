@@ -1,6 +1,8 @@
 package com.example.s215131746.driplit;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.Context;
 import android.icu.text.DateFormat;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -8,12 +10,20 @@ import android.renderscript.Element;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -87,6 +97,7 @@ public class  bll {
                 //item.ItemIcon = resultSet.getByte();
                 itemUsageModel.add(item);
             }
+            resultSet.close();
         }
         catch (SQLException e)
         {
@@ -190,8 +201,7 @@ public class  bll {
             Connect();
             PreparedStatement st = connection.prepareStatement(sql);
             resultSet = st.executeQuery();
-            st.close();
-            connection.close();
+
         }
         catch (SQLException e)
         {
@@ -265,17 +275,50 @@ public class  bll {
         }
 
     //This background class is needed to stop the app from freezing every time we retrieve data
-    public class backGround extends AsyncTask<URL,String,String>{
+    public class backGround extends AsyncTask<String,String,String> {
+
+        Context context;
+        AlertDialog alertDialog;
+
+        backGround(Context ctx) {
+            context = ctx;
+        }
 
         @Override
-        protected String doInBackground(URL... urls) {
-            return null;
+        protected String doInBackground(String... params) {
+            String type = params[0];
+            String login_url = "http://sict-iis.nmmu.ac.za/codecentrix/conn.php";
+            try {
+
+                URL url = new URL(login_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                //httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += "^"+line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return type;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog.setMessage(s);
+            alertDialog.show();
         }
     }
 }
-

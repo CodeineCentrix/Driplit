@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bean id="mssqlDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+<bean id="mssqlDataSource" class="net.sourceforge.jtds.jdbc" destroy-method="close">
     <property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver"/>
     <property name="url" value="jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix"/>
     <property name="username" value="codecentrix"/>

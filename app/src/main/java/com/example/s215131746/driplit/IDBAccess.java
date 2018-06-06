@@ -18,4 +18,5 @@ public interface IDBAccess {
     boolean MobDeletePerson(String email);
     boolean MobPostTip(TipModel tip);
     boolean MobUpdatePerson(PersonModel person);
+
 }

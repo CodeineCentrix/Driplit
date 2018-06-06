@@ -78,6 +78,7 @@ public class TabMenu extends AppCompatActivity {
     {
         Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
         startActivity(showHomeMenu);
+        finish();
     }
 
     @Override

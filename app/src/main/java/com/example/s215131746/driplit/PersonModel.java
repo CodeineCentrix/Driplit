@@ -5,8 +5,14 @@ package com.example.s215131746.driplit;
  */
 
 public class PersonModel {
+    public int id;
     public String fullName;
     public String email;
     public String userPassword;
     public String phoneNumber;
+
+    @Override
+    public String toString() {
+        return fullName+","+email+","+userPassword+","+phoneNumber;
+    }
 }

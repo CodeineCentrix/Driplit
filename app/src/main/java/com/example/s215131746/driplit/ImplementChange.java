@@ -7,4 +7,5 @@ package com.example.s215131746.driplit;
 public interface ImplementChange {
     void DoChanges(String value);
     String GetValue();
+
 }

@@ -38,8 +38,9 @@ private static  int timeOUt = 2000;
             @Override
             public void run() {
 
-                loginScreen = new Intent(getApplicationContext(), Mainmenu.class);
+                loginScreen = new Intent(getApplicationContext(), Login.class);
                 startActivity(loginScreen);
+                finish();
             }
 
         },timeOUt);

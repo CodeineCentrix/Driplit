@@ -29,6 +29,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Mainmenu"
             android:label="@string/main_menu"/>
+        <activity android:name=".EditProfile"
+            android:label="@string/edit_profile"/>
     </application>
 
 </manifest>
