@@ -216,10 +216,10 @@ public class DBAccess {
             while(outerResultSet.next())
             {
                 TipModel tip = new TipModel();
-                tip.ID = outerResultSet.getInt("TipID");
-                tip.CatID = outerResultSet.getInt("PersonID");
+                tip.ID = outerResultSet.getInt("TTID");
+                tip.CatID = outerResultSet.getInt("CatID");
                 tip.PersonID =outerResultSet.getInt("PersonID");
-                tip.TipDescription = outerResultSet.getString("Tip");
+                tip.TipDescription = outerResultSet.getString("TTdescription");
                 //item.ItemIcon = resultSet.getByte();
                 Tips.add(tip);
             }

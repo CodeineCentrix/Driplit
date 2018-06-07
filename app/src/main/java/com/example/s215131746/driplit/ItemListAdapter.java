@@ -105,20 +105,24 @@ public class ItemListAdapter extends BaseAdapter {
 
         View v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
         tvTimesUsedORActual = v.findViewById(R.id.tvLabel);
+
         //text views
         final TextView tvQty = v.findViewById(R.id.tvQty);
         stringsQTY[position] = tvQty.getText().toString();
         final TextView tvItemName = v.findViewById(R.id.tvItemName);
         tvItemName.setText(ItemName[position]);
         final TextView tvUsed = v.findViewById(R.id.tvUsedToday);
+
         //text edits
         final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
         SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
+
         //imgIcons = v.findViewById(R.id.imgItemIcon);
         //imgIcons.setImageResource(ItemIcon[position]);
         LoDropHides[position] = v.findViewById(R.id.loDropHide);
         loHeading[position] = v.findViewById(R.id.loHeading);
         setVisibility(position);
+
      //Buttons
         final Button btnAdd = v.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
