@@ -1,5 +1,6 @@
 package com.example.s215131746.driplit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,9 +9,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -19,17 +22,25 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fodscreen);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        GeneralMethods m = new GeneralMethods(getApplicationContext());
+        String[] details = m.Read("person.txt",",");
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        View header = navigationView.getHeaderView(0);
+        TextView tvFullName = (TextView) header.findViewById(R.id.nav_tvFullName);
+        TextView tvEmail = header.findViewById(R.id.nav_tvEmail);
+        tvEmail.setText(details[2]);
+        tvFullName.setText(details[1]);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -112,6 +123,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.fodscreen, menu);
+
         return true;
     }
 

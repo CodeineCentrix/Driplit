@@ -7,26 +7,13 @@
     tools:context="com.example.s215131746.driplit.Mainmenu"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_weight="2"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-        <TextView
-            android:id="@+id/txtGrid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:fontFamily="@font/disco"
-            android:text="@string/app_name"
-            android:textAllCaps="false"
-            android:textColor="@color/lightdarkerorange"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            tools:targetApi="jelly_bean" />
-
-</RelativeLayout>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:title="Fact Of The Day"/>
 
 
     <GridLayout

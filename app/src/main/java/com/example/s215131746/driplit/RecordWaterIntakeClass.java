@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
 **/
 public class RecordWaterIntakeClass extends Fragment implements ImplementChange {
-    Login l = new Login();
+    GeneralMethods m ;
     TextView tvTotal;
     ArrayList<ItemUsageModel> listOfItem;
     DBAccess business = new DBAccess();
@@ -31,14 +31,14 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
                              Bundle savedInstanceState) {
         //this line inflate this class with the record water intake layout
         View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
-
+        m = new GeneralMethods(getContext());
         ScaleImg(R.id.imgView);
         listOfItem = business.GetItems();
-        value = l.readFromFile(getContext(),"person.txt").split(",");
+        value = m.Read("person.txt",",");
         usagForItem = business.uspMobGetPersonItemTotal(value[2]);
         float totalUsage =0;
         for (ResidentUsageModel prev:usagForItem) {
-                totalUsage = prev.AmountUsed;
+                totalUsage += prev.AmountUsed;
         }
 
         tvTotal = rootView.findViewById(R.id.tvTotalQty);

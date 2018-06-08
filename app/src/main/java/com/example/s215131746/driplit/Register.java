@@ -35,7 +35,7 @@ public class Register extends AppCompatActivity {
         person.fullName = txtFullName.getText().toString();
         person.email = txtEmail.getText().toString();
         person.userPassword = txtPassword.getText().toString();
-        person.phoneNumber = txtPhone.getText().toString();
+
         //Validation missing
         DBAccess bus_logic = new DBAccess();
 
@@ -60,8 +60,8 @@ public class Register extends AppCompatActivity {
     public boolean ValidPerson(PersonModel person)
     {
         boolean error = true;
-        TextView[] tvError = {findViewById(R.id.tvErrorFullName),findViewById(R.id.tvErrorEmail),findViewById(R.id.tvErrorPassword),findViewById(R.id.tvErrorPhone)};
-        String[] values = {person.fullName,person.email,person.userPassword,person.phoneNumber};
+        TextView[] tvError = {findViewById(R.id.tvErrorFullName),findViewById(R.id.tvErrorEmail),findViewById(R.id.tvErrorPassword)};
+        String[] values = {person.fullName,person.email,person.userPassword};
         for(int i = 0; i<tvError.length;i++)
         {
             if(values[i].equalsIgnoreCase(""))

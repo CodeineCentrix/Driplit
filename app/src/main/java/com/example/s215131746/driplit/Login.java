@@ -24,22 +24,25 @@ public class Login extends AppCompatActivity {
     public  EditText email;
     public  EditText password;
     DBAccess business;
+    GeneralMethods m;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        m = new GeneralMethods(getApplicationContext());
         setContentView(R.layout.activity_login);
         email = findViewById(R.id.txtUsername);
         password = findViewById(R.id.txtPassword);
         //should be taken out before judging
-        email.setText("kanye@gmail.com");
-        password.setText("kanye");
+        String[] details = m.Read("person.txt",",");
+        email.setText(details[2]);
+        password.setText(details[3]);
         business = new DBAccess();
 
     }
+
     public void ToRegisterScreen(View view)
     {
-        openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/Resources/View/Register.php?from=mobile");
+        m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/Resources/View/Register.php?from=mobile");
         //registerScreen = new Intent(getApplicationContext(), Register.class);
         //startActivity(registerScreen);
     }
@@ -61,7 +64,7 @@ public class Login extends AppCompatActivity {
         {
             Toast.makeText(this,    "Hello "+person.fullName,Toast.LENGTH_LONG).show();
             fodScreen = new Intent(getApplicationContext(), FODScreen.class);
-            writeToFile(person.id+","+ person.toString(),getApplicationContext(),"person.txt");
+            m.writeToFile(person.id+","+ person.toString(),"person.txt");
             startActivity(fodScreen);
             finish();
         }
@@ -74,8 +77,7 @@ public class Login extends AppCompatActivity {
 
     }
     public void writeToFile(String data,Context context,String fileName) {
-        BackGroundConnection connectionProperties = new BackGroundConnection();
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
             outputStreamWriter.write(data);
@@ -109,6 +111,10 @@ public class Login extends AppCompatActivity {
         }
 
         return ret;
+    }
+    public String[] Read(Context context,String fileName,String splitter)
+    {
+       return m.readFromFile(fileName).split(splitter);
     }
 
 }

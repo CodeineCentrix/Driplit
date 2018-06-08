@@ -29,7 +29,7 @@ import java.util.Calendar;
 import static java.lang.String.*;
 
 public class ItemListAdapter extends BaseAdapter {
-
+    GeneralMethods m;
     private ArrayList<ItemUsageModel> ItemUsage;
     private int[] ItemIcon;
     private String[] ItemName;
@@ -45,7 +45,7 @@ public class ItemListAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     ImplementChange parentCange;
     private ArrayList<ResidentUsageModel> PreviousUsage;
-
+     TextView[] tvUsed;
     public ItemListAdapter(Context c,RecordWaterIntakeClass rwic,ArrayList<ItemUsageModel> itemUsage,
                            ArrayList<ResidentUsageModel> previousUsage)
     {
@@ -58,6 +58,8 @@ public class ItemListAdapter extends BaseAdapter {
         ItemName = new String[i];
         ItemUsageAvg = new String[i];
         ItemID = new String[i];
+        personUsage = new float[i];
+        tvUsed = new TextView[i];
         for (ItemUsageModel item:itemUsage) {
         i--;
         //ItemIcon must be bytes
@@ -65,8 +67,9 @@ public class ItemListAdapter extends BaseAdapter {
         ItemID[i] = ""+item.ItemID;
         ItemName[i] = item.ItemDiscriotn;
         ItemUsageAvg[i] = ""+item.ItemAverage;
-            for (ResidentUsageModel prev:previousUsage) {
-                if(ItemID[i].equals(prev.ItemID )){
+            for (ResidentUsageModel prev:PreviousUsage) {
+                String id = ""+prev.ItemID;
+                if(ItemID[i].equals(id)){
                     personUsage[i] = prev.AmountUsed;
                     break;
                 }
@@ -76,6 +79,7 @@ public class ItemListAdapter extends BaseAdapter {
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
         loHeading = new LinearLayout[getCount()];
+        m = new GeneralMethods(c);
     }
     @Override
     public int getCount() {
@@ -110,7 +114,8 @@ public class ItemListAdapter extends BaseAdapter {
         stringsQTY[position] = tvQty.getText().toString();
         final TextView tvItemName = v.findViewById(R.id.tvItemName);
         tvItemName.setText(ItemName[position]);
-        final TextView tvUsed = v.findViewById(R.id.tvUsedToday);
+         tvUsed[position] = v.findViewById(R.id.tvUsedToday);
+        tvUsed[position].setText( ""+ personUsage[position]);
         //text edits
         final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
         SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
@@ -125,7 +130,7 @@ public class ItemListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 int increasUsage =Integer.parseInt( tvQty.getText().toString()) + 1;
-                ChangeUsage(tvQty,position,txtItemUsage,tvUsed,increasUsage);
+                ChangeUsage(tvQty,position,txtItemUsage,tvUsed[position],increasUsage);
             }
         });
         final Button btnMinus = v.findViewById(R.id.btnMinus);
@@ -135,7 +140,7 @@ public class ItemListAdapter extends BaseAdapter {
                 int decreasUsage =Integer.parseInt( tvQty.getText().toString()) - 1;
                 if(decreasUsage>-1)
                 {
-                    ChangeUsage(tvQty,position,txtItemUsage,tvUsed,decreasUsage);
+                    ChangeUsage(tvQty,position,txtItemUsage,tvUsed[position],decreasUsage);
                 }
             }
         });
@@ -143,7 +148,7 @@ public class ItemListAdapter extends BaseAdapter {
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecordUsage(v,position,txtItemUsage,tvUsed);
+                RecordUsage(v,position,txtItemUsage,tvUsed[position]);
                 tvQty.setText("0");
                 setVisibility(position);
             }
@@ -184,9 +189,9 @@ public class ItemListAdapter extends BaseAdapter {
 
     }
     public void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed ){
-        final Login l = new Login();
-        l.writeToFile("do",context.getApplicationContext(),"Recording.txt");
-        final int duration = 7000;
+
+        m.writeToFile("do","Recording.txt");
+        final int duration = 3000;
         final float Used = Float.parseFloat(txtItemUsage.getText().toString());
         if(Used>0)
         {
@@ -212,14 +217,14 @@ public class ItemListAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
 
-            String[] person = l.readFromFile(context.getApplicationContext(),"person.txt").split(",");
+            String[] person = m.Read("person.txt",",");
             resUsing.PersonID = Integer.parseInt(person[0]);
             Handler h = new Handler();
             Snackbar mySnackbar = Snackbar.make(v,R.string.record_successful, duration);
             mySnackbar.setAction(R.string.undo, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    l.writeToFile("undo",context.getApplicationContext(),"Recording.txt");
+                    m.writeToFile("undo","Recording.txt");
                     String value = dc.format(Float.parseFloat(parentCange.GetValue())-Used);
                     parentCange.DoChanges(value);
                     tvUsed.setText(""+Used);
@@ -236,7 +241,7 @@ public class ItemListAdapter extends BaseAdapter {
            h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(l.readFromFile(context.getApplicationContext(),"Recording.txt").equals("do"))
+                    if(m.readFromFile("Recording.txt").equals("do"))
                     {
                         business.MobAddResidentUsage(resUsing);
                     }

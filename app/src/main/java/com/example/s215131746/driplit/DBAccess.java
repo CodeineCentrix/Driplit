@@ -188,15 +188,50 @@ public class DBAccess {
         }
         return itemUsageModel;
     }
-
+    public ArrayList<UspMobGetPersonItemTotal> UspMobGetPersonItemTotal(String email){
+        ArrayList<UspMobGetPersonItemTotal> usages = new ArrayList<>();
+        try{
+            Object[] paras = {email};
+            outerResultSet = DBHelper.SelectPara("{CALL [UspMobGetPersonItemTotal](?)}",paras);
+            while(outerResultSet.next()){
+                UspMobGetPersonItemTotal usage = new UspMobGetPersonItemTotal();
+                usage.ItemName = outerResultSet.getString("Item");
+                usage.UsageAmount = outerResultSet.getFloat("TotalUsageForItem");
+                usages.add(usage);
+            }
+            DBHelper.Close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return usages;
+    }
+    public ArrayList<UspMobGetPersonTotalUsage> GetPersonTotalUsageGetItems(String email){
+        ArrayList<UspMobGetPersonTotalUsage> usages = new ArrayList<>();
+        try{
+            Object[] paras = {email};
+            outerResultSet = DBHelper.SelectPara("{CALL [uspMobGetPersonTotalUsage](?)}",paras);
+            while(outerResultSet.next()){
+                UspMobGetPersonTotalUsage usage = new UspMobGetPersonTotalUsage();
+                usage.UsageDay = outerResultSet.getString("UsageDay");
+                usage.UsageAmount = outerResultSet.getFloat("UsageAmount");
+                //item.ItemIcon = resultSet.getByte();
+                usages.add(usage);
+            }
+            DBHelper.Close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return usages;
+    }
     public ArrayList<ResidentUsageModel> uspMobGetPersonItemTotal(String userEmail){
         ArrayList<ResidentUsageModel> TotalUsage = new ArrayList<>();
-        ResidentUsageModel use = new ResidentUsageModel();
+
         try{
             Object[] paras = {userEmail};
             outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotal (?)}",paras);
             while (outerResultSet.next())
             {
+                ResidentUsageModel use = new ResidentUsageModel();
                 use.ItemID =outerResultSet.getInt("ItemID");
                 use.AmountUsed = outerResultSet.getFloat("TotalUsageForItem");
                 TotalUsage.add(use);
@@ -232,8 +267,8 @@ public class DBAccess {
         return Tips;
     }
     public boolean MobAddPerson(PersonModel person ){
-        Object[] paras = {person.fullName,person.email,person.userPassword,person.phoneNumber};
-        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?,?)}",paras);
+        Object[] paras = {person.fullName,person.email,person.userPassword};
+        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?)}",paras);
         DBHelper.Close();
         return isWorking;
     }
