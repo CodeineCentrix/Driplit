@@ -57,4 +57,11 @@
     <string name="sing_out">Sing out</string>
     <string name="new_password">New password (optional)</string>
     <string name="old_password">Old password</string>
+    <string name="enter_tip">Enter tip</string>
+    <string name="tip_trick_description">Tip Trick Description</string>
+    <string name="posted_by">Posted By:</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="post">POST</string>
+
 </resources>
