@@ -63,5 +63,6 @@
     <string name="name">Name</string>
     <string name="date">Date</string>
     <string name="post">POST</string>
+    <string name="remember_me">Remember me</string>
 
 </resources>

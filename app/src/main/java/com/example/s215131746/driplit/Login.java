@@ -7,6 +7,7 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class Login extends AppCompatActivity {
     Intent registerScreen, fodScreen;
     public  EditText email;
     public  EditText password;
+    public CheckBox cbRemeber;
     DBAccess business;
     GeneralMethods m;
     @Override
@@ -30,14 +32,29 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         m = new GeneralMethods(getApplicationContext());
         setContentView(R.layout.activity_login);
+        cbRemeber = findViewById(R.id.cbRememberMe);
         email = findViewById(R.id.txtUsername);
         password = findViewById(R.id.txtPassword);
         //should be taken out before judging
-        String[] details = m.Read("person.txt",",");
-        email.setText(details[2]);
-        password.setText(details[3]);
+        RemeberMe();
+        if(cbRemeber.isChecked())
+        {
+            String[] details = m.Read("person.txt",",");
+            email.setText(details[2]);
+            password.setText(details[3]);
+        }
         business = new DBAccess();
-
+    }
+    public void RemeberMe(String answ)
+    {
+        m.writeToFile(answ,"Remember.txt");
+    }
+    public void RemeberMe()
+    {
+        if(m.readFromFile("Remember.txt").equals("yes"))
+        cbRemeber.setChecked(true);
+        else
+            cbRemeber.setChecked(false);
     }
 
     public void ToRegisterScreen(View view)
@@ -56,6 +73,10 @@ public class Login extends AppCompatActivity {
     }
     public void ToFODScreen(View view)
     {
+        if(cbRemeber.isChecked())
+            RemeberMe("yes");
+        else
+            RemeberMe("no");
         PersonModel person = new PersonModel();
         person.email = email.getText().toString();
         person.userPassword = password.getText().toString();

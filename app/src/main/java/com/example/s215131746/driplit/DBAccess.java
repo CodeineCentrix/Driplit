@@ -209,7 +209,7 @@ public class DBAccess {
         ArrayList<UspMobGetPersonTotalUsage> usages = new ArrayList<>();
         try{
             Object[] paras = {email};
-            outerResultSet = DBHelper.SelectPara("{CALL [uspMobGetPersonTotalUsage](?)}",paras);
+            outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonTotalUsage(?)}",paras);
             while(outerResultSet.next()){
                 UspMobGetPersonTotalUsage usage = new UspMobGetPersonTotalUsage();
                 usage.UsageDay = outerResultSet.getString("UsageDay");

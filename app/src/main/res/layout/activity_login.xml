@@ -44,6 +44,12 @@
         android:textCursorDrawable="@color/darkerblue"
         android:textSize="20sp" />
 
+    <CheckBox
+        android:id="@+id/cbRememberMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_me" />
+
     <TextView
         android:id="@+id/tvError"
         android:layout_width="match_parent"

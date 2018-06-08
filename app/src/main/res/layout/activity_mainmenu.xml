@@ -13,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimaryDark"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:title="Fact Of The Day"/>
+        app:title="@string/app_name"/>
 
 
     <GridLayout
