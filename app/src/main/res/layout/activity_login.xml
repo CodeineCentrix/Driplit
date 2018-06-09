@@ -21,6 +21,7 @@
         android:layout_width="308dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:backgroundTint="@color/shade4"
         android:drawableLeft="@drawable/user"
         android:drawableStart="@drawable/user"
         android:hint="@string/email"
@@ -33,7 +34,8 @@
         android:id="@+id/txtPassword"
         android:layout_width="309dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/shade4"
         android:drawableEnd="@drawable/help"
         android:drawableLeft="@drawable/padlock"
         android:drawableRight="@drawable/help"
@@ -48,6 +50,7 @@
         android:id="@+id/cbRememberMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/shade4"
         android:text="@string/remember_me" />
 
     <TextView
@@ -62,11 +65,12 @@
         android:layout_width="286dp"
         android:layout_height="47dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="@color/blue"
+        android:layout_marginTop="10dp"
+        android:background="@color/shade5"
         android:onClick="ToFODScreen"
         android:text="@string/login"
         android:textAlignment="center"
+        android:textColor="?attr/colorPrimary"
         android:textSize="25sp" />
 
     <TextView
@@ -84,15 +88,34 @@
         android:background="@android:color/transparent"
         android:onClick="ToRegisterScreen"
         android:text="@string/register"
-        android:textColor="@color/blue"
+        android:textColor="@color/shade5"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btnReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:onClick="GetLocation"
+        android:text="@string/report_leak"
+        android:textColor="@color/lightOrange" />
+
+    <TextView
+        android:id="@+id/txtFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/footer" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/footer">
+
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.s215131746.driplit;
 
+import android.arch.lifecycle.ReportFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
@@ -102,6 +103,18 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         if (id == R.id.nav_signout) {
             Intent signOut = new Intent(getApplicationContext(),Login.class);
             startActivity(signOut);
+            finish();
+        }
+        else if(id == R.id.nav_help)
+        {
+            Intent help = new Intent (getApplicationContext(), HelpScreen.class);
+            startActivity(help);
+            finish();
+        }
+        else if(id == R.id.nav_aboutus)
+        {
+            Intent aboutUs = new Intent (getApplicationContext(), AboutUs.class);
+            startActivity(aboutUs);
             finish();
         }
 

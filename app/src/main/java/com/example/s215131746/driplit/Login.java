@@ -1,12 +1,20 @@
 package com.example.s215131746.driplit;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.List;
+import java.util.Locale;
 
 public class Login extends AppCompatActivity {
     Intent registerScreen, fodScreen;
@@ -27,6 +37,9 @@ public class Login extends AppCompatActivity {
     public CheckBox cbRemeber;
     DBAccess business;
     GeneralMethods m;
+
+    TextView txtFeedback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,4 +151,70 @@ public class Login extends AppCompatActivity {
        return m.readFromFile(fileName).split(splitter);
     }
 
+    public void GetLocation(View view) {
+
+        Context con = view.getContext();
+        LocationManager lm = (LocationManager) con.getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            //Checking For Request Permissions
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10);
+
+            //Handling The Request Result
+            //onRequestPermissionsResult(10, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, int grantResults[]);
+            return;
+        }
+
+
+        if(lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null)
+        {
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            Geocoder geocoder;
+            List<Address> addresses;
+            Double longitude = location.getLongitude();
+            Double latitude = location.getLatitude();
+
+            geocoder = new Geocoder(this, Locale.getDefault());
+            try
+            {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                String address = addresses.get(0).getAddressLine(0);
+
+                String fullAddress = address;
+                if(address != null)
+                {
+                    txtFeedback = findViewById(R.id.txtFeedback);
+                    txtFeedback.setText("Leak Successfully Reported!");
+                }
+                else
+                {
+                    Toast.makeText(view.getContext(), "OOPS! Something went wrong!", Toast.LENGTH_LONG);
+                }
+
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            txtFeedback.setText("OOPS! Something went wrong!\n Please Make Sure Your Location Is On");
+        }
+
+
+
+
+    }
 }

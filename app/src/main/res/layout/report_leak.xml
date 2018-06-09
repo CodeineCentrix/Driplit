@@ -6,42 +6,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="164dp"
+    <ImageButton
+        android:id="@+id/imgReportLeak"
+        android:layout_width="230dp"
+        android:layout_height="245dp"
+        android:layout_marginBottom="144dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/report_leak"
-        android:textSize="50sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/imgRLImage"
-        android:layout_width="230dp"
-        android:layout_height="245dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginVertical="180dp"
-        android:background="@drawable/rlbuttonstyle"
+        android:background="@android:color/transparent"
         android:clickable="true"
+        android:contentDescription="@string/todo"
+        android:focusable="true"
+        android:onClick="G"
         app:layout_constraintBottom_toTopOf="@+id/txtRLInstruct"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.579"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:srcCompat="@drawable/report" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/report"
+        tools:targetApi="o" />
 
 
     <TextView
         android:id="@+id/txtRLInstruct"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/report_leak_instruct"
@@ -51,6 +44,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/leak_successfully_reported_at"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.557"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgReportLeak"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/address"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtHead"
+        app:layout_constraintVertical_bias="0.152" />
 
 
 </android.support.constraint.ConstraintLayout>

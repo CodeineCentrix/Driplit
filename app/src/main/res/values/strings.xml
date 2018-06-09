@@ -22,6 +22,7 @@
     <string name="tab_text_2">Tips</string>
     <string name="tab_text_3">Edit Profile</string>
     <string name="report_leak">Report Leak</string>
+    <string name="how_report_leak">How To Report Leak</string>
     <string name="tricks_tips">Tips and Tricks</string>
     <string name="tipoftheday">Tip Of The Day</string>
     <string name="intake_trend">Intake Trend</string>
@@ -30,6 +31,7 @@
     <string name="chart_label">Weeks</string>
     <string name="show_more">">"</string>
     <string name="report_leak_instruct">Make Sure You Are Where The Leak Is. \n Click The Button Above To Report Leak.</string>
+    <string name="report_leak_">Make Sure You Are Where The Leak Is. \n Click The Button Above To Report Leak.</string>
     <string name="done">Done</string>
     <string name="back">Back</string>
     <string name="email">EMAIL</string>
@@ -54,7 +56,7 @@
     <string name="connectionString">jdbc:jtds:sqlserver://sict-sql.nmmu.ac.za:1433/Codecentrix</string>
     <string name="help">Help</string>
     <string name="about_us">About us</string>
-    <string name="sing_out">Sing out</string>
+    <string name="sing_out">Sign out</string>
     <string name="new_password">New password (optional)</string>
     <string name="old_password">Old password</string>
     <string name="enter_tip">Enter tip</string>
@@ -64,5 +66,9 @@
     <string name="date">Date</string>
     <string name="post">POST</string>
     <string name="remember_me">Remember me</string>
+    <string name="we_are_codeinecentrix">We are CodeineCentrix</string>
+    <string name="codeinecentrix">CodeineCentrix</string>
+    <string name="leak_successfully_reported_at">Leak Successfully Reported At:</string>
+    <string name="address">Address</string>
 
 </resources>

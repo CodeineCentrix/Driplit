@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.s215131746.driplit">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -27,10 +30,14 @@
             android:name=".TabMenu"
             android:label="@string/title_activity_tab_menu"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Mainmenu"
-            android:label="@string/main_menu"/>
-        <activity android:name=".EditProfile"
-            android:label="@string/edit_profile"/>
+        <activity
+            android:name=".Mainmenu"
+            android:label="@string/main_menu" />
+        <activity
+            android:name=".EditProfile"
+            android:label="@string/edit_profile" />
+        <activity android:name=".HelpScreen" />
+        <activity android:name=".AboutUs"></activity>
     </application>
 
 </manifest>
