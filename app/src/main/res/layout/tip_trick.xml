@@ -7,51 +7,56 @@
 
     <EditText
         android:id="@+id/txtTipTrick"
-        android:layout_width="211dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="36dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
+        android:elevation="5dp"
         android:ems="10"
         android:hint="@string/enter_tip"
         android:inputType="textMultiLine"
         android:textAlignment="center"
         android:textColorHint="@color/lightOrange"
+        android:textColorLink="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnPost"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/imgbtnPost"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <Button
-        android:id="@+id/btnPost"
-        android:layout_width="65dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="36dp"
-        android:text="@string/post"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <LinearLayout
-        android:layout_width="0dp"
+    <ImageButton
+        android:id="@+id/imgbtnPost"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:clickable="false"
+        android:elevation="5dp"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtTipTrick"
+        app:srcCompat="@drawable/ic_menu_send" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ListView
             android:id="@+id/lvPostedTips"
             android:layout_width="match_parent"
-            android:layout_height="431dp"
+            android:layout_height="match_parent"
+            android:stackFromBottom="true"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="-54dp" />
 

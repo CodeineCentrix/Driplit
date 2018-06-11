@@ -13,7 +13,7 @@
         android:layout_marginBottom="144dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginVertical="180dp"
         android:background="@android:color/transparent"
         android:clickable="true"
@@ -22,10 +22,9 @@
         android:onClick="G"
         app:layout_constraintBottom_toTopOf="@+id/txtRLInstruct"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.579"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.739"
         app:srcCompat="@drawable/report"
         tools:targetApi="o" />
 

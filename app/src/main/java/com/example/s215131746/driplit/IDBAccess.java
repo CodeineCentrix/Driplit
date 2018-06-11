@@ -7,16 +7,15 @@ import java.util.ArrayList;
 public interface IDBAccess {
     //Single
     PersonModel LoginPerson(PersonModel person);
-    //List
     ArrayList<ItemUsageModel> GetItems();
+    ArrayList<UspMobGetPersonItemTotal> UspMobGetPersonItemTotal(String email);
+    ArrayList<UspMobGetPersonTotalUsage> GetPersonTotalUsageGetItems(String email);
+    ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotal(String userEmail);
+    ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotalDate(String userEmail, String date);
     ArrayList<TipModel> GetTips();
-    //aggregates
-    float MobGetPersonItemTotal(String userEmail,int itemID);
-    //Modifiers
-    boolean MobAddResidentUsage(ResidentUsageModel ResUsage);
+    boolean uspMobUpdatePerson(PersonModel person );
     boolean MobAddPerson(PersonModel person );
+    boolean MobAddTip(TipModel tip );
     boolean MobDeletePerson(String email);
-    boolean MobPostTip(TipModel tip);
-    boolean MobUpdatePerson(PersonModel person);
-
+    boolean MobAddResidentUsage(ResidentUsageModel ResUsage);
 }

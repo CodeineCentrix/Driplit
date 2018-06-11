@@ -19,35 +19,39 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="Fact Of The Day"/>
 
+        <android.support.v7.widget.ContentFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="150dp"
+            tools:layout_editor_absoluteY="54dp">
+
+        </android.support.v7.widget.ContentFrameLayout>
+
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.ContentFrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="276dp"
-        android:layout_marginTop="150dp"
-        tools:layout_editor_absoluteY="54dp">
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtFOD"
-            android:layout_width="357dp"
-            android:layout_height="252dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="276dp"
+            android:layout_margin="50dp"
             android:background="@color/blue"
             android:text="Hello World, I am so tired right now."
-            android:textAlignment="center"
-            android:textSize="20sp"
-            tools:layout_editor_absoluteY="150dp" />
-    </android.support.v7.widget.ContentFrameLayout>
+            android:textAlignment="center" />
 
-    <Button
-        android:id="@+id/btnMainMenu"
-        android:layout_width="286dp"
-        android:layout_height="55dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="450dp"
-        android:text="@string/main_menu"
-        tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="323dp" />
+        <Button
+            android:id="@+id/btnMainMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_menu" />
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

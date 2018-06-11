@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -41,9 +42,11 @@ public class ReportLeakClass extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.report_leak, container, false);
 
-
+        GeneralMethods m = new GeneralMethods(rootView.getContext());
+        Bitmap image = m.ScaleImg(R.drawable.report,rootView.getResources());
 
         btnReport = (ImageButton)rootView.findViewById(R.id.imgReportLeak);
+        btnReport.setImageBitmap(image);;
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

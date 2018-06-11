@@ -9,6 +9,7 @@ import android.util.Xml;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class DBAccess {
+public class DBAccess implements IDBAccess{
 
     private ResultSet outerResultSet;
     private static class DBHelper{
@@ -223,17 +224,39 @@ public class DBAccess {
         }
         return usages;
     }
-    public ArrayList<ResidentUsageModel> uspMobGetPersonItemTotal(String userEmail){
-        ArrayList<ResidentUsageModel> TotalUsage = new ArrayList<>();
+    public ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotal(String userEmail){
+        ArrayList<UspMobGetPersonItemTotal> TotalUsage = new ArrayList<>();
 
         try{
             Object[] paras = {userEmail};
             outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotal (?)}",paras);
             while (outerResultSet.next())
             {
-                ResidentUsageModel use = new ResidentUsageModel();
+                UspMobGetPersonItemTotal use = new UspMobGetPersonItemTotal();
                 use.ItemID =outerResultSet.getInt("ItemID");
-                use.AmountUsed = outerResultSet.getFloat("TotalUsageForItem");
+                use.ItemName = outerResultSet.getString("Item");
+                use.UsageAmount = outerResultSet.getFloat("TotalUsageForItem");
+                TotalUsage.add(use);
+            }
+
+            DBHelper.Close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return TotalUsage;
+    }
+    public ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotalDate(String userEmail, String date){
+        ArrayList<UspMobGetPersonItemTotal> TotalUsage = new ArrayList<>();
+
+        try{
+            Object[] paras = {userEmail,date};
+            outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotalDate (?,?)}",paras);
+            while (outerResultSet.next())
+            {
+                UspMobGetPersonItemTotal use = new UspMobGetPersonItemTotal();
+                use.ItemID =outerResultSet.getInt("ItemID");
+                use.ItemName = outerResultSet.getString("Item");
+                use.UsageAmount = outerResultSet.getFloat("TotalUsageForItem");
                 TotalUsage.add(use);
             }
 
@@ -254,6 +277,8 @@ public class DBAccess {
                 tip.ID = outerResultSet.getInt("TTID");
                 tip.CatID = outerResultSet.getInt("CatID");
                 tip.PersonID =outerResultSet.getInt("PersonID");
+                tip.DatePosted = outerResultSet.getDate("DatePosted");
+                tip.FullName = outerResultSet.getString("FullName");
                 tip.TipDescription = outerResultSet.getString("TTdescription");
                 //item.ItemIcon = resultSet.getByte();
                 Tips.add(tip);
@@ -262,13 +287,26 @@ public class DBAccess {
         }
         catch (SQLException e)
         {
+
             e.printStackTrace();
         }
         return Tips;
     }
+    public boolean uspMobUpdatePerson(PersonModel person ){
+        Object[] paras = {person.id,person.fullName,person.userPassword};
+        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?)}",paras);
+        DBHelper.Close();
+        return isWorking;
+    }
     public boolean MobAddPerson(PersonModel person ){
         Object[] paras = {person.fullName,person.email,person.userPassword};
         boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?)}",paras);
+        DBHelper.Close();
+        return isWorking;
+    }
+    public boolean MobAddTip(TipModel tip ){
+        Object[] paras = {tip.PersonID,tip.TipDescription};
+        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddTip(?,?)}",paras);
         DBHelper.Close();
         return isWorking;
     }
@@ -278,8 +316,7 @@ public class DBAccess {
         DBHelper.Close();
         return isWorking;
     }
-    boolean MobAddResidentUsage(ResidentUsageModel ResUsage)
-    {
+    public boolean MobAddResidentUsage(ResidentUsageModel ResUsage){
         Object[] paras = {ResUsage.PersonID,ResUsage.ResDate,ResUsage.ResTime,ResUsage.AmountUsed,ResUsage.ItemID};
         boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddResidentUsage(?,?,?,?,?)}",paras);
         DBHelper.Close();

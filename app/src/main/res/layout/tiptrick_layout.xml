@@ -6,39 +6,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/rlTipLayout"
-        android:layout_width="331dp"
-        android:layout_height="165dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/cardview_shadow_start_color"
+    <LinearLayout
+        android:id="@+id/llTipContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/own_tips"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="24dp">
 
-        <TextView
-            android:id="@+id/txtItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/item_name" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvPostedBy"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/tvPostedBy"
-            android:text="@string/date"
-            android:textAlignment="center" />
+            <TextView
+                android:id="@+id/txtItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:text="@string/item_name"
+                android:textAlignment="viewStart"
+                android:layout_marginLeft="10dp"
+                android:gravity="start" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/tvPostName"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/tvPostName"
+                android:layout_marginEnd="17dp"
+                android:layout_marginRight="17dp"
+                android:layout_weight="1"
+                android:text="@string/date"
+                android:textAlignment="textEnd"
+                android:gravity="end" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvDescription"
@@ -47,30 +64,42 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
             android:text="@string/tip_trick_description"
             android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/tvPostedBy"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/tvPostName"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="11dp"
-            android:text="@string/posted_by" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp">
 
-        <TextView
-            android:id="@+id/tvPostName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvPostedBy"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/tvPostedBy"
-            android:layout_marginBottom="11dp"
-            android:text="@string/name"
-            android:textAlignment="center" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tvPostedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tvPostName"
+                android:layout_toLeftOf="@+id/tvPostName"
+                android:layout_toStartOf="@+id/tvPostName"
+                android:layout_weight="0"
+                android:text="@string/posted_by"
+                android:textAlignment="viewEnd"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/tvPostName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvDescription"
+                android:text="@string/name"
+                android:textAlignment="viewStart"
+                android:gravity="start" />
+        </LinearLayout>
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

@@ -44,6 +44,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m = new GeneralMethods(getApplicationContext());
+       txtFeedback = findViewById(R.id.txtFeedback);
         setContentView(R.layout.activity_login);
         cbRemeber = findViewById(R.id.cbRememberMe);
         email = findViewById(R.id.txtUsername);

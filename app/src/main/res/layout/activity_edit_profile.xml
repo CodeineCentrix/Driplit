@@ -117,7 +117,8 @@
             android:background="@color/darkerblue"
             android:elevation="0dp"
             android:text="@string/done"
-            tools:targetApi="lollipop" />
+            tools:targetApi="lollipop"
+            android:onClick="ToUpdatePerson"/>
 
     </LinearLayout>
 

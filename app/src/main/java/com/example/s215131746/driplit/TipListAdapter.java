@@ -1,13 +1,16 @@
 package com.example.s215131746.driplit;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,26 +22,39 @@ import viewmodels.GetTip;
 
 public class TipListAdapter extends BaseAdapter {
 
-    private int count = getCount();
-    private String person;
-    private Date date;
-    private String description;
 
-    private String[] tips;
+    private String[] person;
+    private Date[] date;
+    private String[] description;
     private LayoutInflater mInflater;
-    private Context context;
-    public TipListAdapter(Context context)
+    private Context c;
+    public TipListAdapter(Context context,ArrayList<TipModel> tipsList)
     {
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        c = context;
+        int i =tipsList.size();
+
+        person = new String[i];
+        description = new String[i];
+        date = new Date[i];
+        i=0;
+        for(TipModel tip :tipsList )
+        {
+            description[i] =tip.TipDescription;
+            //person[i];
+            person[i] = tip.FullName;
+            date[i] = tip.DatePosted;
+            i++;
+        }
+        mInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
     public int getCount() {
-        return count;
+        return description.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return tips[position];
+        return description[position];
     }
 
     @Override
@@ -49,32 +65,19 @@ public class TipListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View view = mInflater.inflate(R.layout.tip_trick, null);
-        DBAccess business = new DBAccess();
-        TextView person, datePosted, tipDescription;
-        ListView lvPostedTips = view.findViewById(R.id.lvPostedTips);
-        ArrayList<TipModel> tipsTricks = new ArrayList<>();
+        View v = mInflater.inflate(R.layout.tiptrick_layout,null);
 
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        for (TipModel tip:tipsTricks)
-        {
-            //finding control ID's
-            person =  view.findViewById(R.id.tvPostName);
-            datePosted =  view.findViewById(R.id.tvDate);
-            tipDescription = view.findViewById(R.id.tvDescription);
-
-            //Getting positions
-            String tipPos = tips[position];
-
-            //Assigning values to controls
-            person.setText("Shervin");
-            datePosted.setText(null);
-            tipDescription.setText(tip.TipDescription);
-        }
+        TextView tipDescription = v.findViewById(R.id.tvDescription),
+        tvPerson = v.findViewById(R.id.tvPostName),
+        tvDate = v.findViewById(R.id.tvDate);
+        SimpleDateFormat df = new SimpleDateFormat("MMM dd");
+        tipDescription.setText(""+description[position]);
+        tvPerson.setText(person[position]);
+        tvDate.setText(df.format( date[position]));
+        LinearLayout llTipContainer = v.findViewById(R.id.llTipContainer);
 
 
-        //this.getLayoutInflater().inflate(R.layout.tiptrick_layout,null);
 
-         return view;
+         return v;
     }
 }

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +26,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
     TextView tvTotal;
     ArrayList<ItemUsageModel> listOfItem;
     DBAccess business = new DBAccess();
-    ArrayList<ResidentUsageModel> usagForItem;
+    ArrayList<UspMobGetPersonItemTotal> usagForItem;
     String[] value;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,12 +38,12 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         value = m.Read("person.txt",",");
         usagForItem = business.uspMobGetPersonItemTotal(value[2]);
         float totalUsage =0;
-        for (ResidentUsageModel prev:usagForItem) {
-                totalUsage += prev.AmountUsed;
+        for (UspMobGetPersonItemTotal prev:usagForItem) {
+                totalUsage += prev.UsageAmount;
         }
-
+        final DecimalFormat dc = new DecimalFormat("0.0");
         tvTotal = rootView.findViewById(R.id.tvTotalQty);
-        tvTotal.setText(""+totalUsage);
+        tvTotal.setText(dc.format(totalUsage));
         final ItemListAdapter listAdapter = new ItemListAdapter(getContext(),this,
                 listOfItem,usagForItem);
         //finding and inflating list view
@@ -55,6 +56,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
                 listAdapter.setVisibility(i);
             }
         });
+
         return rootView;
     }
     public Bitmap ScaleImg(int pic)

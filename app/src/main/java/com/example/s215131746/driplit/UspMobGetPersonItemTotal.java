@@ -6,5 +6,6 @@ package com.example.s215131746.driplit;
 
 public class UspMobGetPersonItemTotal {
     public String ItemName;
+    public int ItemID;
     public float UsageAmount;
 }

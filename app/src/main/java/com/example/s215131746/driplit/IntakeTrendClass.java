@@ -10,12 +10,20 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.renderer.XAxisRenderer;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +52,10 @@ public class IntakeTrendClass extends Fragment {
 
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
         barChart = rootView.findViewById(R.id.bcT);
+
+
         final Random rNum = new Random();
+
 
 
         float y = 0;
@@ -71,35 +82,30 @@ public class IntakeTrendClass extends Fragment {
 
         SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
 
-        Button btnShow = rootView.findViewById(R.id.btnShowMode);
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(tvChartLAbel.getText().toString()!="Weeks")
-                {
-                   // SetUpGraph(bcTrend,entriesWeeks,labelWeeks,tvChartLAbel);
-                }
-                else
-                {
-                    SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
-                }
-            }
-        });
+        LineChart lineChart = rootView.findViewById(R.id.lineChart);
 
-        HorizontalBarChart barChart =  rootView.findViewById(R.id.bcT);
-
-        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.UspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
-         i = ItemUsages.size();
-        final String[] Itemlabels = new String[i];
+// creating list of entry
+        ArrayList<Entry> entries = new ArrayList<>();
         i = 0;
-        ArrayList<BarEntry> Itementries = new ArrayList<>();
-        for (UspMobGetPersonItemTotal usage:ItemUsages) {
-            Itemlabels[i] = usage.ItemName;
-            Itementries.add(new BarEntry(i,usage.UsageAmount));
+        for (UspMobGetPersonTotalUsage usage:usages) {
+            labels[i] = usage.UsageDay;
+            entries.add(new Entry(i,usage.UsageAmount));
             i++;
         }
+        LineDataSet dataset = new LineDataSet(entries, "Water usage");
+        // creating labels
 
-        SetUpGraph(barChart,Itementries,labels,tvChartLAbel);
+
+        LineData data = new LineData(dataset);
+
+        lineChart.setData(data); // set the data and list of lables into chart
+        IAxisValueFormatter   formatter = setYaxis(labels);
+        XAxis x = lineChart.getXAxis();
+        x.setValueFormatter(formatter);
+        x.setLabelCount(labels.length-1);
+
+        dataset.setDrawFilled(true);
+
 
 
         return rootView;
@@ -124,7 +130,7 @@ public class IntakeTrendClass extends Fragment {
         }};
         return formatter[0];
     }
-    public void SetUpGraph(BarChart  bcTrend ,List<BarEntry> entries,String[] Labels,TextView tvChartLAbel)
+    public void SetUpGraph(BarChart  bcTrend ,List<BarEntry> entries,String[] Labels,TextView tvChartLAbel )
     {
 
         List<BarEntry> entry;
@@ -151,14 +157,18 @@ public class IntakeTrendClass extends Fragment {
         BarDataSet set = new BarDataSet(entry,"Usage");
         set.setColor(R.color.black);
         BarData b = new BarData(set);
-
+        //b.setValueTextSize(20f);
         b.setBarWidth(distance);
         bcTrend.setData(b);
         bcTrend.setFitBars(true);
         bcTrend.invalidate();
         XAxis xAxis = bcTrend.getXAxis();
+        //xAxis.setAxisMinimum(0f);
         xAxis.setValueFormatter(formatter);
         xAxis.setLabelCount(labelCount);
+
+        //bcTrend.setVisibleYRangeMaximum(50f, YAxis.AxisDependency.RIGHT);
+        bcTrend.fitScreen();
         bcTrend.invalidate();
     }
     public void createRandomBarGraph(String Date1, String Date2){

@@ -29,52 +29,37 @@ import java.util.Calendar;
 import static java.lang.String.*;
 
 public class ItemListAdapter extends BaseAdapter {
-    GeneralMethods m;
+    private GeneralMethods m;
     private ArrayList<ItemUsageModel> ItemUsage;
-    private int[] ItemIcon;
-    private String[] ItemName;
-    private String[] ItemUsageAvg;
-    private String[] ItemID;
     private float[] personUsage;
-
-    String[] stringsQTY;
-    LinearLayout[] LoDropHides;
+    private String[] stringsQTY;
+    private LinearLayout[] LoDropHides;
     private LinearLayout[] loHeading;
-    Context context;
-    private TextView tvTimesUsedORActual;
-    LayoutInflater mInflater;
-    ImplementChange parentCange;
-    private ArrayList<ResidentUsageModel> PreviousUsage;
-     TextView[] tvUsed;
+    private Context context;
+    private LayoutInflater mInflater;
+    private ImplementChange parentCange;
+    private ArrayList<UspMobGetPersonItemTotal> PreviousUsage;
+    private TextView[] tvUsed;
     public ItemListAdapter(Context c,RecordWaterIntakeClass rwic,ArrayList<ItemUsageModel> itemUsage,
-                           ArrayList<ResidentUsageModel> previousUsage)
-    {
+                           ArrayList<UspMobGetPersonItemTotal> previousUsage){
         context = c;
         PreviousUsage = previousUsage;
         ItemUsage = itemUsage;
         parentCange = rwic;
         int i =itemUsage.size();
-        ItemIcon = new int[i];
-        ItemName = new String[i];
-        ItemUsageAvg = new String[i];
-        ItemID = new String[i];
         personUsage = new float[i];
         tvUsed = new TextView[i];
-        for (ItemUsageModel item:itemUsage) {
-        i--;
-        //ItemIcon must be bytes
-        ItemIcon[i] = i;
-        ItemID[i] = ""+item.ItemID;
-        ItemName[i] = item.ItemDiscriotn;
-        ItemUsageAvg[i] = ""+item.ItemAverage;
-            for (ResidentUsageModel prev:PreviousUsage) {
-                String id = ""+prev.ItemID;
-                if(ItemID[i].equals(id)){
-                    personUsage[i] = prev.AmountUsed;
-                    break;
-                }
+        //Loading previous usage for specific items
+        for(i =0;i<ItemUsage.size();i++)
+        for(int z=0; z<PreviousUsage.size();z++)
+        {
+            int x = ItemUsage.get(i).ItemID, y =previousUsage.get(z).ItemID;
+            if(x == y){
+                personUsage[i] = previousUsage.get(z).UsageAmount;
+                break;
             }
-    }
+        }
+
         mInflater =(LayoutInflater) c.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
@@ -83,20 +68,18 @@ public class ItemListAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return ItemName.length;
+        return ItemUsage.size();
     }
-
     @Override
     public Object getItem(int position) {
-        return ItemName[position];
+        return ItemUsage.get(position).ItemDiscriotn;
     }
     public String getItemAvg(int position) {
-        return ItemUsageAvg[position];
+        return ""+ItemUsage.get(position).ItemAverage;
     }
-    public float getUsage(int position,float TotalQty)
-    {
+    public float getUsage(int position,float TotalQty){
        float qty = Float.parseFloat (stringsQTY[position]);
-        qty = qty*Float.parseFloat (ItemUsageAvg[position]);
+        qty = qty*ItemUsage.get(position).ItemAverage;
         qty = qty + TotalQty;
         return  qty;
     }
@@ -107,55 +90,59 @@ public class ItemListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        View v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
-        tvTimesUsedORActual = v.findViewById(R.id.tvLabel);
-        //text views
-        final TextView tvQty = v.findViewById(R.id.tvQty);
-        stringsQTY[position] = tvQty.getText().toString();
-        final TextView tvItemName = v.findViewById(R.id.tvItemName);
-        tvItemName.setText(ItemName[position]);
-         tvUsed[position] = v.findViewById(R.id.tvUsedToday);
-        tvUsed[position].setText( ""+ personUsage[position]);
-        //text edits
-        final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
-        SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
-        //imgIcons = v.findViewById(R.id.imgItemIcon);
-        //imgIcons.setImageResource(ItemIcon[position]);
-        LoDropHides[position] = v.findViewById(R.id.loDropHide);
-        loHeading[position] = v.findViewById(R.id.loHeading);
-        setVisibility(position);
-     //Buttons
-        final Button btnAdd = v.findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int increasUsage =Integer.parseInt( tvQty.getText().toString()) + 1;
-                ChangeUsage(tvQty,position,txtItemUsage,tvUsed[position],increasUsage);
-            }
-        });
-        final Button btnMinus = v.findViewById(R.id.btnMinus);
-        btnMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int decreasUsage =Integer.parseInt( tvQty.getText().toString()) - 1;
-                if(decreasUsage>-1)
-                {
-                    ChangeUsage(tvQty,position,txtItemUsage,tvUsed[position],decreasUsage);
+        View v = convertView;
+
+            v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
+
+            //text views
+            final TextView tvQty = v.findViewById(R.id.tvQty);
+            stringsQTY[position] = tvQty.getText().toString();
+            final TextView tvItemName = v.findViewById(R.id.tvItemName);
+            tvItemName.setText(ItemUsage.get(position).ItemDiscriotn);
+            tvUsed[position] = v.findViewById(R.id.tvUsedToday);
+            String value = ""+ personUsage[position];
+            tvUsed[position].setText(value);
+            //text edits
+            final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
+            SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
+            //imgIcons = v.findViewById(R.id.imgItemIcon);
+            //imgIcons.setImageResource(ItemIcon[position]);
+            LoDropHides[position] = v.findViewById(R.id.loDropHide);
+            loHeading[position] = v.findViewById(R.id.loHeading);
+            setVisibility(position);
+            //Buttons
+            final Button btnAdd = v.findViewById(R.id.btnAdd);
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int increasUsage =Integer.parseInt( tvQty.getText().toString()) + 1;
+                    ChangeUsage(tvQty,position,txtItemUsage,increasUsage);
                 }
-            }
-        });
-       final Button  btnRecord = v.findViewById(R.id.btnRecord);
-        btnRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecordUsage(v,position,txtItemUsage,tvUsed[position]);
-                tvQty.setText("0");
-                setVisibility(position);
-            }
-        });
+            });
+            final Button btnMinus = v.findViewById(R.id.btnMinus);
+            btnMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int decreasUsage =Integer.parseInt( tvQty.getText().toString()) - 1;
+                    if(decreasUsage>-1)
+                    {
+                        ChangeUsage(tvQty,position,txtItemUsage,decreasUsage);
+                    }
+                }
+            });
+            final Button  btnRecord = v.findViewById(R.id.btnRecord);
+            btnRecord.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RecordUsage(v,position,txtItemUsage,tvUsed[position]);
+                    tvQty.setText("0");
+                    setVisibility(position);
+                }
+            });
+
+
         return v;
     }
-
     public void setVisibility(int position ){
         if(LoDropHides[position].getVisibility()==View.INVISIBLE)
         {
@@ -170,25 +157,27 @@ public class ItemListAdapter extends BaseAdapter {
     }
     private float GetAllUsage(){
         float all=0;
-        for (ResidentUsageModel res: PreviousUsage) {
-            all+=res.AmountUsed;
+        for (UspMobGetPersonItemTotal res: PreviousUsage) {
+            all+=res.UsageAmount;
         }
         return all;
     }
-    public void SetUsageEditText(EditText txtItemUsage,int position,int Quatity){
+    private void SetUsageEditText(EditText txtItemUsage,int position,int Quatity){
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
-        float i = Float.parseFloat(ItemUsageAvg[position])*Quatity;
+        float i = ItemUsage.get(position).ItemAverage*Quatity;
         txtItemUsage.setText(""+df.format(i));
     }
-    public void ChangeUsage(TextView tvQty,int position,EditText txtItemUsage,TextView tvUsed,int value){
-        tvQty.setText("" + value);
+    private void ChangeUsage(TextView tvQty,int position,EditText txtItemUsage,int value){
+        String v = ""+value;
+        tvQty.setText(v);
         stringsQTY[position] = ""+value;
-        float i = Float.parseFloat(ItemUsageAvg[position]) * value;
-        txtItemUsage.setText(""+i);
+        float i = ItemUsage.get(position).ItemAverage * value;
+        v =""+i;
+        txtItemUsage.setText(v);
 
     }
-    public void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed ){
+    private void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed ){
 
         m.writeToFile("do","Recording.txt");
         final int duration = 3000;
@@ -197,16 +186,27 @@ public class ItemListAdapter extends BaseAdapter {
         {
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             String date = df.format(Calendar.getInstance().getTime());
-                final DecimalFormat dc = new DecimalFormat("0.0");
+            final DecimalFormat dc = new DecimalFormat("0.0");
             final DBAccess business = new DBAccess();
             final ResidentUsageModel resUsing = new ResidentUsageModel();
-            resUsing.ItemID =Integer.parseInt( ItemID[position]);
+            resUsing.ItemID =ItemUsage.get(position).ItemID;
             resUsing.AmountUsed = Used;
             float x = Float.parseFloat(tvUsed.getText().toString());
             x+=resUsing.AmountUsed;
-            tvUsed.setText(""+x);
+            String value = ""+x;
+            tvUsed.setText(value);
             txtItemUsage.setText("0");
-            String value = dc.format(Float.parseFloat(parentCange.GetValue())+Used);
+            try {
+                value = dc.format(Float.parseFloat(parentCange.GetValue())+Used);
+            }
+            catch (NumberFormatException e)
+            {
+                Toast.makeText(context,"Please use US numbering system",Toast.LENGTH_SHORT);
+                String[] GetValue = parentCange.GetValue().split(",");
+                String get =String.valueOf (Float.parseFloat(GetValue[1])/10 + Float.parseFloat(GetValue[0]));
+                value = dc.format(Float.parseFloat(get)+Used);
+            }
+
             parentCange.DoChanges(value);
             try {
                 resUsing.ResDate = new Date(df.parse(date).getTime());
@@ -227,10 +227,12 @@ public class ItemListAdapter extends BaseAdapter {
                     m.writeToFile("undo","Recording.txt");
                     String value = dc.format(Float.parseFloat(parentCange.GetValue())-Used);
                     parentCange.DoChanges(value);
-                    tvUsed.setText(""+Used);
+                    value = Used+"";
+                    tvUsed.setText(value);
                     float x = Float.parseFloat(tvUsed.getText().toString());
                     x-=resUsing.AmountUsed;
-                    tvUsed.setText(""+x);
+                    value = ""+x;
+                    tvUsed.setText(value);
                 }
 
 

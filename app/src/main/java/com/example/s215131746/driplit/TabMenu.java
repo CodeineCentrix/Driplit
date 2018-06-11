@@ -61,7 +61,7 @@ public class TabMenu extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         Bundle tab = getIntent().getExtras();
         String tabName = tab.getString("Tab");
-        String[] tabs = {"Trend","Record","Tips","Report","Edit"};
+        String[] tabs = {"ItemTrend","Trend","Tips","Report","Record","Edit"};
 
         for(int i = 0; i <tabs.length-1;i++)
         {
@@ -145,10 +145,11 @@ public class TabMenu extends AppCompatActivity {
                 position= 0 ;
           Fragment[] f =
                   {
+                          new ItemTrend(),
                           new IntakeTrendClass(),
-                          new RecordWaterIntakeClass(),
                           new TipTrickClass(),
                           new ReportLeakClass(),
+                          new RecordWaterIntakeClass(),
                          // new EditProfileClass()
                   } ;
 
@@ -158,7 +159,7 @@ public class TabMenu extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 5 total pages.
-            return 4;
+            return 5;
         }
     }
 

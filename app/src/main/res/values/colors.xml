@@ -20,4 +20,8 @@
     <color name="shade4">#3298bc</color>
     <color name="shade5">#1691bd</color>
     <color name="shade6">#71bed9</color>
+
+    <!--Tip color-->
+    <color name="own_tips">#5a6473</color>
+    <color name="others_tips">#73869b</color>
 </resources>
