@@ -99,13 +99,24 @@ public class ItemTrend extends android.support.v4.app.Fragment {
                   Itementries.add(new BarEntry(x,usage.UsageAmount));
                   x++;
               }
-              in.SetUpGraph(barChart,Itementries,Itemlabels,t);
+              try{
+                  in.SetUpGraph(barChart,Itementries,Itemlabels,t);
+              }catch (ArrayIndexOutOfBoundsException e)
+              {
+
+              }
               barChart.setExtraOffsets(2f, 20f, 60f, 20f);
           }
 
 
       });
-        in.SetUpGraph(barChart,Itementries,Itemlabels,t);
+        try{
+            in.SetUpGraph(barChart,Itementries,Itemlabels,t);
+        }catch (ArrayIndexOutOfBoundsException e)
+        {
+
+        }
+
         barChart.setExtraOffsets(0f, 20f, 60f, 20f);
         AxisBase axis = barChart.getAxis(YAxis.AxisDependency.LEFT);
         axis.setAxisMinimum(0);

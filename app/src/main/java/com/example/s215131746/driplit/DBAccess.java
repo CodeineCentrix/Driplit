@@ -275,6 +275,7 @@ public class DBAccess implements IDBAccess{
             {
                 TipModel tip = new TipModel();
                 tip.ID = outerResultSet.getInt("TTID");
+                tip.PersonName = outerResultSet.getString("FullName");
                 tip.CatID = outerResultSet.getInt("CatID");
                 tip.PersonID =outerResultSet.getInt("PersonID");
                 tip.DatePosted = outerResultSet.getDate("DatePosted");

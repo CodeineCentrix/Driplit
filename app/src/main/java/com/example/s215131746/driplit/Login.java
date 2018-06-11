@@ -37,7 +37,7 @@ public class Login extends AppCompatActivity {
     public CheckBox cbRemeber;
     DBAccess business;
     GeneralMethods m;
-
+    String[] details;
     TextView txtFeedback;
 
     @Override
@@ -53,7 +53,7 @@ public class Login extends AppCompatActivity {
         RemeberMe();
         if(cbRemeber.isChecked())
         {
-            String[] details = m.Read("person.txt",",");
+            details = m.Read("person.txt",",");
             email.setText(details[2]);
             password.setText(details[3]);
         }
@@ -73,7 +73,12 @@ public class Login extends AppCompatActivity {
 
     public void ToRegisterScreen(View view)
     {
-        m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/Resources/View/Register.php?from=mobile");
+        //m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Resources/View/log_in.php?from=mobile");
+        Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if ( intent.resolveActivity(getPackageManager()) != null) {
+            startActivity( intent);
+        }
         //registerScreen = new Intent(getApplicationContext(), Register.class);
         //startActivity(registerScreen);
     }
@@ -94,12 +99,33 @@ public class Login extends AppCompatActivity {
         PersonModel person = new PersonModel();
         person.email = email.getText().toString();
         person.userPassword = password.getText().toString();
-        person = business.LoginPerson(person);
-        if(person.fullName!=null && !person.fullName.equals(""))
+//        if(person.email.equals(details[2])&&person.userPassword.equals(details[3]))
+//        {
+//            person.id = Integer.parseInt(details[0]);
+//            person.fullName = details[1];
+//            person.email = details[2];
+//            person.userPassword =  details[3];
+//            Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
+      //  }else{
+        boolean wifi = true;
+            try {
+                person = business.LoginPerson(person);
+                m.writeToFile(person.id+","+ person.toString(),"person.txt");
+            }catch (NullPointerException e)
+            {
+                wifi = false;
+            }
+
+      //  }
+        if(!wifi)
+        {
+            Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
+        }
+        else if(person.fullName!=null && !person.fullName.equals(""))
         {
             Toast.makeText(this,    "Hello "+person.fullName,Toast.LENGTH_LONG).show();
             fodScreen = new Intent(getApplicationContext(), FODScreen.class);
-            m.writeToFile(person.id+","+ person.toString(),"person.txt");
+
             startActivity(fodScreen);
             finish();
         }
@@ -111,46 +137,9 @@ public class Login extends AppCompatActivity {
         }
 
     }
-    public void writeToFile(String data,Context context,String fileName) {
 
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
-            outputStreamWriter.write(data);
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public String readFromFile(Context context,String fileName) {
-        String ret = "";
 
-        try {
-            InputStream inputStream = context.openFileInput(fileName);
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return ret;
-    }
-    public String[] Read(Context context,String fileName,String splitter)
-    {
-       return m.readFromFile(fileName).split(splitter);
-    }
 
     public void GetLocation(View view) {
 

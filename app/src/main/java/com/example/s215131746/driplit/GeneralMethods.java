@@ -25,11 +25,11 @@ public class GeneralMethods {
     }
 
     public void openWebPage(String url) {
-       // Uri webpage = Uri.parse(url);
-      //  Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-       // if (intent.resolveActivity(getPackageManager()) != null) {
-       //     startActivity(context, intent);
-      //  }
+       Uri webpage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+       if ( intent.resolveActivity(context.getPackageManager()) != null) {
+           context.startActivity( intent);
+        }
     }
 
     public void writeToFile(String data,String fileName) {

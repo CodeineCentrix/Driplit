@@ -62,7 +62,30 @@ public class TabMenu extends AppCompatActivity {
         Bundle tab = getIntent().getExtras();
         String tabName = tab.getString("Tab");
         String[] tabs = {"ItemTrend","Trend","Tips","Report","Record","Edit"};
-
+        DBAccess business = new DBAccess();
+        boolean wifi = true;
+        try {
+            business.GetTips();
+        }catch (NullPointerException e)
+        {
+            wifi = false;
+        }
+        if(!wifi)
+        {
+            Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            for(int i = 0; i <tabs.length-1;i++)
+            {
+                if(tabName.equalsIgnoreCase(tabs[i]) )
+                {
+                    mViewPager.setCurrentItem(i);
+                }
+            }
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        }
         for(int i = 0; i <tabs.length-1;i++)
         {
             if(tabName.equalsIgnoreCase(tabs[i]) )

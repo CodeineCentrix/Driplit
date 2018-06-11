@@ -79,8 +79,13 @@ public class IntakeTrendClass extends Fragment {
 //            entriesWeeks.add(new BarEntry(x, y));
 //        }
         final TextView tvChartLAbel = rootView.findViewById(R.id.tvChartLAbel);
+        try{
+            SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
+        } catch (ArrayIndexOutOfBoundsException e)
+        {
 
-        SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
+        }
+
 
         LineChart lineChart = rootView.findViewById(R.id.lineChart);
 
@@ -99,10 +104,15 @@ public class IntakeTrendClass extends Fragment {
         LineData data = new LineData(dataset);
 
         lineChart.setData(data); // set the data and list of lables into chart
-        IAxisValueFormatter   formatter = setYaxis(labels);
-        XAxis x = lineChart.getXAxis();
-        x.setValueFormatter(formatter);
-        x.setLabelCount(labels.length-1);
+       try{
+           IAxisValueFormatter   formatter = setYaxis(labels);
+           XAxis x = lineChart.getXAxis();
+           x.setValueFormatter(formatter);
+           x.setLabelCount(labels.length-1);
+       }catch (ArrayIndexOutOfBoundsException e)
+       {
+
+       }
 
         dataset.setDrawFilled(true);
 
@@ -111,18 +121,12 @@ public class IntakeTrendClass extends Fragment {
         return rootView;
     }
 
-
-
-
-
-
-
     public IAxisValueFormatter setYaxis(final String[] labels)
     {
         final IAxisValueFormatter[] formatter = {new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                if (labels.length > (int) value)
+                if (labels.length > (int) value && value>-1)
                     return labels[(int) value];
                 else
                     return "";
@@ -137,23 +141,19 @@ public class IntakeTrendClass extends Fragment {
         IAxisValueFormatter formatter;
         float distance =0;
         int labelCount = 0;
+        formatter = setYaxis(Labels);
+        labelCount = Labels.length;
         if(tvChartLAbel.getText().toString()=="Days")
         {
-            formatter = setYaxis(Labels);
             distance = 0.7f;
             tvChartLAbel.setText("Weeks");
-            labelCount = Labels.length;
-            entry = entries;
         }
         else
         {
-            formatter = setYaxis(Labels);
-            labelCount = Labels.length;
             tvChartLAbel.setText("Days");
             distance = 0.5f;
-            entry = entries;
-
         }
+        entry = entries;
         BarDataSet set = new BarDataSet(entry,"Usage");
         set.setColor(R.color.black);
         BarData b = new BarData(set);

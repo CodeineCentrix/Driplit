@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -88,8 +89,25 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         i.putString("Tab", tabName);
         in.putExtras(i);
         in.putExtras(getIntent());
-        startActivity(in);
-        finish();
+        DBAccess business = new DBAccess();
+        boolean wifi = true;
+        try {
+            business.GetTips();
+        }catch (NullPointerException e)
+        {
+            wifi = false;
+        }
+
+        //  }
+        if(!wifi)
+        {
+            Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            startActivity(in);
+            finish();
+        }
+
     }
 
 
