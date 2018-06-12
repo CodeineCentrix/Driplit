@@ -21,18 +21,11 @@ import viewmodels.TipModel;
 public class FODScreen extends AppCompatActivity
          {
 Intent mainMenu;
-             TextView txtTod;
-             DBAccess db = new DBAccess();
-             List<TipModel> tm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_fodscreen);
-
-        txtTod = findViewById(R.id.txtTod);
-        txtTod.setText(db.GetTips().get(0).toString());
-        //tm.TipDescription = db.GetTips
-
 
         Button btnMainMenu = findViewById(R.id.btnMainMenu);
         btnMainMenu.setOnClickListener(new View.OnClickListener() {
