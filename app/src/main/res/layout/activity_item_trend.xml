@@ -42,4 +42,15 @@
         android:textColor="@color/blue"
         android:textSize="14sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/cvDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="117dp"
+        android:text="TextView"
+        android:textSize="24sp"
+        android:visibility="invisible" />
 </RelativeLayout>
