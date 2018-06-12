@@ -3,6 +3,7 @@ package com.example.s215131746.driplit;
 import java.util.ArrayList;
 
 import viewmodels.PersonModel;
+import viewmodels.ReportLeakModel;
 import viewmodels.ResidentUsageModel;
 import viewmodels.TipModel;
 import viewmodels.UspMobGetPersonItemTotal;
@@ -22,4 +23,5 @@ public interface IDBAccess {
     boolean MobAddTip(TipModel tip );
     boolean MobDeletePerson(String email);
     boolean MobAddResidentUsage(ResidentUsageModel ResUsage);
+    boolean MobAddLeak(ReportLeakModel leak);
 }

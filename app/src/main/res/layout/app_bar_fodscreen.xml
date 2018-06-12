@@ -39,12 +39,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtFOD"
+            android:id="@+id/txtTod"
             android:layout_width="match_parent"
             android:layout_height="276dp"
             android:layout_margin="50dp"
             android:background="@color/blue"
-            android:text="Hello World, I am so tired right now."
+            android:text="Tip Of The day"
             android:textAlignment="center" />
 
         <Button

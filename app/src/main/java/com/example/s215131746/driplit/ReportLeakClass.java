@@ -21,11 +21,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.sourceforge.jtds.jdbc.DateTime;
+
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import viewmodels.ReportLeakModel;
+
+import static android.location.LocationManager.*;
 
 /**
  * Created by s216127904 on 2018/04/30.
@@ -37,8 +44,10 @@ public class ReportLeakClass extends Fragment {
     TextView txtAddress;
     TextView txtHead;
     TextView txtInstruction;
-    Context context;
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    DBAccess db = new DBAccess();
+    GeneralMethods m ;
+
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.report_leak, container, false);
 
@@ -46,7 +55,8 @@ public class ReportLeakClass extends Fragment {
         Bitmap image = m.ScaleImg(R.drawable.report,rootView.getResources());
 
         btnReport = (ImageButton)rootView.findViewById(R.id.imgReportLeak);
-        btnReport.setImageBitmap(image);;
+        btnReport.setImageBitmap(image);
+
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,8 +71,10 @@ public class ReportLeakClass extends Fragment {
 
     public void GetLocation(View view) {
 
+        //Getting the context and initializing LocationManager with location service.
         Context con = view.getContext();
         LocationManager lm = (LocationManager) con.getSystemService(Context.LOCATION_SERVICE);
+
 
         if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -83,19 +95,24 @@ public class ReportLeakClass extends Fragment {
         }
 
 
-        if(lm.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null)
+        if(lm.getProvider(GPS_PROVIDER) != null)
         {
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+            m = new GeneralMethods(view.getContext());
+
+            //Getting the last known location of the device
+            Location location = lm.getLastKnownLocation(GPS_PROVIDER);
             Geocoder geocoder;
             List<Address> addresses;
             Double longitude = location.getLongitude();
             Double latitude = location.getLatitude();
 
+            //Finding the IDs for the TextViews
             txtAddress = (TextView) getView().findViewById(R.id.txtAddress);
             txtHead = (TextView) getView().findViewById(R.id.txtHead);
             txtInstruction = (TextView) getView().findViewById(R.id.txtRLInstruct);
 
+            //This section gets the address from the longitude and latitude.
             geocoder = new Geocoder(getContext(), Locale.getDefault());
             try
             {
@@ -106,14 +123,24 @@ public class ReportLeakClass extends Fragment {
                 String fullAddress = address;
                 if(address != null)
                 {
+
                     txtHead.setVisibility(View.VISIBLE);
                     txtAddress.setVisibility(View.VISIBLE);
                     txtInstruction.setVisibility(View.INVISIBLE);
                     txtAddress.setText(fullAddress);
+
+                    //Saving location to the database
+                    ReportLeakModel report = new ReportLeakModel();
+                    String id = m.Read("person.txt", ",")[0];
+                    report.PersonID = Integer.parseInt(id);
+                    report.Lattitude = ""+latitude;
+                    report.Longitude = ""+longitude;
+                    Date date = new Date();
+                    db.MobAddLeak(report);
                 }
                 else
                 {
-                    Toast.makeText(view.getContext(), "OOPS! Something went wrong!", Toast.LENGTH_LONG);
+                    Toast.makeText(view.getContext(), "OOPS! Something went wrong!", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -121,14 +148,14 @@ public class ReportLeakClass extends Fragment {
             {
                 e.printStackTrace();
             }
+            catch (Exception e)
+            {
+                Toast.makeText(view.getContext(), "OOPS! Something went wrong!", Toast.LENGTH_LONG).show();
+            }
         }
         else
         {
-            Toast.makeText(view.getContext(), "OOPS! Something went wrong!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG);
+            Toast.makeText(view.getContext(), "OOPS! Something went wrong!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
         }
-
-
-
-
     }
 }

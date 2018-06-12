@@ -66,10 +66,10 @@
     <string name="remember_me">Remember me</string>
     <string name="Business_name">codeinecentrix</string>
     <string name="we_are_codeinecentrix">We are codeinecentrix</string>
-    <string name="how_report_leak">how report leak</string>
+    <string name="how_report_leak">How to report leak</string>
     <string name="select_day">select day</string>
     <string name="item_trend">Item trend</string>
-    <string name="leak_successfully_reported_at">leak successfully reported at</string>
+    <string name="leak_successfully_reported_at">Leak successfully reported at:</string>
     <string name="address">address</string>
     <string name="title_activity_edit">Edit</string>
     <string name="large_text">

@@ -69,13 +69,13 @@ public class Login extends AppCompatActivity {
     {
         //m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Resources/View/log_in.php?from=mobile");
 
-//        Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
-//        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-//        if ( intent.resolveActivity(getPackageManager()) != null) {
-//            startActivity( intent);
-//        }
-        registerScreen = new Intent(getApplicationContext(), Register2.class);
-        startActivity(registerScreen);
+       Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
+       Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if ( intent.resolveActivity(getPackageManager()) != null) {
+           startActivity( intent);
+       }
+       // registerScreen = new Intent(getApplicationContext(), Register2.class);
+       // startActivity(registerScreen);
     }
     public void openWebPage(String url) {
 
@@ -137,7 +137,7 @@ public class Login extends AppCompatActivity {
 
 
     public void GetLocation(View view) {
-
+        TextView txtFeedback;
         Context con = view.getContext();
         LocationManager lm = (LocationManager) con.getSystemService(Context.LOCATION_SERVICE);
 
@@ -195,7 +195,10 @@ public class Login extends AppCompatActivity {
         }
         else
         {
-            txtFeedback.setText("OOPS! Something went wrong!\n Please Make Sure Your Location Is On");
+            /*txtFeedback = findViewById(R.id.txtFeedback);
+            txtFeedback.setText("OOPS! Something went wrong!\n Please Make Sure Your Location Is On");*/
+            Toast.makeText(this, "OOPS! Something went wrong!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
+
         }
 
 

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by s216127904 on 2018/04/30.
@@ -14,9 +15,11 @@ import android.view.ViewGroup;
 
 public class FODScreenClass extends Fragment {
     Intent mainMenu;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.app_bar_fodscreen, container, false);
+
 
         return rootView;
     }

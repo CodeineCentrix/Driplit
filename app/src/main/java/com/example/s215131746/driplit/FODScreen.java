@@ -12,15 +12,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.List;
+
+import viewmodels.TipModel;
 
 public class FODScreen extends AppCompatActivity
          {
 Intent mainMenu;
+             TextView txtTod;
+             DBAccess db = new DBAccess();
+             List<TipModel> tm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_fodscreen);
 
+        txtTod = findViewById(R.id.txtTod);
+        txtTod.setText(db.GetTips().get(0).toString());
+        //tm.TipDescription = db.GetTips
 
 
         Button btnMainMenu = findViewById(R.id.btnMainMenu);
