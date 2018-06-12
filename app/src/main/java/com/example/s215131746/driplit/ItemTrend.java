@@ -27,25 +27,30 @@ import viewmodels.UspMobGetPersonItemTotal;
 
 public class ItemTrend extends android.support.v4.app.Fragment {
     IntakeTrendClass in = new IntakeTrendClass();
-
+     TextView tvNodata;
+    TextView t;
+     HorizontalBarChart barChart;
+    ArrayList<BarEntry> Itementries;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_item_trend, container, false);
         final CalendarView cvDate  = rootView.findViewById(R.id.cvDate);
-        final HorizontalBarChart barChart =  rootView.findViewById(R.id.bcT);
+        barChart =  rootView.findViewById(R.id.bcT);
         final DBAccess business = new DBAccess();
         final GeneralMethods m = new GeneralMethods(rootView.getContext());
         ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.UspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
         int i = ItemUsages.size();
         final String[] Itemlabels = new String[i];
         i = 0;
-        ArrayList<BarEntry> Itementries = new ArrayList<>();
+         Itementries = new ArrayList<>();
         for (UspMobGetPersonItemTotal usage:ItemUsages) {
             Itemlabels[i] = usage.ItemName;
             Itementries.add(new BarEntry(i,usage.UsageAmount));
             i++;
         }
-        final TextView t = rootView.findViewById(R.id.textView);
+         t = rootView.findViewById(R.id.textView);
+         tvNodata = rootView.findViewById(R.id.tvNoData);
+
         t.setText("Day");
         cvDate.setVisibility(View.INVISIBLE);
 
@@ -63,7 +68,8 @@ public class ItemTrend extends android.support.v4.app.Fragment {
                 }
                 else
                 {
-
+                    cvDate.setVisibility(View.VISIBLE);
+                    tvNodata.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -100,7 +106,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
               {
 
               }
-              barChart.setExtraOffsets(2f, 20f, 60f, 20f);
+              SetUp(Itemlabels);
           }
 
 
@@ -112,10 +118,25 @@ public class ItemTrend extends android.support.v4.app.Fragment {
 
         }
 
-        barChart.setExtraOffsets(0f, 20f, 60f, 20f);
-        AxisBase axis = barChart.getAxis(YAxis.AxisDependency.LEFT);
-        axis.setAxisMinimum(0);
+       SetUp(Itemlabels);
         return rootView;
+    }
+    public void SetUp(String[] l)
+    {
+        if(l.length>0)
+        {
+            barChart.setExtraOffsets(0f, 20f, 60f, 20f);
+            AxisBase axis = barChart.getAxis(YAxis.AxisDependency.LEFT);
+            axis.setAxisMinimum(0);
+            tvNodata.setVisibility(View.INVISIBLE);
+            barChart.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            barChart.setVisibility(View.INVISIBLE);
+            tvNodata.setText("The are no recordings for this day");
+            tvNodata.setVisibility(View.VISIBLE);
+        }
     }
 
 

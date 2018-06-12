@@ -69,13 +69,13 @@ public class Login extends AppCompatActivity {
     {
         //m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Resources/View/log_in.php?from=mobile");
 
-//        Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
-//        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-//        if ( intent.resolveActivity(getPackageManager()) != null) {
-//            startActivity( intent);
-//        }
-        registerScreen = new Intent(getApplicationContext(), Register2.class);
-        startActivity(registerScreen);
+        Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if ( intent.resolveActivity(getPackageManager()) != null) {
+            startActivity( intent);
+        }
+        //registerScreen = new Intent(getApplicationContext(), Register2.class);
+        //startActivity(registerScreen);
     }
     public void openWebPage(String url) {
 
