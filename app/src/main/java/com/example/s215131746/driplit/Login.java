@@ -9,26 +9,20 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.Locale;
+
+import viewmodels.PersonModel;
 
 public class Login extends AppCompatActivity {
     Intent registerScreen, fodScreen;
@@ -74,13 +68,14 @@ public class Login extends AppCompatActivity {
     public void ToRegisterScreen(View view)
     {
         //m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Resources/View/log_in.php?from=mobile");
-        Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
-        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-        if ( intent.resolveActivity(getPackageManager()) != null) {
-            startActivity( intent);
-        }
-        //registerScreen = new Intent(getApplicationContext(), Register.class);
-        //startActivity(registerScreen);
+
+//        Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
+//        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+//        if ( intent.resolveActivity(getPackageManager()) != null) {
+//            startActivity( intent);
+//        }
+        registerScreen = new Intent(getApplicationContext(), Register2.class);
+        startActivity(registerScreen);
     }
     public void openWebPage(String url) {
 

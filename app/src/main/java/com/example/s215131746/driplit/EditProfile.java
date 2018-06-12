@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import viewmodels.PersonModel;
+
 public class EditProfile extends AppCompatActivity {
     GeneralMethods m;
     EditText txtFullname;

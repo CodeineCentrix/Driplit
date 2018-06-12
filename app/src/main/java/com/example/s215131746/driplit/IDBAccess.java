@@ -1,8 +1,12 @@
 package com.example.s215131746.driplit;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
+
+import viewmodels.PersonModel;
+import viewmodels.ResidentUsageModel;
+import viewmodels.TipModel;
+import viewmodels.UspMobGetPersonItemTotal;
+import viewmodels.UspMobGetPersonTotalUsage;
 
 public interface IDBAccess {
     //Single

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import viewmodels.UspMobGetPersonItemTotal;
+
 /**
  * Created by s216127904 on 2018/04/30.
  */

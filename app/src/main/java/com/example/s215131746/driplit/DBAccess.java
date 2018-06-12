@@ -1,15 +1,10 @@
 package com.example.s215131746.driplit;
 
-import android.app.AppOpsManager;
-import android.content.res.Resources;
 import android.os.StrictMode;
-import android.support.annotation.XmlRes;
-import android.util.Xml;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +12,13 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Properties;
+
+import viewmodels.PersonModel;
+import viewmodels.ReportLeakModel;
+import viewmodels.ResidentUsageModel;
+import viewmodels.TipModel;
+import viewmodels.UspMobGetPersonItemTotal;
+import viewmodels.UspMobGetPersonTotalUsage;
 
 public class DBAccess implements IDBAccess{
 
@@ -58,14 +59,22 @@ public class DBAccess implements IDBAccess{
             }
 
         }
-        public static boolean NonQuery(String sql,Object[] parameters){
+        static String SetParaToPass(String sql, Object[] parameters){
+            String usp = "{ CALL "+sql+"( ?";
+            for(int i = 1 ; i<parameters.length;i++){
+                usp += ",?";
+            }
+            usp+= " )}";
+            return usp;
+        }
+        static boolean NonQuery(String sql, Object[] parameters){
             Connect();
             int i=0;
             try {
-                 st = connection.prepareStatement(sql);
+                 st = connection.prepareStatement(SetParaToPass(sql,parameters));
                 int count = 1;
                 for (Object para : parameters) {
-                    setObject(count,para,st);
+                    BindParameter(count,para,st);
                     count++;
                 }
                 i = st.executeUpdate();
@@ -76,7 +85,7 @@ public class DBAccess implements IDBAccess{
             }
             return i==0;
         }
-        public static ResultSet Select(String sql){
+        static ResultSet Select(String sql){
             try
             {
                 Connect();
@@ -87,54 +96,49 @@ public class DBAccess implements IDBAccess{
             {
                 e.printStackTrace();
             }
-            finally {
-
-            }
             return innerResultSet;
         }
-        public static ResultSet SelectPara(String sql,Object[] parameters){
+        static ResultSet SelectPara(String sql, Object[] parameters){
             try
             {
                 Connect();
-                st = connection.prepareStatement(sql);
+                st = connection.prepareStatement(SetParaToPass(sql,parameters));
                 int i = 1;
                 for (Object para: parameters) {
-                    setObject(i,para,st);
+                    BindParameter(i,para,st);
                     i++;
                 }
-                ResultSet r =  st.executeQuery();
-                innerResultSet = r;
+                innerResultSet = st.executeQuery();
 
             }
             catch (SQLException e)
             {
                 e.printStackTrace();
             }
-            finally {
-
-            }
             return innerResultSet;
         }
-        private static void setObject(int parameterIndex, Object parameterObj,PreparedStatement preparedStatement) throws SQLException {
+        private static void BindParameter(int parameterIndex, Object parameterObj, PreparedStatement preparedStatement) throws SQLException {
             //Hate this, I really do But the is no other way
             if (parameterObj == null) {
                 preparedStatement.setNull(parameterIndex, java.sql.Types.OTHER);
             } else {
-                if (parameterObj instanceof Byte) {
-                    preparedStatement.setInt(parameterIndex, ((Byte) parameterObj).intValue());
-                } else if (parameterObj instanceof String) {
+                if (parameterObj instanceof String) {
                     preparedStatement.setString(parameterIndex, (String) parameterObj);
-                } else if (parameterObj instanceof BigDecimal) {
-                    preparedStatement.setBigDecimal(parameterIndex, (BigDecimal) parameterObj);
-                } else if (parameterObj instanceof Short) {
-                    preparedStatement.setShort(parameterIndex, ((Short) parameterObj).shortValue());
-                } else if (parameterObj instanceof Integer) {
+                }else if (parameterObj instanceof Integer) {
                     preparedStatement.setInt(parameterIndex, ((Integer) parameterObj).intValue());
                 } else if (parameterObj instanceof Long) {
                     preparedStatement.setLong(parameterIndex, ((Long) parameterObj).longValue());
                 } else if (parameterObj instanceof Float) {
                     preparedStatement.setFloat(parameterIndex, ((Float) parameterObj).floatValue());
-                } else if (parameterObj instanceof Double) {
+                }else if (parameterObj instanceof Boolean) {
+                    preparedStatement.setBoolean(parameterIndex, ((Boolean) parameterObj).booleanValue());
+                } else if (parameterObj instanceof Byte) {
+                    preparedStatement.setInt(parameterIndex, ((Byte) parameterObj).intValue());
+                } else if (parameterObj instanceof BigDecimal) {
+                    preparedStatement.setBigDecimal(parameterIndex, (BigDecimal) parameterObj);
+                } else if (parameterObj instanceof Short) {
+                    preparedStatement.setShort(parameterIndex, ((Short) parameterObj).shortValue());
+                }  else if (parameterObj instanceof Double) {
                     preparedStatement.setDouble(parameterIndex, ((Double) parameterObj).doubleValue());
                 } else if (parameterObj instanceof byte[]) {
                     preparedStatement.setBytes(parameterIndex, (byte[]) parameterObj);
@@ -144,8 +148,6 @@ public class DBAccess implements IDBAccess{
                     preparedStatement.setTime(parameterIndex, (Time) parameterObj);
                 } else if (parameterObj instanceof Timestamp) {
                     preparedStatement.setTimestamp(parameterIndex, (Timestamp) parameterObj);
-                } else if (parameterObj instanceof Boolean) {
-                    preparedStatement.setBoolean(parameterIndex, ((Boolean) parameterObj).booleanValue());
                 } else if (parameterObj instanceof BigInteger) {
                     preparedStatement.setString(parameterIndex, parameterObj.toString());
                 } else {
@@ -157,7 +159,7 @@ public class DBAccess implements IDBAccess{
 
     public PersonModel LoginPerson(PersonModel person){
         Object[] paras = {person.email,person.userPassword};
-        outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPerson (?,?)}",paras);
+        outerResultSet = DBHelper.SelectPara("uspMobGetPerson",paras);
         try{
             outerResultSet.next();//Moves from row of Heading to row record
             person.id = outerResultSet.getInt("PersonID");
@@ -193,7 +195,7 @@ public class DBAccess implements IDBAccess{
         ArrayList<UspMobGetPersonItemTotal> usages = new ArrayList<>();
         try{
             Object[] paras = {email};
-            outerResultSet = DBHelper.SelectPara("{CALL [UspMobGetPersonItemTotal](?)}",paras);
+            outerResultSet = DBHelper.SelectPara("[UspMobGetPersonItemTotal] ",paras);
             while(outerResultSet.next()){
                 UspMobGetPersonItemTotal usage = new UspMobGetPersonItemTotal();
                 usage.ItemName = outerResultSet.getString("Item");
@@ -210,7 +212,7 @@ public class DBAccess implements IDBAccess{
         ArrayList<UspMobGetPersonTotalUsage> usages = new ArrayList<>();
         try{
             Object[] paras = {email};
-            outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonTotalUsage(?)}",paras);
+            outerResultSet = DBHelper.SelectPara(" uspMobGetPersonTotalUsage ",paras);
             while(outerResultSet.next()){
                 UspMobGetPersonTotalUsage usage = new UspMobGetPersonTotalUsage();
                 usage.UsageDay = outerResultSet.getString("UsageDay");
@@ -229,7 +231,7 @@ public class DBAccess implements IDBAccess{
 
         try{
             Object[] paras = {userEmail};
-            outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotal (?)}",paras);
+            outerResultSet = DBHelper.SelectPara(" uspMobGetPersonItemTotal ",paras);
             while (outerResultSet.next())
             {
                 UspMobGetPersonItemTotal use = new UspMobGetPersonItemTotal();
@@ -250,7 +252,7 @@ public class DBAccess implements IDBAccess{
 
         try{
             Object[] paras = {userEmail,date};
-            outerResultSet = DBHelper.SelectPara("{CALL uspMobGetPersonItemTotalDate (?,?)}",paras);
+            outerResultSet = DBHelper.SelectPara(" uspMobGetPersonItemTotalDate ",paras);
             while (outerResultSet.next())
             {
                 UspMobGetPersonItemTotal use = new UspMobGetPersonItemTotal();
@@ -295,31 +297,37 @@ public class DBAccess implements IDBAccess{
     }
     public boolean uspMobUpdatePerson(PersonModel person ){
         Object[] paras = {person.id,person.fullName,person.userPassword};
-        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?)}",paras);
+        boolean isWorking = DBHelper.NonQuery(" uspMobAddPerson",paras);
         DBHelper.Close();
         return isWorking;
     }
     public boolean MobAddPerson(PersonModel person ){
         Object[] paras = {person.fullName,person.email,person.userPassword};
-        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?,?,?)}",paras);
+        boolean isWorking = DBHelper.NonQuery(" uspMobAddPerson",paras);
         DBHelper.Close();
         return isWorking;
     }
     public boolean MobAddTip(TipModel tip ){
         Object[] paras = {tip.PersonID,tip.TipDescription};
-        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddTip(?,?)}",paras);
+        boolean isWorking = DBHelper.NonQuery(" uspMobAddTip ",paras);
         DBHelper.Close();
         return isWorking;
     }
     public boolean MobDeletePerson(String email){
         Object[] paras = {email};
-        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddPerson(?)}",paras);
+        boolean isWorking = DBHelper.NonQuery(" uspMobAddPerson",paras);
         DBHelper.Close();
         return isWorking;
     }
     public boolean MobAddResidentUsage(ResidentUsageModel ResUsage){
         Object[] paras = {ResUsage.PersonID,ResUsage.ResDate,ResUsage.ResTime,ResUsage.AmountUsed,ResUsage.ItemID};
-        boolean isWorking = DBHelper.NonQuery("{CALL uspMobAddResidentUsage(?,?,?,?,?)}",paras);
+        boolean isWorking = DBHelper.NonQuery(" uspMobAddResidentUsage",paras);
+        DBHelper.Close();
+        return isWorking;
+    }
+    public boolean MobAddLeak(ReportLeakModel leak){
+        Object[] paras = {leak.Lattitude,leak.Longitude,leak.PersonID};
+        boolean isWorking = DBHelper.NonQuery(" uspAddLeak",paras);
         DBHelper.Close();
         return isWorking;
     }

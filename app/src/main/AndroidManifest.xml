@@ -39,6 +39,10 @@
             android:label="@string/edit_profile" />
         <activity android:name=".HelpScreen" />
         <activity android:name=".AboutUs" />
+        <activity
+            android:name=".Register2"
+            android:label="@string/title_activity_register2"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

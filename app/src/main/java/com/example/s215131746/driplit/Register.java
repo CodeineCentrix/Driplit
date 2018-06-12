@@ -2,17 +2,19 @@ package com.example.s215131746.driplit;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.String;
-import java.sql.SQLException;
+
+import viewmodels.PersonModel;
 
 public class Register extends AppCompatActivity {
    EditText txtFullName, txtEmail, txtPassword, txtPhone;
@@ -54,6 +56,8 @@ public class Register extends AppCompatActivity {
             {
                 Toast.makeText(Register.this,  "One or more fields are empty ", Toast.LENGTH_LONG).show();
             }
+
+
 
     }
 

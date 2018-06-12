@@ -1,19 +1,14 @@
 package com.example.s215131746.driplit;
 
 import android.content.Context;
-import android.content.Intent;
-import android.opengl.GLException;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static java.lang.String.*;
+import viewmodels.ResidentUsageModel;
+import viewmodels.UspMobGetPersonItemTotal;
 
 public class ItemListAdapter extends BaseAdapter {
     private GeneralMethods m;

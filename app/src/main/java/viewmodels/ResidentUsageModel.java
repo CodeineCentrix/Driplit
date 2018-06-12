@@ -1,4 +1,4 @@
-package com.example.s215131746.driplit;
+package viewmodels;
 
 import java.sql.Date;
 import java.sql.Time;

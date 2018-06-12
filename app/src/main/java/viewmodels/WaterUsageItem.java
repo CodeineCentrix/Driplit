@@ -1,4 +1,4 @@
-package com.example.s215131746.driplit;
+package viewmodels;
 
 /**
  * Created by s216127904 on 2018/06/02.
