@@ -99,7 +99,8 @@ public class ReportLeakClass extends Fragment {
         {
 
             m = new GeneralMethods(view.getContext());
-
+            try
+            {
             //Getting the last known location of the device
             Location location = lm.getLastKnownLocation(GPS_PROVIDER);
             Geocoder geocoder;
@@ -114,8 +115,7 @@ public class ReportLeakClass extends Fragment {
 
             //This section gets the address from the longitude and latitude.
             geocoder = new Geocoder(getContext(), Locale.getDefault());
-            try
-            {
+
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
                 String address = addresses.get(0).getAddressLine(0);
