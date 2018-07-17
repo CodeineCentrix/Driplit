@@ -19,24 +19,19 @@ import viewmodels.TipModel;
  */
 
 public class TipListAdapter extends BaseAdapter {
-
-
     private String[] person;
     private Date[] date;
     private String[] description;
     private LayoutInflater mInflater;
     private Context c;
-    public TipListAdapter(Context context,ArrayList<TipModel> tipsList)
-    {
+    public TipListAdapter(Context context,ArrayList<TipModel> tipsList){
         c = context;
         int i =tipsList.size();
-
         person = new String[i];
         description = new String[i];
         date = new Date[i];
         i=0;
-        for(TipModel tip :tipsList )
-        {
+        for(TipModel tip :tipsList ){
             description[i] =tip.TipDescription;
             //person[i];
             person[i] = tip.FullName;
@@ -62,9 +57,7 @@ public class TipListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View v = mInflater.inflate(R.layout.tiptrick_layout,null);
-
         TextView tipDescription = v.findViewById(R.id.tvDescription),
         tvPerson = v.findViewById(R.id.tvPostName),
         tvDate = v.findViewById(R.id.tvDate);
@@ -72,10 +65,7 @@ public class TipListAdapter extends BaseAdapter {
         tipDescription.setText(""+description[position]);
         tvPerson.setText(person[position]);
         tvDate.setText(df.format( date[position]));
-        LinearLayout llTipContainer = v.findViewById(R.id.llTipContainer);
-
-
-
+        //LinearLayout llTipContainer = v.findViewById(R.id.llTipContainer);
          return v;
     }
 }

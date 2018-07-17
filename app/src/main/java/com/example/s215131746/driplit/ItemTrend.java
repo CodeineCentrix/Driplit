@@ -31,6 +31,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
     TextView t;
      HorizontalBarChart barChart;
     ArrayList<BarEntry> Itementries;
+    SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_item_trend, container, false);
@@ -60,8 +61,8 @@ public class ItemTrend extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 if(barChart.getVisibility()==View.VISIBLE)
                 {
-                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                    String date = df.format(cvDate.getDate());
+
+
                     cvDate.setVisibility(View.VISIBLE);
                     barChart.setVisibility(View.INVISIBLE);
                     btnSelectDate.setVisibility(View.INVISIBLE);
@@ -81,7 +82,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
 
               cvDate.setVisibility(View.INVISIBLE);
               barChart.setVisibility(View.VISIBLE);
-              SimpleDateFormat df = new SimpleDateFormat("MMM dd");
+
               Calendar calendar = Calendar.getInstance();
               calendar.set(year, month, day);
               Date date = calendar.getTime();
@@ -106,7 +107,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
               {
 
               }
-              SetUp(Itemlabels);
+              SetUp(Itemlabels,dateV);
           }
 
 
@@ -117,11 +118,12 @@ public class ItemTrend extends android.support.v4.app.Fragment {
         {
 
         }
-
-       SetUp(Itemlabels);
+        Date date = new Date();
+        date.setTime(cvDate.getDate());
+       SetUp(Itemlabels, df.format(date));
         return rootView;
     }
-    public void SetUp(String[] l)
+    public void SetUp(String[] l,String date)
     {
         if(l.length>0)
         {
@@ -134,7 +136,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
         else
         {
             barChart.setVisibility(View.INVISIBLE);
-            tvNodata.setText("The are no recordings for this day");
+            tvNodata.setText("The are no recordings for "+date);
             tvNodata.setVisibility(View.VISIBLE);
         }
     }

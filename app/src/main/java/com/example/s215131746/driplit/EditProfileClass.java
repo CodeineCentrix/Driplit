@@ -16,25 +16,17 @@ import static android.content.Intent.getIntentOld;
  */
 
 public class EditProfileClass extends Fragment {
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_edit_profile, container, false);
-
-
         EditText txtFullname = rootView.findViewById(R.id.txtUsername);
         EditText txtEmail = rootView.findViewById(R.id.txtUserEmail);
         EditText txtPhoneNumber =rootView.findViewById(R.id.txtPhoneNumber);
         EditText txtPassword = rootView.findViewById(R.id.txtPassword);
-
-
-
-
        //txtFullname.setText(person[0]);
        //txtEmail.setText(person[1]);
        //txtPhoneNumber.setText(person[2]);
        //txtPassword.setText(person[3]);
         return rootView;
     }
-
 }

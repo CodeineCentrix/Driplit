@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -16,14 +15,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import net.sourceforge.jtds.jdbc.DateTime;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.Date;
@@ -133,7 +127,7 @@ public class ReportLeakClass extends Fragment {
                     ReportLeakModel report = new ReportLeakModel();
                     String id = m.Read("person.txt", ",")[0];
                     report.PersonID = Integer.parseInt(id);
-                    report.Lattitude = ""+latitude;
+                    report.Latitude = ""+latitude;
                     report.Longitude = ""+longitude;
                     Date date = new Date();
                     db.MobAddLeak(report);

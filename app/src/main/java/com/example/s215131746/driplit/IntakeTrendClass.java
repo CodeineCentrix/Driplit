@@ -37,24 +37,12 @@ public class IntakeTrendClass extends Fragment {
      BarChart barChart = null;
      List<BarEntry> barEntries = new ArrayList<>();
     final List<BarEntry> entries = new ArrayList<>();
-    final List<BarEntry> entriesWeeks = new ArrayList<>();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.intake_trend, container, false);
-
-
         GeneralMethods m = new GeneralMethods(getContext());
-
-
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
         barChart = rootView.findViewById(R.id.bcT);
-
-
-        final Random rNum = new Random();
-
-
-
-        float y = 0;
         DBAccess business = new DBAccess();
         ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(m.Read("person.txt",",")[2]);
         int i = usages.size();
@@ -65,26 +53,16 @@ public class IntakeTrendClass extends Fragment {
             entries.add(new BarEntry(i,usage.UsageAmount));
             i++;
         }
-//
 //        final String[] labelWeeks = {"Week 1","Week 2","Week 3","Week 4"};
-//
-//
-//        for(float x = 0; x< labelWeeks.length ;x++)
-//        {
+//        for(float x = 0; x< labelWeeks.length ;x++){
 //            y = rNum.nextInt(30)+2f;
 //            entriesWeeks.add(new BarEntry(x, y));
 //        }
         final TextView tvChartLAbel = rootView.findViewById(R.id.tvChartLAbel);
         try{
             SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
-        } catch (ArrayIndexOutOfBoundsException e)
-        {
-
-        }
-
-
+        } catch (ArrayIndexOutOfBoundsException e){}
         LineChart lineChart = rootView.findViewById(R.id.lineChart);
-
 // creating list of entry
         ArrayList<Entry> entries = new ArrayList<>();
         i = 0;
@@ -95,30 +73,19 @@ public class IntakeTrendClass extends Fragment {
         }
         LineDataSet dataset = new LineDataSet(entries, "Water usage");
         // creating labels
-
-
         LineData data = new LineData(dataset);
-
         lineChart.setData(data); // set the data and list of lables into chart
        try{
            IAxisValueFormatter   formatter = setYaxis(labels);
            XAxis x = lineChart.getXAxis();
            x.setValueFormatter(formatter);
            x.setLabelCount(labels.length-1);
-       }catch (ArrayIndexOutOfBoundsException e)
-       {
-
-       }
-
+       }catch (ArrayIndexOutOfBoundsException e){ }
         dataset.setDrawFilled(true);
-
-
-
         return rootView;
     }
 
-    public IAxisValueFormatter setYaxis(final String[] labels)
-    {
+    public IAxisValueFormatter setYaxis(final String[] labels){
         final IAxisValueFormatter[] formatter = {new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -130,22 +97,17 @@ public class IntakeTrendClass extends Fragment {
         }};
         return formatter[0];
     }
-    public void SetUpGraph(BarChart  bcTrend ,List<BarEntry> entries,String[] Labels,TextView tvChartLAbel )
-    {
-
+    public void SetUpGraph(BarChart  bcTrend ,List<BarEntry> entries,String[] Labels,TextView tvChartLAbel ){
         List<BarEntry> entry;
         IAxisValueFormatter formatter;
         float distance =0;
         int labelCount = 0;
         formatter = setYaxis(Labels);
         labelCount = Labels.length;
-        if(tvChartLAbel.getText().toString()=="Days")
-        {
+        if(tvChartLAbel.getText().toString()=="Days"){
             distance = 0.7f;
             tvChartLAbel.setText("Weeks");
-        }
-        else
-        {
+        }else{
             tvChartLAbel.setText("Days");
             distance = 0.5f;
         }
@@ -162,30 +124,23 @@ public class IntakeTrendClass extends Fragment {
         //xAxis.setAxisMinimum(0f);
         xAxis.setValueFormatter(formatter);
         xAxis.setLabelCount(labelCount);
-
         //bcTrend.setVisibleYRangeMaximum(50f, YAxis.AxisDependency.RIGHT);
         bcTrend.fitScreen();
         bcTrend.invalidate();
     }
     public void createRandomBarGraph(String Date1, String Date2){
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         ArrayList<String> dates = new ArrayList<>();
         try {
             Date date1 = simpleDateFormat.parse(Date1);
             Date date2 = simpleDateFormat.parse(Date2);
-
             Calendar mDate1 = Calendar.getInstance();
             Calendar mDate2 = Calendar.getInstance();
             mDate1.clear();
             mDate2.clear();
-
             mDate1.setTime(date1);
             mDate2.setTime(date2);
-
-
             dates = getList(mDate1,mDate2);
-
             barEntries = new ArrayList<>();
             float max = 0f;
             float value = 0f;

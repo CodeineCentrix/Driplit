@@ -18,7 +18,7 @@ import java.net.URL;
 
 public class BackGroundConnection extends AsyncTask<String,String,String>  {
 
-    BackGroundConnection() {
+    public BackGroundConnection() {
     }
 
     @Override

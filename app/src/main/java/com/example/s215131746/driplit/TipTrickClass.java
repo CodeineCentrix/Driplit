@@ -25,21 +25,14 @@ public class TipTrickClass extends Fragment {
     GeneralMethods m ;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.tip_trick, container, false);
-
-
-
-
         final ListView postedItems = rootView.findViewById(R.id.lvPostedTips);
-
         m = new GeneralMethods(getContext());
-         business = new DBAccess();
+        business = new DBAccess();
         ArrayList<TipModel> tips =  business.GetTips();
-
         TipListAdapter la = new TipListAdapter(getContext(),tips);
-
-         txtTip = rootView.findViewById(R.id.txtTipTrick);
+        txtTip = rootView.findViewById(R.id.txtTipTrick);
         final ImageButton btnPost = rootView.findViewById(R.id.imgbtnPost);
-         txtTip.addTextChangedListener(new TextWatcher() {
+        txtTip.addTextChangedListener(new TextWatcher() {
              @Override
              public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -64,11 +57,7 @@ public class TipTrickClass extends Fragment {
             @Override
             public void onClick(View v) {
                 String tipd = txtTip.getText().toString();
-                if(tipd.equals(""))
-                {
-
-                }
-                else {
+                if(!tipd.equals("")){
                     TipModel tip = new TipModel();
                     tip.PersonID =Integer.parseInt( m.Read("person.txt",",")[0]);
                     tip.TipDescription = tipd;
@@ -80,7 +69,6 @@ public class TipTrickClass extends Fragment {
                 }
             }
         });
-
         return rootView;
     }
 

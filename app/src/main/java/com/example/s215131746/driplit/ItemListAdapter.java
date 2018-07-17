@@ -46,16 +46,15 @@ public class ItemListAdapter extends BaseAdapter {
         personUsage = new float[i];
         tvUsed = new TextView[i];
         //Loading previous usage for specific items
-        for(i =0;i<ItemUsage.size();i++)
-        for(int z=0; z<PreviousUsage.size();z++)
-        {
-            int x = ItemUsage.get(i).ItemID, y =previousUsage.get(z).ItemID;
-            if(x == y){
-                personUsage[i] = previousUsage.get(z).UsageAmount;
-                break;
+        for(i =0;i<ItemUsage.size();i++) {
+            for (int z = 0; z < PreviousUsage.size(); z++) {
+                int x = ItemUsage.get(i).ItemID, y = previousUsage.get(z).ItemID;
+                if (x == y) {
+                    personUsage[i] = previousUsage.get(z).UsageAmount;
+                    break;
+                }
             }
         }
-
         mInflater =(LayoutInflater) c.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
@@ -86,67 +85,67 @@ public class ItemListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        View v = convertView;
-
-            v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
-
-            //text views
-            final TextView tvQty = v.findViewById(R.id.tvQty);
-            stringsQTY[position] = tvQty.getText().toString();
-            final TextView tvItemName = v.findViewById(R.id.tvItemName);
-            tvItemName.setText(ItemUsage.get(position).ItemDiscriotn);
-            tvUsed[position] = v.findViewById(R.id.tvUsedToday);
-            String value = ""+ personUsage[position];
-            tvUsed[position].setText(value);
-            //text edits
-            final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
-            SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
-            //imgIcons = v.findViewById(R.id.imgItemIcon);
-            //imgIcons.setImageResource(ItemIcon[position]);
-            LoDropHides[position] = v.findViewById(R.id.loDropHide);
-            loHeading[position] = v.findViewById(R.id.loHeading);
-            setVisibility(position);
-            //Buttons
-            final Button btnAdd = v.findViewById(R.id.btnAdd);
-            btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int increasUsage =Integer.parseInt( tvQty.getText().toString()) + 1;
-                    ChangeUsage(tvQty,position,txtItemUsage,increasUsage);
+        View v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
+        //text views
+        final TextView tvQty = v.findViewById(R.id.tvQty);
+        stringsQTY[position] = tvQty.getText().toString();
+        final TextView tvItemName = v.findViewById(R.id.tvItemName);
+        tvItemName.setText(ItemUsage.get(position).ItemDiscriotn);
+        tvUsed[position] = v.findViewById(R.id.tvUsedToday);
+        String value = ""+ personUsage[position];
+        tvUsed[position].setText(value);
+        //text edits
+        final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
+        SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
+        //imgIcons = v.findViewById(R.id.imgItemIcon);
+        //imgIcons.setImageResource(ItemIcon[position]);
+        LoDropHides[position] = v.findViewById(R.id.loDropHide);
+        loHeading[position] = v.findViewById(R.id.loHeading);
+        setVisibility(position);
+        //Buttons
+        final Button btnAdd = v.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int increasUsage =Integer.parseInt( tvQty.getText().toString()) + 1;
+                ChangeUsage(tvQty,position,txtItemUsage,increasUsage);
+            }
+        });
+        final Button btnMinus = v.findViewById(R.id.btnMinus);
+        btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int decreasUsage =Integer.parseInt( tvQty.getText().toString()) - 1;
+                if(decreasUsage>-1){
+                    ChangeUsage(tvQty,position,txtItemUsage,decreasUsage);
                 }
-            });
-            final Button btnMinus = v.findViewById(R.id.btnMinus);
-            btnMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int decreasUsage =Integer.parseInt( tvQty.getText().toString()) - 1;
-                    if(decreasUsage>-1)
-                    {
-                        ChangeUsage(tvQty,position,txtItemUsage,decreasUsage);
+            }
+        });
+        final Button  btnRecord = v.findViewById(R.id.btnRecord);
+        btnRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecordUsage(v,position,txtItemUsage,tvUsed[position]);
+                tvQty.setText("0");
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setVisibility(position);
                     }
-                }
-            });
-            final Button  btnRecord = v.findViewById(R.id.btnRecord);
-            btnRecord.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RecordUsage(v,position,txtItemUsage,tvUsed[position]);
-                    tvQty.setText("0");
-                    setVisibility(position);
-                }
-            });
-
-
+                    //allow the user to see the recorded amount
+                },500);
+            }
+        });
         return v;
     }
+
+
     public void setVisibility(int position ){
-        if(LoDropHides[position].getVisibility()==View.INVISIBLE)
-        {
+        if(LoDropHides[position].getVisibility()==View.INVISIBLE){
             LoDropHides[position].setVisibility(View.VISIBLE);
             loHeading[position].setVisibility(View.INVISIBLE);
-        }
-        else
-        {
+        }else{
             loHeading[position].setVisibility(View.VISIBLE);
             LoDropHides[position].setVisibility(View.INVISIBLE);
         }
@@ -171,15 +170,12 @@ public class ItemListAdapter extends BaseAdapter {
         float i = ItemUsage.get(position).ItemAverage * value;
         v =""+i;
         txtItemUsage.setText(v);
-
     }
     private void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed ){
-
         m.writeToFile("do","Recording.txt");
         final int duration = 3000;
         final float Used = Float.parseFloat(txtItemUsage.getText().toString());
-        if(Used>0)
-        {
+        if(Used>0){
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             String date = df.format(Calendar.getInstance().getTime());
             final DecimalFormat dc = new DecimalFormat("0.0");
@@ -194,15 +190,12 @@ public class ItemListAdapter extends BaseAdapter {
             txtItemUsage.setText("0");
             try {
                 value = dc.format(Float.parseFloat(parentCange.GetValue())+Used);
-            }
-            catch (NumberFormatException e)
-            {
+            }catch (NumberFormatException e){
                 Toast.makeText(context,"Please use US numbering system",Toast.LENGTH_SHORT);
                 String[] GetValue = parentCange.GetValue().split(",");
                 String get =String.valueOf (Float.parseFloat(GetValue[1])/10 + Float.parseFloat(GetValue[0]));
                 value = dc.format(Float.parseFloat(get)+Used);
             }
-
             parentCange.DoChanges(value);
             try {
                 resUsing.ResDate = new Date(df.parse(date).getTime());
@@ -212,7 +205,6 @@ public class ItemListAdapter extends BaseAdapter {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             String[] person = m.Read("person.txt",",");
             resUsing.PersonID = Integer.parseInt(person[0]);
             Handler h = new Handler();
@@ -234,24 +226,16 @@ public class ItemListAdapter extends BaseAdapter {
 
             });
             mySnackbar.show();
-
-
            h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(m.readFromFile("Recording.txt").equals("do"))
-                    {
+                    if(m.readFromFile("Recording.txt").equals("do")){
                         business.MobAddResidentUsage(resUsing);
                     }
 
                 }
                 //1 second wait before saving to the database
             },duration);
-
-           }
-
-
+        }
     }
-
-
 }

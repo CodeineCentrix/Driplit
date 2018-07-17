@@ -7,13 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 public class AboutUs extends AppCompatActivity {
-
     Button btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
-
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -23,8 +21,7 @@ public class AboutUs extends AppCompatActivity {
         });
     }
 
-    public void BackClicked()
-    {
+    public void BackClicked(){
         Intent toMenu = new Intent(getApplicationContext(),Mainmenu.class);
         startActivity(toMenu);
         finish();

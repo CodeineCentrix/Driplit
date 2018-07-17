@@ -33,7 +33,6 @@ public class GeneralMethods {
     }
 
     public void writeToFile(String data,String fileName) {
-
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
             outputStreamWriter.write(data);
@@ -45,13 +44,12 @@ public class GeneralMethods {
     }
     public String readFromFile(String fileName) {
         String ret = "";
-
         try {
             InputStream inputStream = context.openFileInput(fileName);
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
+                String receiveString;
                 StringBuilder stringBuilder = new StringBuilder();
                 while ( (receiveString = bufferedReader.readLine()) != null ) {
                     stringBuilder.append(receiveString);
@@ -68,42 +66,28 @@ public class GeneralMethods {
 
         return ret;
     }
-    public String[] Read(String fileName,String splitter)
-    {
+    public String[] Read(String fileName,String splitter){
         return readFromFile(fileName).split(splitter);
     }
 
-    public Bitmap ScaleImg(int pic, Resources res)
-    {
+    public Bitmap ScaleImg(int pic, Resources res){
         Bitmap scaledImg;
         BitmapFactory.Options op = new BitmapFactory.Options();
 
         op.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(res,pic,op);
-
         int imgWidth = op.outWidth;
-        if(imgWidth>1500)
-        {
+        if(imgWidth>1500){
             op.inSampleSize = 20;
-        }
-        else if(imgWidth>500)
-        {
+        }else if(imgWidth>500){
             op.inSampleSize = 5;
-        }
-        else if(imgWidth>400)
-        {
+        }else if(imgWidth>400){
             op.inSampleSize = 4;
-        }
-        else if(imgWidth>300)
-        {
+        }else if(imgWidth>300){
             op.inSampleSize = 3;
-        }
-        else
-        {
+        }else{
             op.inSampleSize = 2;
         }
-
-
         op.inJustDecodeBounds = false;
         scaledImg = BitmapFactory.decodeResource(res,pic,op);
 

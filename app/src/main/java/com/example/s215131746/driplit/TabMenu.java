@@ -66,19 +66,14 @@ public class TabMenu extends AppCompatActivity {
         boolean wifi = true;
         try {
             business.GetTips();
-        }catch (NullPointerException e)
-        {
+        }catch (NullPointerException e)        {
             wifi = false;
         }
-        if(!wifi)
-        {
+        if(!wifi){
             Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
-        }
-        else {
-            for(int i = 0; i <tabs.length-1;i++)
-            {
-                if(tabName.equalsIgnoreCase(tabs[i]) )
-                {
+        }else {
+            for(int i = 0; i <tabs.length-1;i++){
+                if(tabName.equalsIgnoreCase(tabs[i]) ){
                     mViewPager.setCurrentItem(i);
                 }
             }
@@ -86,10 +81,8 @@ public class TabMenu extends AppCompatActivity {
             mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         }
-        for(int i = 0; i <tabs.length-1;i++)
-        {
-            if(tabName.equalsIgnoreCase(tabs[i]) )
-            {
+        for(int i = 0; i <tabs.length-1;i++){
+            if(tabName.equalsIgnoreCase(tabs[i]) ){
                 mViewPager.setCurrentItem(i);
             }
         }
@@ -97,8 +90,7 @@ public class TabMenu extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
-    public void ToHome(View v)
-    {
+    public void ToHome(View v){
         Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
         startActivity(showHomeMenu);
         finish();
@@ -117,12 +109,10 @@ public class TabMenu extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

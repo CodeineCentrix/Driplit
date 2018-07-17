@@ -24,7 +24,6 @@ public class DBAccess implements IDBAccess{
 
     private ResultSet outerResultSet;
     private static class DBHelper{
-
         private static String conString ;
         private static Connection connection;
         private static PreparedStatement st;
@@ -32,6 +31,7 @@ public class DBAccess implements IDBAccess{
         private static String forName ;
         static String us ;
         static String password;
+
         private static void Connect(){
             BackGroundConnection connectionProperties = new BackGroundConnection();
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -49,7 +49,6 @@ public class DBAccess implements IDBAccess{
             }
         }
         private static void Close(){
-
             try {
                 innerResultSet.close();
                 st.close();
@@ -57,7 +56,6 @@ public class DBAccess implements IDBAccess{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
         static String SetParaToPass(String sql, Object[] parameters){
             String usp = "{ CALL "+sql+"( ?";
@@ -79,8 +77,7 @@ public class DBAccess implements IDBAccess{
                 }
                 i = st.executeUpdate();
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e){
                 e.printStackTrace();
             }
             return i==0;
@@ -99,8 +96,7 @@ public class DBAccess implements IDBAccess{
             return innerResultSet;
         }
         static ResultSet SelectPara(String sql, Object[] parameters){
-            try
-            {
+            try{
                 Connect();
                 st = connection.prepareStatement(SetParaToPass(sql,parameters));
                 int i = 1;
@@ -109,10 +105,8 @@ public class DBAccess implements IDBAccess{
                     i++;
                 }
                 innerResultSet = st.executeQuery();
-
             }
-            catch (SQLException e)
-            {
+            catch (SQLException e){
                 e.printStackTrace();
             }
             return innerResultSet;
@@ -164,7 +158,6 @@ public class DBAccess implements IDBAccess{
             outerResultSet.next();//Moves from row of Heading to row record
             person.id = outerResultSet.getInt("PersonID");
             person.fullName = outerResultSet.getString("FullName");
-
             person.email = outerResultSet.getString("Email");
             person.userPassword = outerResultSet.getString("UserPassword");
             DBHelper.Close();
@@ -228,12 +221,10 @@ public class DBAccess implements IDBAccess{
     }
     public ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotal(String userEmail){
         ArrayList<UspMobGetPersonItemTotal> TotalUsage = new ArrayList<>();
-
         try{
             Object[] paras = {userEmail};
             outerResultSet = DBHelper.SelectPara(" uspMobGetPersonItemTotal ",paras);
-            while (outerResultSet.next())
-            {
+            while (outerResultSet.next()){
                 UspMobGetPersonItemTotal use = new UspMobGetPersonItemTotal();
                 use.ItemID =outerResultSet.getInt("ItemID");
                 use.ItemName = outerResultSet.getString("Item");
@@ -249,19 +240,16 @@ public class DBAccess implements IDBAccess{
     }
     public ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotalDate(String userEmail, String date){
         ArrayList<UspMobGetPersonItemTotal> TotalUsage = new ArrayList<>();
-
         try{
             Object[] paras = {userEmail,date};
             outerResultSet = DBHelper.SelectPara(" uspMobGetPersonItemTotalDate ",paras);
-            while (outerResultSet.next())
-            {
+            while (outerResultSet.next()){
                 UspMobGetPersonItemTotal use = new UspMobGetPersonItemTotal();
                 use.ItemID =outerResultSet.getInt("ItemID");
                 use.ItemName = outerResultSet.getString("Item");
                 use.UsageAmount = outerResultSet.getFloat("TotalUsageForItem");
                 TotalUsage.add(use);
             }
-
             DBHelper.Close();
         }catch (SQLException e){
             e.printStackTrace();
@@ -270,11 +258,9 @@ public class DBAccess implements IDBAccess{
     }
     public ArrayList<TipModel> GetTips(){
         ArrayList<TipModel> Tips = new ArrayList<>();
-        try
-        {
+        try{
             outerResultSet = DBHelper.Select("{CALL uspMobGetTips}");
-            while(outerResultSet.next())
-            {
+            while(outerResultSet.next()){
                 TipModel tip = new TipModel();
                 tip.ID = outerResultSet.getInt("TTID");
                 tip.PersonName = outerResultSet.getString("FullName");
@@ -288,9 +274,7 @@ public class DBAccess implements IDBAccess{
             }
             DBHelper.Close();
         }
-        catch (SQLException e)
-        {
-
+        catch (SQLException e){
             e.printStackTrace();
         }
         return Tips;
@@ -326,10 +310,9 @@ public class DBAccess implements IDBAccess{
         return isWorking;
     }
     public boolean MobAddLeak(ReportLeakModel leak){
-        Object[] paras = {leak.Lattitude,leak.Longitude,leak.PersonID};
+        Object[] paras = {leak.Latitude,leak.Longitude,leak.PersonID};
         boolean isWorking = DBHelper.NonQuery(" uspAddLeak",paras);
         DBHelper.Close();
         return isWorking;
     }
-
 }

@@ -61,8 +61,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
 
         return rootView;
     }
-    public Bitmap ScaleImg(int pic)
-    {
+    public Bitmap ScaleImg(int pic){
         Bitmap scaledImg;
         BitmapFactory.Options op = new BitmapFactory.Options();
 
@@ -97,6 +96,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
 
         return scaledImg;
     }
+
     @Override
     public void DoChanges(String value) {
         tvTotal.setText(value);
@@ -107,33 +107,4 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         return tvTotal.getText().toString();
     }
 
-    public void ToHome()
-    {
-       // AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-       // builder.setMessage("Do you want to save usage")
-       //         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-       //             @Override
-       //             public void onClick(DialogInterface dialog, int which) {
-       //                 //Write code to save new recodings to the database
-       //                 Toast.makeText(getContext(),"Recorded usage",Toast.LENGTH_SHORT).show();
-
-       //             }
-       //         })
-       //         .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
-       //             @Override
-       //             public void onClick(DialogInterface dialog, int which) {
-
-       //             }
-       //         })
-       //         .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-       //             @Override
-       //             public void onClick(DialogInterface dialog, int which) {
-
-       //             }
-       //         });
-       // AlertDialog startSaving = builder.create();
-       // startSaving.show();
-
-    }
 }

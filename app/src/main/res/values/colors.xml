@@ -12,7 +12,7 @@
     <color name="white">#f2f2f2</color>
     <color name="aImaginary">#b9cbd2</color>
     <color name="darkerblue">#af2091c6</color>
-
+<color name="trans_green">#7700ff00</color>
     <!--Main menu colors-->
     <color name="shade1">#9ad3e4</color>
     <color name="shade2">#53a4c1</color>

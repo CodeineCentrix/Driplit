@@ -1,7 +1,7 @@
 package viewmodels;
 
 public class ReportLeakModel {
-    public String Lattitude ;
+    public String Latitude;
     public String Longitude ;
     public int PersonID ;
 }
