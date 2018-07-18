@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Fact Of The Day"/>
+            app:title="Tip Of The Day"/>
 
         <android.support.v7.widget.ContentFrameLayout
             android:layout_width="match_parent"
@@ -57,7 +57,8 @@
             android:layout_width="192dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/main_menu" />
+            android:text="@string/main_menu"
+            android:onClick="ToHome"/>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

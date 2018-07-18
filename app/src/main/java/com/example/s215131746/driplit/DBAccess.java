@@ -4,6 +4,7 @@ import android.os.StrictMode;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import viewmodels.ItemUsageModel;
 import viewmodels.PersonModel;
 import viewmodels.ReportLeakModel;
 import viewmodels.ResidentUsageModel;
@@ -172,9 +174,17 @@ public class DBAccess implements IDBAccess{
             outerResultSet = DBHelper.Select("{CALL uspMobGetWaterUsageItmes}");
             while(outerResultSet.next()){
                 ItemUsageModel item = new ItemUsageModel();
+                try{
+                    Blob blob = outerResultSet.getBlob("Icon");
+                    int l = (int) blob.length();
+                    item.ItemIcon = blob.getBytes(1,l);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 item.ItemID = outerResultSet.getInt("ItemID");
                 item.ItemDiscriotn = outerResultSet.getString("ItemDescription");
                 item.ItemAverage =outerResultSet.getFloat("ItemAverageAmount");
+
                 //item.ItemIcon = resultSet.getByte();
                 itemUsageModel.add(item);
             }
@@ -314,5 +324,21 @@ public class DBAccess implements IDBAccess{
         boolean isWorking = DBHelper.NonQuery(" uspAddLeak",paras);
         DBHelper.Close();
         return isWorking;
+    }
+    public TipModel GetRandomTips(){
+        TipModel tip = new TipModel();
+        try{
+            outerResultSet = DBHelper.Select("{CALL uspMobGetRandomTips}");
+            outerResultSet.next();
+            tip.ID = outerResultSet.getInt("TTID");
+
+            tip.TipDescription = outerResultSet.getString("TTdescription");
+                //item.ItemIcon = resultSet.getByte();
+            DBHelper.Close();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return tip;
     }
 }

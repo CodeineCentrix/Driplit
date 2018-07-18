@@ -42,22 +42,11 @@
             android:background="@color/blue">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tiItemTrend"
+                android:id="@+id/tiRecordIntake"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/item_trend" />
-            <android.support.design.widget.TabItem
-                android:id="@+id/tiIntakeTrend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/intake_trend" />
+                android:text="@string/record_intake" />
 
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tiTips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_2" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tiReportLeak"
@@ -66,10 +55,22 @@
                 android:text="@string/report_leak" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tiRecordIntake"
+                android:id="@+id/tiTips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/record_intake" />
+                android:text="@string/tab_text_2" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tiItemTrend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_trend" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tiIntakeTrend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/intake_trend" />
 
             <!--<android.support.design.widget.TabItem-->
                 <!--android:id="@+id/tiEditProfile"-->

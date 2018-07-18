@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import viewmodels.ItemUsageModel;
 import viewmodels.ResidentUsageModel;
 import viewmodels.UspMobGetPersonItemTotal;
 
@@ -86,6 +88,16 @@ public class ItemListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
+
+        //Icon
+        final ImageView icon = v.findViewById(R.id.imgItemIcon);
+        try{
+            icon.setImageBitmap(m.ScaleImg(0,ItemUsage.get(position).ItemIcon));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         //text views
         final TextView tvQty = v.findViewById(R.id.tvQty);
         stringsQTY[position] = tvQty.getText().toString();

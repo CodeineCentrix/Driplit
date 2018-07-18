@@ -70,25 +70,6 @@
         <!--Row2-->
         <!--Column1-->
         <!--Row2-->
-        <android.support.v7.widget.CardView
-            android:layout_width="1dp"
-            android:layout_height="150dp"
-            android:layout_columnWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="8dp" tools:targetApi="lollipop">
-
-            <Button
-                android:id="@+id/btnTrend"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/shade5"
-                android:text="@string/trend"
-                android:onClick="TrendScreen"
-                />
-        </android.support.v7.widget.CardView>
         <!--Column2-->
         <!--Row3-->
         <android.support.v7.widget.CardView
@@ -112,6 +93,26 @@
         </android.support.v7.widget.CardView>
         <!--Column1-->
         <!--Row3-->
+
+        <android.support.v7.widget.CardView
+            android:layout_width="1dp"
+            android:layout_height="150dp"
+            android:layout_columnWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            tools:targetApi="lollipop">
+
+            <Button
+                android:id="@+id/btnTrend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shade5"
+                android:onClick="TrendScreen"
+                android:text="@string/trend" />
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="1dp"

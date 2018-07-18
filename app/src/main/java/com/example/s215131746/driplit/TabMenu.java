@@ -61,7 +61,8 @@ public class TabMenu extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         Bundle tab = getIntent().getExtras();
         String tabName = tab.getString("Tab");
-        String[] tabs = {"ItemTrend","Trend","Tips","Report","Record","Edit"};
+//        String[] tabs = {"ItemTrend","Trend","Tips","Report","Record","Edit"};
+        String[] tabs = {"Record","Report","Tips","Trend","ItemTrend","Edit"};
         DBAccess business = new DBAccess();
         boolean wifi = true;
         try {
@@ -156,15 +157,24 @@ public class TabMenu extends AppCompatActivity {
            //just in case
             if(position>getCount())
                 position= 0 ;
-          Fragment[] f =
-                  {
-                          new ItemTrend(),
-                          new IntakeTrendClass(),
-                          new TipTrickClass(),
-                          new ReportLeakClass(),
-                          new RecordWaterIntakeClass(),
-                         // new EditProfileClass()
-                  } ;
+//          Fragment[] f =
+//                  {
+//                          new ItemTrend(),
+//                          new IntakeTrendClass(),
+//                          new TipTrickClass(),
+//                          new ReportLeakClass(),
+//                          new RecordWaterIntakeClass(),
+//                         // new EditProfileClass()
+//                  } ;
+            Fragment[] f =
+                    {
+                            new RecordWaterIntakeClass(),
+                            new ReportLeakClass(),
+                            new TipTrickClass(),
+                            new IntakeTrendClass(),
+                            new ItemTrend(),
+                            // new EditProfileClass()
+                    } ;
 
             return f[position];
         }

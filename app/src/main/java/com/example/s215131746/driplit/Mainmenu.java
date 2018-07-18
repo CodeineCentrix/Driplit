@@ -61,7 +61,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
     public void TrendScreen(View view)
     {
         Intent showTrend = new Intent(getApplicationContext(),TabMenu.class);
-        SetBundel(showTrend,"Tend");
+        SetBundel(showTrend,"ItemTrend");
     }
     public void TipScreen(View view)
     {

@@ -2,6 +2,7 @@ package com.example.s215131746.driplit;
 
 import java.util.ArrayList;
 
+import viewmodels.ItemUsageModel;
 import viewmodels.PersonModel;
 import viewmodels.ReportLeakModel;
 import viewmodels.ResidentUsageModel;
