@@ -75,12 +75,17 @@ public class IntakeTrendClass extends Fragment {
         // creating labels
         LineData data = new LineData(dataset);
         lineChart.setData(data); // set the data and list of lables into chart
+
        try{
            IAxisValueFormatter   formatter = setYaxis(labels);
+           AxisBase leftY = lineChart.getAxisLeft();
+           leftY.setAxisMinimum(0f);
+           lineChart.getAxisRight().setEnabled(false);
            XAxis x = lineChart.getXAxis();
            x.setValueFormatter(formatter);
            x.setLabelCount(labels.length-1);
        }catch (ArrayIndexOutOfBoundsException e){ }
+
         dataset.setDrawFilled(true);
         return rootView;
     }
@@ -118,8 +123,11 @@ public class IntakeTrendClass extends Fragment {
         //b.setValueTextSize(20f);
         b.setBarWidth(distance);
         bcTrend.setData(b);
-        bcTrend.setFitBars(true);
+        AxisBase leftY = bcTrend.getAxisLeft();
+        leftY.setAxisMinimum(0f);
+        leftY.setDrawGridLines(false);
         bcTrend.invalidate();
+        bcTrend.getAxisRight().setEnabled(false);
         XAxis xAxis = bcTrend.getXAxis();
         //xAxis.setAxisMinimum(0f);
         xAxis.setValueFormatter(formatter);

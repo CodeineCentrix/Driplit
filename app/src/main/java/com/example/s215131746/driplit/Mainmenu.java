@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,13 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
 
 
         View header = navigationView.getHeaderView(0);
+        ImageView profile = header.findViewById(R.id.nav_imgIcon);
+        try {
+          //  DownLoadPicture d = new DownLoadPicture("meter");
+          //  profile.setImageBitmap(d.doInBackground());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         TextView tvFullName = (TextView) header.findViewById(R.id.nav_tvFullName);
         TextView tvEmail = header.findViewById(R.id.nav_tvEmail);
         tvEmail.setText(details[2]);

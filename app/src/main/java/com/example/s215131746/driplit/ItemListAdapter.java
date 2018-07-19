@@ -91,12 +91,11 @@ public class ItemListAdapter extends BaseAdapter {
 
         //Icon
         final ImageView icon = v.findViewById(R.id.imgItemIcon);
-        try{
-            icon.setImageBitmap(m.ScaleImg(0,ItemUsage.get(position).ItemIcon));
+        try {
+              icon.setImageBitmap(ItemUsage.get(position).ItemIcon);
         }catch (Exception e){
             e.printStackTrace();
         }
-
 
         //text views
         final TextView tvQty = v.findViewById(R.id.tvQty);

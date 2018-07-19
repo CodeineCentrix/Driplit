@@ -174,10 +174,9 @@ public class DBAccess implements IDBAccess{
             outerResultSet = DBHelper.Select("{CALL uspMobGetWaterUsageItmes}");
             while(outerResultSet.next()){
                 ItemUsageModel item = new ItemUsageModel();
-                try{
-                    Blob blob = outerResultSet.getBlob("Icon");
-                    int l = (int) blob.length();
-                    item.ItemIcon = blob.getBytes(1,l);
+                try {
+                    DownLoadPicture d = new DownLoadPicture("icon/"+outerResultSet.getString("Icon"));
+                    item.ItemIcon = d.doInBackground();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
