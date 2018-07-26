@@ -26,4 +26,10 @@ public class HelpScreen extends AppCompatActivity {
         startActivity(toMenu);
         finish();
     }
+    public void ToIntakeHelp(View view) {
+        Intent ToIntakeHelp = new Intent(getApplicationContext(), IntakeHelper.class);
+        startActivity(ToIntakeHelp);
+
+    }
+
 }

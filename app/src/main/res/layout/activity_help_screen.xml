@@ -82,4 +82,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btnIntakeHelp"
+        android:layout_width="121dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="4dp"
+        android:text="intake help"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="ToIntakeHelp"/>
+
 </android.support.constraint.ConstraintLayout>

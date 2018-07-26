@@ -157,32 +157,22 @@ public class TabMenu extends AppCompatActivity {
            //just in case
             if(position>getCount())
                 position= 0 ;
-//          Fragment[] f =
-//                  {
-//                          new ItemTrend(),
-//                          new IntakeTrendClass(),
-//                          new TipTrickClass(),
-//                          new ReportLeakClass(),
-//                          new RecordWaterIntakeClass(),
-//                         // new EditProfileClass()
-//                  } ;
-            Fragment[] f =
+            Fragment[] tabs =
                     {
                             new RecordWaterIntakeClass(),
                             new ReportLeakClass(),
                             new TipTrickClass(),
-                            new IntakeTrendClass(),
-                            new ItemTrend(),
+                            new IntakeTrendScroller(),
                             // new EditProfileClass()
                     } ;
 
-            return f[position];
+            return tabs[position];
         }
 
         @Override
         public int getCount() {
-            // Show 5 total pages.
-            return 5;
+            // Show 4 total pages.
+            return 4;
         }
     }
 

@@ -1,7 +1,9 @@
 package com.example.s215131746.driplit;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,7 +36,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line inflate this class with the record water intake layout
-        View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
+        final View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
         m = new GeneralMethods(getContext());
         ScaleImg(R.id.imgView);
         listOfItem = business.GetItems();
@@ -59,7 +61,14 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
                 listAdapter.setVisibility(i);
             }
         });
-
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabInfo);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent showHelp = new Intent(rootView.getContext(),IntakeHelper.class);
+                startActivity(showHelp);
+            }
+        });
         return rootView;
     }
     public Bitmap ScaleImg(int pic){

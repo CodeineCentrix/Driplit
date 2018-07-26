@@ -154,17 +154,21 @@ public class DBAccess implements IDBAccess{
     }
 
     public PersonModel LoginPerson(PersonModel person){
+       //this object acts like a sqlparameter like in c#
         Object[] paras = {person.email,person.userPassword};
+        //pass the stored procedure name and the paras if you have parameter
         outerResultSet = DBHelper.SelectPara("uspMobGetPerson",paras);
+       //the is alot that could go wrong when trying to connect to the database that is why the is a try catch
         try{
+            //the outerResulSet is the table returned from the execution of the stored procedure
             outerResultSet.next();//Moves from row of Heading to row record
-            person.id = outerResultSet.getInt("PersonID");
+            person.id = outerResultSet.getInt("PersonID");//you need to specify not only the colunm name but also the data type to be return
             person.fullName = outerResultSet.getString("FullName");
             person.email = outerResultSet.getString("Email");
             person.userPassword = outerResultSet.getString("UserPassword");
-            DBHelper.Close();
+            DBHelper.Close();//to closes the connection
         }catch (SQLException e){
-            e.printStackTrace();
+            e.printStackTrace();// I propable should inform the user
         }
         return person;
     }
@@ -330,7 +334,6 @@ public class DBAccess implements IDBAccess{
             outerResultSet = DBHelper.Select("{CALL uspMobGetRandomTips}");
             outerResultSet.next();
             tip.ID = outerResultSet.getInt("TTID");
-
             tip.TipDescription = outerResultSet.getString("TTdescription");
                 //item.ItemIcon = resultSet.getByte();
             DBHelper.Close();

@@ -66,12 +66,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/item_trend" />
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/tiIntakeTrend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/intake_trend" />
-
             <!--<android.support.design.widget.TabItem-->
                 <!--android:id="@+id/tiEditProfile"-->
                 <!--android:layout_width="wrap_content"-->

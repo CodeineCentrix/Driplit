@@ -47,7 +47,7 @@ public class GeneralMethods {
     }
     public String readFromFile(String fileName) {
         String ret = "";
-        try {
+        try {if(context != null){
             InputStream inputStream = context.openFileInput(fileName);
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -60,10 +60,12 @@ public class GeneralMethods {
                 inputStream.close();
                 ret = stringBuilder.toString();
             }
-        }
+        }}
         catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
 
@@ -85,18 +87,8 @@ public class GeneralMethods {
         op.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(res,pic,op);
 
-        int imgWidth = op.outWidth;
-        if(imgWidth>1500){
-            op.inSampleSize = 20;
-        }else if(imgWidth>500){
-            op.inSampleSize = 5;
-        }else if(imgWidth>400){
-            op.inSampleSize = 4;
-        }else if(imgWidth>300){
-            op.inSampleSize = 3;
-        }else{
-            op.inSampleSize = 2;
-        }
+
+
         op.inJustDecodeBounds = false;
         scaledImg = BitmapFactory.decodeResource(res,pic,op);
 

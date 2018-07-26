@@ -59,7 +59,7 @@
     <string name="old_password">Old password</string>
     <string name="enter_tip">Enter tip</string>
     <string name="tip_trick_description">Tip Trick Description</string>
-    <string name="posted_by">Posted By:</string>
+    <string name="posted_by">By: </string>
     <string name="name">Name</string>
     <string name="date">Date</string>
     <string name="post">POST</string>
@@ -68,7 +68,7 @@
     <string name="we_are_codeinecentrix">We are codeinecentrix</string>
     <string name="how_report_leak">How to report leak</string>
     <string name="select_day">select day</string>
-    <string name="item_trend">Item trend</string>
+    <string name="item_trend">Trends</string>
     <string name="leak_successfully_reported_at">Leak successfully reported at:</string>
     <string name="address">address</string>
     <string name="title_activity_edit">Edit</string>
@@ -166,5 +166,9 @@
     <string name="title_activity_register2">Register2</string>
     <string name="re_enter_password">Re-enter password</string>
     <string name="flushing_5_times_uses_55_litres">Flushing 5 times uses 55 litres!</string>
-
+    <string name="title_activity_intake_helper">IntakeHelper</string>
+    <string name="title_activity_intake_trend_scroller">IntakeTrendScroller</string>
+    <string name="the_bar_trend_info">The bar graph shows you 5 bars that have been recently been recorded, you can drag the graph to see other old bars you have recorded </string>
+    <string name="the_line_graph">The line graph shows you all the water usage records giving you the bigger picture</string>
+    <string name="item_graph">This bar graph shows you how much water you used on a selected day, by default it will show today\'s usage </string>
 </resources>

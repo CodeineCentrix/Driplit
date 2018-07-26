@@ -44,17 +44,14 @@ public class TipListAdapter extends BaseAdapter {
     public int getCount() {
         return description.length;
     }
-
     @Override
     public Object getItem(int position) {
         return description[position];
     }
-
     @Override
     public long getItemId(int position) {
         return position;
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = mInflater.inflate(R.layout.tiptrick_layout,null);
@@ -63,7 +60,7 @@ public class TipListAdapter extends BaseAdapter {
         tvDate = v.findViewById(R.id.tvDate);
         SimpleDateFormat df = new SimpleDateFormat("MMM dd");
         tipDescription.setText(""+description[position]);
-        tvPerson.setText(person[position]);
+        tvPerson.setText("By: "+person[position]);
         tvDate.setText(df.format( date[position]));
         //LinearLayout llTipContainer = v.findViewById(R.id.llTipContainer);
          return v;

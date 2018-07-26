@@ -34,160 +34,79 @@ import viewmodels.UspMobGetPersonTotalUsage;
  */
 
 public class IntakeTrendClass extends Fragment {
-     BarChart barChart = null;
-     List<BarEntry> barEntries = new ArrayList<>();
+
     final List<BarEntry> entries = new ArrayList<>();
+    final ArrayList<Entry> lineEntry = new ArrayList<>();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.intake_trend, container, false);
-        GeneralMethods m = new GeneralMethods(getContext());
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
-        barChart = rootView.findViewById(R.id.bcT);
         DBAccess business = new DBAccess();
-        ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(m.Read("person.txt",",")[2]);
+        GeneralMethods m = new GeneralMethods(getContext());
+        String index2 = m.Read("person.txt",",")[2];
+
+        ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(index2);
         int i = usages.size();
-        final String[] labels = new String[i];
-        i = 0;
-        for (UspMobGetPersonTotalUsage usage:usages) {
-            labels[i] = usage.UsageDay;
-            entries.add(new BarEntry(i,usage.UsageAmount));
-            i++;
+        if(i>0){
+            final String[] labels = new String[i];
+            i = 0;
+            for (UspMobGetPersonTotalUsage usage:usages) {
+                labels[i] = usage.UsageDay;
+                entries.add(new BarEntry(i,usage.UsageAmount));
+                lineEntry.add(new Entry(i,usage.UsageAmount));
+                i++;
+            }
+            SetUpGraph(bcTrend,entries,labels);
+            //Line chart___________________________________________________________
+            LineChart lineChart = rootView.findViewById(R.id.lineChart);
+            // creating list of entry
+            LineDataSet dataset = new LineDataSet(lineEntry, "line water usage");//loading the top labels and setting the bottom label
+            lineChart.setData(new LineData(dataset)); // set the data and list of lables into chart
+            IAxisValueFormatter formatter = setYaxis(labels);
+            lineChart.getAxisLeft().setAxisMinimum(0f);
+            lineChart.getAxisRight().setEnabled(false);
+            lineChart.getXAxis().setValueFormatter(formatter);
+            lineChart.getXAxis().setLabelCount(labels.length-1);
+            dataset.setDrawFilled(true);
         }
-//        final String[] labelWeeks = {"Week 1","Week 2","Week 3","Week 4"};
-//        for(float x = 0; x< labelWeeks.length ;x++){
-//            y = rNum.nextInt(30)+2f;
-//            entriesWeeks.add(new BarEntry(x, y));
-//        }
-        final TextView tvChartLAbel = rootView.findViewById(R.id.tvChartLAbel);
-        try{
-            SetUpGraph(bcTrend,entries,labels,tvChartLAbel);
-        } catch (ArrayIndexOutOfBoundsException e){}
-        LineChart lineChart = rootView.findViewById(R.id.lineChart);
-// creating list of entry
-        ArrayList<Entry> entries = new ArrayList<>();
-        i = 0;
-        for (UspMobGetPersonTotalUsage usage:usages) {
-            labels[i] = usage.UsageDay;
-            entries.add(new Entry(i,usage.UsageAmount));
-            i++;
-        }
-        LineDataSet dataset = new LineDataSet(entries, "Water usage");
-        // creating labels
-        LineData data = new LineData(dataset);
-        lineChart.setData(data); // set the data and list of lables into chart
-
-       try{
-           IAxisValueFormatter   formatter = setYaxis(labels);
-           AxisBase leftY = lineChart.getAxisLeft();
-           leftY.setAxisMinimum(0f);
-           lineChart.getAxisRight().setEnabled(false);
-           XAxis x = lineChart.getXAxis();
-           x.setValueFormatter(formatter);
-           x.setLabelCount(labels.length-1);
-       }catch (ArrayIndexOutOfBoundsException e){ }
-
-        dataset.setDrawFilled(true);
         return rootView;
     }
 
+    //Label returner
     public IAxisValueFormatter setYaxis(final String[] labels){
-        final IAxisValueFormatter[] formatter = {new IAxisValueFormatter() {
+        return new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                if (labels.length > (int) value && value>-1)
+                if (labels.length > (int) value && value>-1 )
                     return labels[(int) value];
                 else
                     return "";
             }
-        }};
-        return formatter[0];
+        };
+
     }
-    public void SetUpGraph(BarChart  bcTrend ,List<BarEntry> entries,String[] Labels,TextView tvChartLAbel ){
-        List<BarEntry> entry;
-        IAxisValueFormatter formatter;
-        float distance =0;
-        int labelCount = 0;
-        formatter = setYaxis(Labels);
-        labelCount = Labels.length;
-        if(tvChartLAbel.getText().toString()=="Days"){
-            distance = 0.7f;
-            tvChartLAbel.setText("Weeks");
-        }else{
-            tvChartLAbel.setText("Days");
-            distance = 0.5f;
+    //Bar graph set up
+    public void SetUpGraph(BarChart  bcTrend ,List<BarEntry> entries,String[] Labels ){
+        if(entries.size()>0) {
+            IAxisValueFormatter formatter = setYaxis(Labels);
+            BarDataSet set = new BarDataSet(entries, "50 liters is the daily recommendation");
+            set.setColor(R.color.black);// not sure if this worsks it sts the font color black
+            BarData b = new BarData(set);
+            b.setBarWidth(0.5f);//bar width
+            bcTrend.setData(b);
+            bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
+            bcTrend.getAxisLeft().setAxisMinimum(0f);
+            bcTrend.getAxisLeft().setDrawGridLines(false);//removes the grid lines of the bar graph
+            bcTrend.invalidate();
+            bcTrend.getAxisRight().setEnabled(false);
+            bcTrend.getXAxis().setValueFormatter(formatter);// uses the an interface to get labels
+            bcTrend.getXAxis().setLabelCount(Labels.length);
+            bcTrend.fitScreen();//obviuosly its to make sure the graph fits the screen
+            bcTrend.invalidate();
+            bcTrend.setVisibleXRangeMaximum(5);// sets the number of bars to be shown at a given moment
+            bcTrend.moveViewToX(entries.size());
         }
-        entry = entries;
-        BarDataSet set = new BarDataSet(entry,"Usage");
-        set.setColor(R.color.black);
-        BarData b = new BarData(set);
-        //b.setValueTextSize(20f);
-        b.setBarWidth(distance);
-        bcTrend.setData(b);
-        AxisBase leftY = bcTrend.getAxisLeft();
-        leftY.setAxisMinimum(0f);
-        leftY.setDrawGridLines(false);
-        bcTrend.invalidate();
-        bcTrend.getAxisRight().setEnabled(false);
-        XAxis xAxis = bcTrend.getXAxis();
-        //xAxis.setAxisMinimum(0f);
-        xAxis.setValueFormatter(formatter);
-        xAxis.setLabelCount(labelCount);
-        //bcTrend.setVisibleYRangeMaximum(50f, YAxis.AxisDependency.RIGHT);
-        bcTrend.fitScreen();
-        bcTrend.invalidate();
-    }
-    public void createRandomBarGraph(String Date1, String Date2){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        ArrayList<String> dates = new ArrayList<>();
-        try {
-            Date date1 = simpleDateFormat.parse(Date1);
-            Date date2 = simpleDateFormat.parse(Date2);
-            Calendar mDate1 = Calendar.getInstance();
-            Calendar mDate2 = Calendar.getInstance();
-            mDate1.clear();
-            mDate2.clear();
-            mDate1.setTime(date1);
-            mDate2.setTime(date2);
-            dates = getList(mDate1,mDate2);
-            barEntries = new ArrayList<>();
-            float max = 0f;
-            float value = 0f;
-            Random random = new Random();
-            for(int j = 0; j< dates.size();j++){
-                max = 100f;
-                value = random.nextFloat()*max;
-                barEntries.add(new BarEntry(value,j));
-            }
-
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
-
-        BarDataSet barDataSet = new BarDataSet(barEntries,"Dates");
-        BarData barData = new BarData( barDataSet);
-        barChart.setData(barData);
-
     }
 
-    public ArrayList<String> getList(Calendar startDate, Calendar endDate){
-        ArrayList<String> list = new ArrayList<String>();
-        while(startDate.compareTo(endDate)<=0){
-            list.add(getDate(startDate));
-            startDate.add(Calendar.DAY_OF_MONTH,1);
-        }
-        return list;
-    }
-
-    public String getDate(Calendar cld){
-        String curDate = cld.get(Calendar.YEAR) + "/" + (cld.get(Calendar.MONTH) + 1) + "/"
-                +cld.get(Calendar.DAY_OF_MONTH);
-        try{
-            Date date = new SimpleDateFormat("yyyy/MM/dd").parse(curDate);
-            curDate =  new SimpleDateFormat("yyy/MM/dd").format(date);
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
-        return curDate;
-    }
 
 }

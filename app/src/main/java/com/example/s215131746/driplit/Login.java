@@ -33,34 +33,29 @@ public class Login extends AppCompatActivity {
     GeneralMethods m;
     String[] details;
     TextView txtFeedback;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         m = new GeneralMethods(getApplicationContext());
-       txtFeedback = findViewById(R.id.txtFeedback);
+        txtFeedback = findViewById(R.id.txtFeedback);
         setContentView(R.layout.activity_login);
         cbRemeber = findViewById(R.id.cbRememberMe);
         email = findViewById(R.id.txtUsername);
         password = findViewById(R.id.txtPassword);
-        //should be taken out before judging
         RemeberMe();
-        if(cbRemeber.isChecked())
-        {
+        if(cbRemeber.isChecked()){
             details = m.Read("person.txt",",");
             email.setText(details[2]);
             password.setText(details[3]);
         }
         business = new DBAccess();
     }
-    public void RemeberMe(String answ)
-    {
+    public void RemeberMe(String answ){
         m.writeToFile(answ,"Remember.txt");
     }
-    public void RemeberMe()
-    {
+    public void RemeberMe(){
         if(m.readFromFile("Remember.txt").equals("yes"))
-        cbRemeber.setChecked(true);
+         cbRemeber.setChecked(true);
         else
             cbRemeber.setChecked(false);
     }
@@ -77,14 +72,7 @@ public class Login extends AppCompatActivity {
        // registerScreen = new Intent(getApplicationContext(), Register2.class);
        // startActivity(registerScreen);
     }
-    public void openWebPage(String url) {
 
-         Uri webpage = Uri.parse(url);
-          Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-             startActivity( intent);
-         }
-    }
     public void ToFODScreen(View view)
     {
         if(cbRemeber.isChecked())
@@ -94,47 +82,28 @@ public class Login extends AppCompatActivity {
         PersonModel person = new PersonModel();
         person.email = email.getText().toString();
         person.userPassword = password.getText().toString();
-//        if(person.email.equals(details[2])&&person.userPassword.equals(details[3]))
-//        {
-//            person.id = Integer.parseInt(details[0]);
-//            person.fullName = details[1];
-//            person.email = details[2];
-//            person.userPassword =  details[3];
-//            Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
-      //  }else{
         boolean wifi = true;
-            try {
-                person = business.LoginPerson(person);
-                m.writeToFile(person.id+","+ person.toString(),"person.txt");
-            }catch (NullPointerException e)
-            {
-                wifi = false;
-            }
-
-      //  }
-        if(!wifi)
-        {
+        try {
+            person = business.LoginPerson(person);
+            //writes the persons details to a screen which gets continually used
+            m.writeToFile(person.id+","+ person.toString(),"person.txt");
+        }catch (NullPointerException e){
+            wifi = false;
+        }
+        if(!wifi)        {
             Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
         }
-        else if(person.fullName!=null && !person.fullName.equals(""))
-        {
+        else if(person.fullName!=null && !person.fullName.equals("")){
             Toast.makeText(this,    "Hello "+person.fullName,Toast.LENGTH_LONG).show();
             fodScreen = new Intent(getApplicationContext(), FODScreen.class);
-
             startActivity(fodScreen);
-            finish();
-        }
-        else
-        {
+        }else{
             TextView tvError = findViewById(R.id.tvError);
             tvError.setText(R.string.login_error);
             Toast.makeText(this,"Invalide email or password",Toast.LENGTH_SHORT).show();
         }
 
     }
-
-
-
 
     public void GetLocation(View view) {
         TextView txtFeedback;

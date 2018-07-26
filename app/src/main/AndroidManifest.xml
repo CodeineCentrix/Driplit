@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -42,9 +43,15 @@
         <activity
             android:name=".Register2"
             android:label="@string/title_activity_register2"
-            android:theme="@style/AppTheme"></activity>
-
-
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".IntakeHelper"
+            android:label="@string/title_activity_intake_helper"
+            android:theme="@style/AppTheme" />
+        <!--<activity-->
+            <!--android:name=".IntakeTrendScroller"-->
+            <!--android:label="@string/title_activity_intake_trend_scroller"-->
+            <!--android:theme="@style/AppTheme"></activity>-->
     </application>
 
 </manifest>

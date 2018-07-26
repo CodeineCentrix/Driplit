@@ -56,22 +56,6 @@
             tools:targetApi="lollipop" />
 
         <EditText
-            android:id="@+id/txtPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/darkerblue"
-            android:drawableEnd="@drawable/ic_edit_24dp"
-            android:drawableRight="@drawable/ic_edit_24dp"
-            android:ems="10"
-            android:hint="@string/phonenumber"
-            android:inputType="phone"
-            android:textAlignment="center"
-            tools:layout_editor_absoluteX="63dp"
-            tools:layout_editor_absoluteY="286dp"
-            tools:targetApi="lollipop" />
-
-        <EditText
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -120,21 +104,21 @@
             tools:targetApi="lollipop"
             android:onClick="ToUpdatePerson"/>
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginStart="300dp"
+            android:layout_weight="1"
+            android:onClick="ToHome"
+            android:padding="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/home"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_height="33dp"
-        android:layout_marginLeft="300dp"
-        android:layout_weight="1"
-        android:padding="5dp"
-        android:paddingBottom="5dp"
-        android:text="@string/home"
-        android:textSize="12sp"
-        android:layout_marginStart="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="ToHome"/>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
