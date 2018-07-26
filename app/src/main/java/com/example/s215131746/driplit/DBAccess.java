@@ -12,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import viewmodels.Business;
 import viewmodels.ItemUsageModel;
 import viewmodels.PersonModel;
 import viewmodels.ReportLeakModel;
@@ -294,11 +296,17 @@ public class DBAccess implements IDBAccess{
     }
     public boolean uspMobUpdatePerson(PersonModel person ){
         Object[] paras = {person.id,person.fullName,person.userPassword};
-        boolean isWorking = DBHelper.NonQuery(" uspMobAddPerson",paras);
+        boolean isWorking = DBHelper.NonQuery(" uspMobUpdatePerson ",paras);
         DBHelper.Close();
         return isWorking;
     }
     public boolean MobAddPerson(PersonModel person ){
+        Object[] paras = {person.fullName,person.email,person.userPassword};
+        boolean isWorking = DBHelper.NonQuery(" uspMobAddPerson",paras);
+        DBHelper.Close();
+        return isWorking;
+    }
+    public boolean MobUpdatePerson(PersonModel person ){
         Object[] paras = {person.fullName,person.email,person.userPassword};
         boolean isWorking = DBHelper.NonQuery(" uspMobAddPerson",paras);
         DBHelper.Close();
@@ -331,7 +339,7 @@ public class DBAccess implements IDBAccess{
     public TipModel GetRandomTips(){
         TipModel tip = new TipModel();
         try{
-            outerResultSet = DBHelper.Select("{CALL uspMobGetRandomTips}");
+            outerResultSet = DBHelper.Select(" uspMobGetRandomTips");
             outerResultSet.next();
             tip.ID = outerResultSet.getInt("TTID");
             tip.TipDescription = outerResultSet.getString("TTdescription");
@@ -342,5 +350,11 @@ public class DBAccess implements IDBAccess{
             e.printStackTrace();
         }
         return tip;
+    }
+
+    public Business GetBusiness(){
+        Business business = new Business();
+
+        return  business;
     }
 }

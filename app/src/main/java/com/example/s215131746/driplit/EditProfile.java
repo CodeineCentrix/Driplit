@@ -15,6 +15,7 @@ public class EditProfile extends AppCompatActivity {
     EditText txtEmail;
     DBAccess business;
     EditText txtPassword;
+    EditText txtNewPassword;
     PersonModel person = new PersonModel();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class EditProfile extends AppCompatActivity {
         m = new GeneralMethods(getApplicationContext());
         txtFullname = findViewById(R.id.txtUsername);
         txtEmail = findViewById(R.id.txtUserEmail);
-
+        txtNewPassword = findViewById(R.id.txtNewPassword);
         txtPassword = findViewById(R.id.txtPassword);
         business = new DBAccess();
 
@@ -34,6 +35,7 @@ public class EditProfile extends AppCompatActivity {
 
         person.id =Integer.parseInt(p[0]);
         person.fullName = p[1];
+        person.email = p[2];
         person.userPassword = p[3];
         //txtPassword.setText(person[3]);
     }
@@ -43,25 +45,32 @@ public class EditProfile extends AppCompatActivity {
         finish();
     }
     public void ToUpdatePerson(View v){
-        //if(person.userPassword==txtPassword && txtNewPassword.getText() != "")
-        //person.userPassword = txtNewPassword.getText()
-//        boolean error = false;
-//        String[] values = {""+person.id, person.fullName,person.userPassword};
-//        for(int i = 0; i<values.length;i++)
-//        {
-//            if(values[i].equalsIgnoreCase(""))
-//            {
-//                error = true;
-//
-//            }
-//            else
-//            {
-//
-//            }
-//        }
-//        if(!error)
-//            business.uspMobUpdatePerson(person);
-        Toast.makeText(getApplicationContext(),"Updated Profile",Toast.LENGTH_SHORT).show();
-        ToHome(v);
+
+        person.fullName = txtFullname.getText().toString();
+        boolean error = false;
+        if(person.userPassword.equals(txtPassword.getText().toString())){
+            String[] values = {""+person.fullName,person.userPassword,txtNewPassword.getText().toString()};
+            //new password
+            if(!values[values.length-1].equalsIgnoreCase("")){
+                person.userPassword = values[values.length-1];
+            }
+
+            for(int i = 0; i<values.length-1;i++){
+                if(values[i].equalsIgnoreCase("")){
+                    error = true;
+                }
+            }
+        }
+        else {
+            error = true;
+        }
+
+        if(!error){
+            business.uspMobUpdatePerson(person);
+            m.writeToFile(person.id+","+ person.toString(),"person.txt");
+            Toast.makeText(getApplicationContext(),"Updated Profile",Toast.LENGTH_SHORT).show();
+            ToHome(v);
+        }
+
     }
 }

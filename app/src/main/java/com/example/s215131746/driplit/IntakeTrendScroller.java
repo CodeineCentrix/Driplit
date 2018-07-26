@@ -3,6 +3,7 @@ package com.example.s215131746.driplit;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
         ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(index2);
        i = usages.size();
+        LineChart lineChart = rootView.findViewById(R.id.lineChart);
         if(i>0) {
             final String[] labels = new String[i];
             i = 0;
@@ -142,22 +144,27 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 entries.add(new BarEntry(i, usage.UsageAmount));
                 lineEntry.add(new Entry(i, usage.UsageAmount));
                 i++;
+
+                SetUpGraph(bcTrend, entries, labels);
+                //Line chart___________________________________________________________
+
+                // creating list of entry
+
+                LineDataSet dataset = new LineDataSet(lineEntry, "line water usage");//loading the top labels and setting the bottom label
+                lineChart.setData(new LineData(dataset)); // set the data and list of labels into chart
+                IAxisValueFormatter formatter = setYaxis(labels);
+                lineChart.getAxisLeft().setAxisMinimum(0f);
+                lineChart.getAxisRight().setEnabled(false);
+                lineChart.getXAxis().setEnabled(false);
+                lineChart.getXAxis().setValueFormatter(formatter);
+                lineChart.getXAxis().setLabelCount(labels.length - 1);
+                dataset.setDrawFilled(true);
+                //end
             }
-            SetUpGraph(bcTrend, entries, labels);
-            //Line chart___________________________________________________________
-            LineChart lineChart = rootView.findViewById(R.id.lineChart);
-            // creating list of entry
-            LineDataSet dataset = new LineDataSet(lineEntry, "line water usage");//loading the top labels and setting the bottom label
-            lineChart.setData(new LineData(dataset)); // set the data and list of labels into chart
-            IAxisValueFormatter formatter = setYaxis(labels);
-            lineChart.getAxisLeft().setAxisMinimum(0f);
-            lineChart.getAxisRight().setEnabled(false);
-            lineChart.getXAxis().setValueFormatter(formatter);
-            lineChart.getXAxis().setLabelCount(labels.length - 1);
-            dataset.setDrawFilled(true);
-            //end
 
-
+        }else{
+            lineChart.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            bcTrend.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         }
         return rootView;
     }
@@ -196,8 +203,16 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         if(entries.size()>0) {
             IAxisValueFormatter formatter = setYaxis(Labels);
             BarDataSet set = new BarDataSet(entries, "50 liters is the daily recommendation");
-            set.setColor(R.color.black);// not sure if this worsks it sts the font color black
-            BarData b = new BarData(set);
+
+            MyBarDataSet setColor = new MyBarDataSet(entries,"",set);
+            setColor.setColors(new int[]{ContextCompat.getColor(getContext(), R.color.green),
+                    ContextCompat.getColor(getContext(), R.color.red)});
+            ArrayList<BarDataSet> dataSets = new ArrayList<>();
+            dataSets.add(setColor);
+
+
+            BarData b = new BarData(dataSets.get(0));
+
             b.setBarWidth(0.5f);//bar width
             bcTrend.setData(b);
             bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
@@ -215,4 +230,31 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     }
     //end
 
+
+
+
+
+    public class MyBarDataSet extends BarDataSet {
+
+        BarDataSet set;
+        public MyBarDataSet(List<BarEntry> yVals, String label, BarDataSet set) {
+            super(yVals, label);
+            this.set = set;
+        }
+
+        @Override
+        public int getColor(int index) {
+           try {
+               if(this.getEntryForIndex(index).getY() < 60) // less than 95 green
+                   return mColors.get(0);
+               else // greater or equal than 100 red
+                   return mColors.get(1);
+           }catch (Exception e){
+               e.printStackTrace();
+           }
+
+        return -1;
+        }
+
+    }
 }

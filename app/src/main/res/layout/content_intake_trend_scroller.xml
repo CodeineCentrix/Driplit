@@ -30,6 +30,7 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="287dp">
 
+
         </com.github.mikephil.charting.charts.BarChart>
 
         <TextView
@@ -46,6 +47,7 @@
             android:background="@color/colorPrimary"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="287dp">
+
 
         </com.github.mikephil.charting.charts.LineChart>
 
@@ -109,7 +111,7 @@
                 android:layout_alignBottom="@+id/cvDate"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="117dp"
-                android:text="TextView"
+
                 android:textSize="24sp"
                 android:visibility="invisible" />
         </RelativeLayout>

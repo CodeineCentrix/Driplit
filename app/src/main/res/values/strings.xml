@@ -171,4 +171,5 @@
     <string name="the_bar_trend_info">The bar graph shows you 5 bars that have been recently been recorded, you can drag the graph to see other old bars you have recorded </string>
     <string name="the_line_graph">The line graph shows you all the water usage records giving you the bigger picture</string>
     <string name="item_graph">This bar graph shows you how much water you used on a selected day, by default it will show today\'s usage </string>
+    <string name="no_water_usage">No water Usage</string>
 </resources>
