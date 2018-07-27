@@ -65,7 +65,9 @@
     <string name="post">POST</string>
     <string name="remember_me">Remember me</string>
     <string name="Business_name">codeinecentrix</string>
-    <string name="we_are_codeinecentrix">We are codeinecentrix</string>
+    <string name="we_are_codeinecentrix">We are codeinecentrix.\n
+    With our Water Saving and Awareness system we aim to educate and make the public aware of the water crisis that we are facing.\n
+    By doing this we can play our part in ensuring that we do not run out of water.</string>
     <string name="how_report_leak">How to report leak</string>
     <string name="select_day">select day</string>
     <string name="item_trend">Trends</string>
