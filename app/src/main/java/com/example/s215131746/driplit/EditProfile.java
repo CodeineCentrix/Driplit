@@ -40,8 +40,6 @@ public class EditProfile extends AppCompatActivity {
         //txtPassword.setText(person[3]);
     }
     public void ToHome(View v){
-        Intent mainMenu = new Intent(getApplicationContext(), Mainmenu.class);
-        startActivity(mainMenu);
         finish();
     }
     public void ToUpdatePerson(View v){
@@ -70,6 +68,8 @@ public class EditProfile extends AppCompatActivity {
             m.writeToFile(person.id+","+ person.toString(),"person.txt");
             Toast.makeText(getApplicationContext(),"Updated Profile",Toast.LENGTH_SHORT).show();
             ToHome(v);
+        }else {
+            Toast.makeText(getApplicationContext(),"No Changes",Toast.LENGTH_SHORT).show();
         }
 
     }

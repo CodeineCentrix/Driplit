@@ -1,4 +1,4 @@
-package com.example.s215131746.driplit;
+package Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.s215131746.driplit.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,7 +64,11 @@ public class TipListAdapter extends BaseAdapter {
         tipDescription.setText(""+description[position]);
         tvPerson.setText("By: "+person[position]);
         tvDate.setText(df.format( date[position]));
-        //LinearLayout llTipContainer = v.findViewById(R.id.llTipContainer);
+//        LinearLayout llTipContainer = v.findViewById(R.id.llTipContainer);
+//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        lp.setMargins(0,16,8,4);
+//        llTipContainer.setLayoutParams(lp);
+
          return v;
     }
 }

@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import Adapters.TipListAdapter;
 import viewmodels.TipModel;
 
 /**

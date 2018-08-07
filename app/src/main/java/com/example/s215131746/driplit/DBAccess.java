@@ -24,7 +24,7 @@ import viewmodels.TipModel;
 import viewmodels.UspMobGetPersonItemTotal;
 import viewmodels.UspMobGetPersonTotalUsage;
 
-public class DBAccess implements IDBAccess{
+public class DBAccess{
 
     private ResultSet outerResultSet;
     private static class DBHelper{
@@ -187,7 +187,7 @@ public class DBAccess implements IDBAccess{
                     e.printStackTrace();
                 }
                 item.ItemID = outerResultSet.getInt("ItemID");
-                item.ItemDiscriotn = outerResultSet.getString("ItemDescription");
+                item.ItemDescription = outerResultSet.getString("ItemDescription");
                 item.ItemAverage =outerResultSet.getFloat("ItemAverageAmount");
 
                 //item.ItemIcon = resultSet.getByte();

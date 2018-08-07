@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 public class ItemUsageModel {
 
     public int ItemID;
-    public String ItemDiscriotn;
+    public String ItemDescription;
     public float ItemAverage;
     public Bitmap ItemIcon;
 }

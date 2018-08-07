@@ -1,4 +1,4 @@
-package com.example.s215131746.driplit;
+package Adapters;
 
 import android.content.Context;
 import android.os.Handler;
@@ -14,6 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.s215131746.driplit.DBAccess;
+import com.example.s215131746.driplit.GeneralMethods;
+import com.example.s215131746.driplit.R;
+import com.example.s215131746.driplit.RecordWaterIntakeClass;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
@@ -22,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import Interfaces.ImplementChange;
 import viewmodels.ItemUsageModel;
 import viewmodels.ResidentUsageModel;
 import viewmodels.UspMobGetPersonItemTotal;
@@ -38,7 +44,7 @@ public class ItemListAdapter extends BaseAdapter {
     private ImplementChange parentCange;
     private ArrayList<UspMobGetPersonItemTotal> PreviousUsage;
     private TextView[] tvUsed;
-    public ItemListAdapter(Context c,RecordWaterIntakeClass rwic,ArrayList<ItemUsageModel> itemUsage,
+    public ItemListAdapter(Context c, RecordWaterIntakeClass rwic, ArrayList<ItemUsageModel> itemUsage,
                            ArrayList<UspMobGetPersonItemTotal> previousUsage){
         context = c;
         PreviousUsage = previousUsage;
@@ -69,7 +75,7 @@ public class ItemListAdapter extends BaseAdapter {
     }
     @Override
     public Object getItem(int position) {
-        return ItemUsage.get(position).ItemDiscriotn;
+        return ItemUsage.get(position).ItemDescription;
     }
     public String getItemAvg(int position) {
         return ""+ItemUsage.get(position).ItemAverage;
@@ -101,7 +107,7 @@ public class ItemListAdapter extends BaseAdapter {
         final TextView tvQty = v.findViewById(R.id.tvQty);
         stringsQTY[position] = tvQty.getText().toString();
         final TextView tvItemName = v.findViewById(R.id.tvItemName);
-        tvItemName.setText(ItemUsage.get(position).ItemDiscriotn);
+        tvItemName.setText(ItemUsage.get(position).ItemDescription);
         tvUsed[position] = v.findViewById(R.id.tvUsedToday);
         String value = ""+ personUsage[position];
         tvUsed[position].setText(value);
@@ -153,12 +159,12 @@ public class ItemListAdapter extends BaseAdapter {
 
 
     public void setVisibility(int position ){
-        if(LoDropHides[position].getVisibility()==View.INVISIBLE){
+        if(LoDropHides[position].getVisibility()==View.GONE){
             LoDropHides[position].setVisibility(View.VISIBLE);
-            loHeading[position].setVisibility(View.INVISIBLE);
+            loHeading[position].setBackgroundColor(context.getResources().getColor(R.color.darkerblue));
         }else{
-            loHeading[position].setVisibility(View.VISIBLE);
-            LoDropHides[position].setVisibility(View.INVISIBLE);
+            loHeading[position].setBackgroundColor(context.getResources().getColor(R.color.darkgrey));
+            LoDropHides[position].setVisibility(View.GONE);
         }
     }
     private float GetAllUsage(){

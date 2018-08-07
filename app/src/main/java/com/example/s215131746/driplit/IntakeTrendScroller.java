@@ -139,12 +139,14 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         if(i>0) {
             final String[] labels = new String[i];
             i = 0;
+            entries.clear();
+            lineEntry.clear();
             for (UspMobGetPersonTotalUsage usage : usages) {
                 labels[i] = usage.UsageDay;
                 entries.add(new BarEntry(i, usage.UsageAmount));
                 lineEntry.add(new Entry(i, usage.UsageAmount));
                 i++;
-
+            }
                 SetUpGraph(bcTrend, entries, labels);
                 //Line chart___________________________________________________________
 
@@ -153,14 +155,14 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 LineDataSet dataset = new LineDataSet(lineEntry, "line water usage");//loading the top labels and setting the bottom label
                 lineChart.setData(new LineData(dataset)); // set the data and list of labels into chart
                 IAxisValueFormatter formatter = setYaxis(labels);
-                lineChart.getAxisLeft().setAxisMinimum(0f);
+                //lineChart.getAxisLeft().setAxisMinimum(0f);
                 lineChart.getAxisRight().setEnabled(false);
                 lineChart.getXAxis().setEnabled(false);
                 lineChart.getXAxis().setValueFormatter(formatter);
                 lineChart.getXAxis().setLabelCount(labels.length - 1);
                 dataset.setDrawFilled(true);
                 //end
-            }
+
 
         }else{
             lineChart.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -209,14 +211,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                     ContextCompat.getColor(getContext(), R.color.red)});
             ArrayList<BarDataSet> dataSets = new ArrayList<>();
             dataSets.add(setColor);
-
-
             BarData b = new BarData(dataSets.get(0));
 
             b.setBarWidth(0.5f);//bar width
             bcTrend.setData(b);
             bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
-            bcTrend.getAxisLeft().setAxisMinimum(0f);
+           // bcTrend.getAxisLeft().setAxisMinimum(0f);
             bcTrend.getAxisLeft().setDrawGridLines(false);//removes the grid lines of the bar graph
             bcTrend.invalidate();
             bcTrend.getAxisRight().setEnabled(false);
@@ -224,7 +224,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             bcTrend.getXAxis().setLabelCount(Labels.length);
             bcTrend.fitScreen();//obviuosly its to make sure the graph fits the screen
             bcTrend.invalidate();
-            bcTrend.setVisibleXRangeMaximum(5);// sets the number of bars to be shown at a given moment
+            bcTrend.setVisibleXRangeMaximum(5f);// sets the number of bars to be shown at a given moment
             bcTrend.moveViewToX(entries.size());
         }
     }
