@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import static android.location.LocationManager.*;
 
 public class ReportLeakClass extends Fragment {
     ImageButton btnReport;
+    Button btnReported;
     Intent mainMenu;
     TextView txtAddress;
     TextView txtHead;
@@ -59,6 +61,13 @@ public class ReportLeakClass extends Fragment {
             }
         });
 
+        btnReported = (Button) rootView.findViewById(R.id.btnReported);
+        btnReported.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewReportedLeaks();
+            }
+        });
 
         return rootView;
     }
@@ -151,5 +160,10 @@ public class ReportLeakClass extends Fragment {
         {
             Toast.makeText(view.getContext(), "OOPS! Something went wrong!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
         }
+    }
+    public void ViewReportedLeaks()
+    {
+        Intent rLeaks = new Intent(getContext(), ReportedLeaks.class);
+        startActivity(rLeaks);
     }
 }

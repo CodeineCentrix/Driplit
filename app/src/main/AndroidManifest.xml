@@ -48,10 +48,11 @@
             android:name=".IntakeHelper"
             android:label="@string/title_activity_intake_helper"
             android:theme="@style/AppTheme" />
-        <!--<activity-->
-            <!--android:name=".IntakeTrendScroller"-->
-            <!--android:label="@string/title_activity_intake_trend_scroller"-->
-            <!--android:theme="@style/AppTheme"></activity>-->
+        <!-- <activity -->
+        <!-- android:name=".IntakeTrendScroller" -->
+        <!-- android:label="@string/title_activity_intake_trend_scroller" -->
+        <!-- android:theme="@style/AppTheme"></activity> -->
+        <activity android:name=".ReportedLeaks"></activity>
     </application>
 
 </manifest>

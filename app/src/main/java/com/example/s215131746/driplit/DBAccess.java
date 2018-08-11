@@ -15,14 +15,8 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import viewmodels.Business;
-import viewmodels.ItemUsageModel;
-import viewmodels.PersonModel;
-import viewmodels.ReportLeakModel;
-import viewmodels.ResidentUsageModel;
-import viewmodels.TipModel;
-import viewmodels.UspMobGetPersonItemTotal;
-import viewmodels.UspMobGetPersonTotalUsage;
+import viewmodels.*;
+import viewmodels.ReportedLeaks;
 
 public class DBAccess{
 
@@ -350,6 +344,27 @@ public class DBAccess{
             e.printStackTrace();
         }
         return tip;
+    }
+    public ArrayList<ReportedLeaks> GetReportedLeaks()
+    {
+        ArrayList<ReportedLeaks> leaks = new ArrayList<>();
+        try
+        {
+            outerResultSet = DBHelper.Select("{CALL uspMobGetLeaks}");
+            while(outerResultSet.next())
+            {
+                ReportedLeaks leak = new ReportedLeaks();
+                leak.location = outerResultSet.getString("Latitude");
+                leak.date = outerResultSet.getDate("DateReported");
+                leaks.add(leak);
+            }
+            DBHelper.Close();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return leaks;
     }
 
     public Business GetBusiness(){
