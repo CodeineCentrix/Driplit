@@ -69,7 +69,7 @@ public class ReportedLeaksAdapter extends BaseAdapter {
         java.sql.Date ldate = date[position];
 
         address.setText(loc);
-        day.setText((CharSequence) ldate);
+        day.setText(""+ ldate);
         return v;
     }
 }

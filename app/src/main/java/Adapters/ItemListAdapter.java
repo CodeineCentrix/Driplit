@@ -163,7 +163,7 @@ public class ItemListAdapter extends BaseAdapter {
             LoDropHides[position].setVisibility(View.VISIBLE);
             loHeading[position].setBackgroundColor(context.getResources().getColor(R.color.darkerblue));
         }else{
-            loHeading[position].setBackgroundColor(context.getResources().getColor(R.color.darkgrey));
+            loHeading[position].setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
             LoDropHides[position].setVisibility(View.GONE);
         }
     }

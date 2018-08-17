@@ -2,14 +2,18 @@ package com.example.s215131746.driplit;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,6 +37,8 @@ public class Login extends AppCompatActivity {
     GeneralMethods m;
     String[] details;
     TextView txtFeedback;
+    Bitmap bitmapImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +65,7 @@ public class Login extends AppCompatActivity {
         else
             cbRemeber.setChecked(false);
     }
-
-    public void ToRegisterScreen(View view)
-    {
+    public void ToRegisterScreen(View view){
         //m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Resources/View/log_in.php?from=mobile");
 
        Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
@@ -72,9 +76,7 @@ public class Login extends AppCompatActivity {
        // registerScreen = new Intent(getApplicationContext(), Register2.class);
        // startActivity(registerScreen);
     }
-
-    public void ToFODScreen(View view)
-    {
+    public void ToFODScreen(View view){
         if(cbRemeber.isChecked())
             RemeberMe("yes");
         else
@@ -104,8 +106,7 @@ public class Login extends AppCompatActivity {
         }
 
     }
-
-    public void GetLocation(View view) {
+    public void GetLocation(final View view) {
         TextView txtFeedback;
         Context con = view.getContext();
         LocationManager lm = (LocationManager) con.getSystemService(Context.LOCATION_SERVICE);
@@ -137,41 +138,64 @@ public class Login extends AppCompatActivity {
             List<Address> addresses;
             Double longitude = location.getLongitude();
             Double latitude = location.getLatitude();
-
             geocoder = new Geocoder(this, Locale.getDefault());
-            try
-            {
+            try{
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
                 String address = addresses.get(0).getAddressLine(0);
-
                 String fullAddress = address;
                 if(address != null)
                 {
+                    AlertDialog.Builder takePic = new AlertDialog.Builder(view.getContext());
+                    takePic.setTitle("Take leak picture! ");
+                    takePic.setMessage("Do you want to take a picture of leak?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    onTakePicture( view);
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    AlertDialog b = takePic.create();
+                    b.show();
                     txtFeedback = findViewById(R.id.txtFeedback);
                     txtFeedback.setText("Leak Successfully Reported!");
+
                 }
-                else
-                {
-                    Toast.makeText(view.getContext(), "OOPS! Something went wrong!", Toast.LENGTH_LONG);
+                else{
+                    Toast.makeText(view.getContext(), "OOPS! geo location not found!", Toast.LENGTH_LONG);
                 }
 
-            }
-            catch (IOException e)
-            {
+            }catch (IOException e){
                 e.printStackTrace();
             }
-        }
-        else
-        {
+        }else{
             /*txtFeedback = findViewById(R.id.txtFeedback);
             txtFeedback.setText("OOPS! Something went wrong!\n Please Make Sure Your Location Is On");*/
-            Toast.makeText(this, "OOPS! Something went wrong!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Geo location not found!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
 
         }
 
 
 
 
+    }
+    public void onTakePicture(View view){
+
+        Intent showCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(showCamera, 10);
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==10 && data!=null){
+            bitmapImage = (Bitmap) data.getExtras().get("data");
+        }
     }
 }
