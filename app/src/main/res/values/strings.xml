@@ -61,7 +61,7 @@
     <string name="tip_trick_description">Tip Trick Description</string>
     <string name="posted_by">By: </string>
     <string name="name">Name</string>
-    <string name="date">Date</string>
+    <string name="date">Date:</string>
     <string name="post">POST</string>
     <string name="remember_me">Remember me</string>
     <string name="Business_name">codeinecentrix</string>
@@ -180,8 +180,9 @@
     <string name="after_you_click_record_button_you_will_see_the_total_usage_of_today_at_the_bottom_you_can_also_click_undo_with_in_3_seconds">After you click record button you will see the total usage of today at the bottom you can also click undo with in 3 seconds</string>
     <string name="on_your_left_you_will_see_the_average_used">On your left you will see the average used</string>
     <string name="use_the_buttons_to_add_or_minus_the_number_of_times_you_the_item">use the buttons to add or minus the number of times you the item</string>
-    <string name="location">Location</string>
+    <string name="location">Location:</string>
     <string name="reported">Reported</string>
+    <string name="leak_image">Leak Image</string>
 
     <string-array name="Location">
         <item>Burberry Close</item>

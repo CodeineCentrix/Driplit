@@ -14,6 +14,8 @@ public class ReportedLeaks extends AppCompatActivity {
     GeneralMethods method;
     ListView reportedLeaks;
     String[] location;
+    Double[] longitude;
+    Double[] latitude;
     String[] date;
 
     @Override
@@ -27,7 +29,7 @@ public class ReportedLeaks extends AppCompatActivity {
         access = new DBAccess();
 
 
-        ArrayList<viewmodels.ReportedLeaks> leaks = access.GetReportedLeaks();
+        ArrayList<viewmodels.ReportLeakModel> leaks = access.GetReportedLeaks();
 
         //Trying to link the properties in the GetReportedLeaks/ReportedLeak class to the Adapter to display.
 

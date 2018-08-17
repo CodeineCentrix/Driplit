@@ -10,4 +10,6 @@ public class ReportedLeaks {
 
     public String location;
     public Date date;
+    Double[] longitude;
+    Double[] latitude;
 }

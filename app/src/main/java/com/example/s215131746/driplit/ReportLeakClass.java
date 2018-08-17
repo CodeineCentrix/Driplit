@@ -138,6 +138,7 @@ public class ReportLeakClass extends Fragment {
                     report.PersonID = Integer.parseInt(id);
                     report.Latitude = ""+latitude;
                     report.Longitude = ""+longitude;
+                    report.Location = ""+fullAddress;
                     Date date = new Date();
                     db.MobAddLeak(report);
                 }

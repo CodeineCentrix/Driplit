@@ -1,6 +1,9 @@
 package com.example.s215131746.driplit;
 
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.StrictMode;
+import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -14,11 +17,12 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import viewmodels.*;
 import viewmodels.ReportedLeaks;
 
-public class DBAccess{
+public class  DBAccess{
 
     private ResultSet outerResultSet;
     private static class DBHelper{
@@ -325,7 +329,7 @@ public class DBAccess{
         return isWorking;
     }
     public boolean MobAddLeak(ReportLeakModel leak){
-        Object[] paras = {leak.Latitude,leak.Longitude,leak.PersonID};
+        Object[] paras = {leak.Latitude,leak.Longitude,leak.PersonID, leak.picPath, leak.Location};
         boolean isWorking = DBHelper.NonQuery(" uspAddLeak",paras);
         DBHelper.Close();
         return isWorking;
@@ -345,17 +349,36 @@ public class DBAccess{
         }
         return tip;
     }
-    public ArrayList<ReportedLeaks> GetReportedLeaks()
+    public ArrayList<ReportLeakModel> GetReportedLeaks()
     {
-        ArrayList<ReportedLeaks> leaks = new ArrayList<>();
+        Location location = null;
+        Geocoder geocoder;
+        ArrayList<ReportLeakModel> leaks = new ArrayList<>();
         try
         {
             outerResultSet = DBHelper.Select("{CALL uspMobGetLeaks}");
             while(outerResultSet.next())
             {
-                ReportedLeaks leak = new ReportedLeaks();
-                leak.location = outerResultSet.getString("Latitude");
+                ReportLeakModel leak = new ReportLeakModel();
+                leak.Location = outerResultSet.getString("Location");
+                //leak.Latitude = outerResultSet.getString("Latitude");
+                //leak.Longitude = outerResultSet.getString("Longitude");
                 leak.date = outerResultSet.getDate("DateReported");
+
+
+                //Double longitude = location.getLongitude();
+                //Double latitude = location.getLatitude();
+
+
+                //This section gets the address from the longitude and latitude.
+                //geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                //ddresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                //String address = addresses.get(0).getAddressLine(0);
+
+                //String fullAddress = address;
+
                 leaks.add(leak);
             }
             DBHelper.Close();
