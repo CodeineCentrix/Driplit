@@ -12,6 +12,7 @@ import com.example.s215131746.driplit.R;
 import java.util.ArrayList;
 import java.util.Date;
 
+import viewmodels.ReportLeakModel;
 import viewmodels.ReportedLeaks;
 
 /**
@@ -22,19 +23,20 @@ public class ReportedLeaksAdapter extends BaseAdapter {
 
     LayoutInflater mInflater;
     String[] location;
+    ArrayList<ReportLeakModel> leak;
     java.sql.Date[] date;
 
-    public ReportedLeaksAdapter(Context c, ArrayList<ReportedLeaks> l)
+    public ReportedLeaksAdapter(Context c, ArrayList<ReportLeakModel> l)
     {
 
         int i = l.size();
         location = new String[i];
         date = new java.sql.Date[i];
-
+        leak = l;
         i=0;
-        for(ReportedLeaks leak :l )
+        for(ReportLeakModel leak :l )
         {
-            location[i] = leak.location;
+            location[i] = leak.Location;
             date[i] = (java.sql.Date) leak.date;
             i++;
         }
@@ -62,14 +64,16 @@ public class ReportedLeaksAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = mInflater.inflate(R.layout.activity_reported_leaks, null);
-        TextView address =(TextView) v.findViewById(R.id.LeakAddress);
+        TextView longitude =(TextView) v.findViewById(R.id.LeakAddress);
         TextView day = (TextView) v.findViewById(R.id.LeakDate);
 
         String loc = location[position];
-        java.sql.Date ldate = date[position];
+        String lon = location[position];
+        java.sql.Date leakDate = date[position];
 
-        address.setText(loc);
-        day.setText(""+ ldate);
+        //address.setText(loc);
+        longitude.setText(leak.get(position).Location);
+        day.setText(""+leakDate);
         return v;
     }
 }
