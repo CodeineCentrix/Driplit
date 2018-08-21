@@ -155,6 +155,12 @@ public class Login extends AppCompatActivity {
                                     onTakePicture( view);
                                 }
                             })
+                            .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

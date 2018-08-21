@@ -2,6 +2,7 @@ package com.example.s215131746.driplit;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,31 +47,24 @@ public class ReportLeakClass extends Fragment {
     TextView txtInstruction;
     DBAccess db = new DBAccess();
     GeneralMethods m ;
-    ImageView leakPic;
     Bitmap bitmapImage;
-
+     Double longitude;
+     Double latitude ;
+     String fullAddress;
+     String id;
+    String uploadImageName;
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.report_leak, container, false);
 
         GeneralMethods m = new GeneralMethods(rootView.getContext());
         Bitmap image = m.ScaleImg(R.drawable.report,rootView.getResources());
-        leakPic = rootView.findViewById(R.id.imgLeak);
-        btnTakePic = rootView.findViewById(R.id.btnTakePic);
-            btnTakePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                onTakePicture(v);
-            }
-        });
             btnReport = (ImageButton)rootView.findViewById(R.id.imgReportLeak);
             btnReport.setImageBitmap(image);
 
             btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    leakPic.setVisibility(View.GONE);
                     GetLocation(v);
                 }
             });
@@ -89,13 +84,11 @@ public class ReportLeakClass extends Fragment {
         startActivityForResult(showCamera, 10);
 
     }
-    public void GetLocation(View view){
+    public void GetLocation(final View view){
 
         //Getting the context and initializing LocationManager with location service.
         Context con = view.getContext();
         LocationManager lm = (LocationManager) con.getSystemService(Context.LOCATION_SERVICE);
-
-
         if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -108,24 +101,19 @@ public class ReportLeakClass extends Fragment {
             //Checking For Request Permissions
             ActivityCompat.requestPermissions(this.getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10);
-
             //Handling The Request Result
             //onRequestPermissionsResult(10, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, int grantResults[]);
             return;
         }
-
-
-        if(lm.getProvider(GPS_PROVIDER) != null)
-        {
-
+        if(lm.getProvider(GPS_PROVIDER) != null){
             m = new GeneralMethods(view.getContext());
             try{
                 //Getting the last known location of the device
                 Location location = lm.getLastKnownLocation(GPS_PROVIDER);
                 Geocoder geocoder;
                 List<Address> addresses;
-                Double longitude = location.getLongitude();
-                Double latitude = location.getLatitude();
+                final Double longitude = location.getLongitude();
+                final Double latitude = location.getLatitude();
                 //Finding the IDs for the TextViews
                 txtAddress = (TextView) getView().findViewById(R.id.txtAddress);
                 txtHead = (TextView) getView().findViewById(R.id.txtHead);
@@ -134,25 +122,33 @@ public class ReportLeakClass extends Fragment {
                 geocoder = new Geocoder(getContext(), Locale.getDefault());
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
                 String address = addresses.get(0).getAddressLine(0);
-                String fullAddress = address;
+                final String fullAddress = address;
+             id = m.Read("person.txt", ",")[0];
                 if(address != null){
-                    txtHead.setVisibility(View.VISIBLE);
-                    txtAddress.setVisibility(View.VISIBLE);
-                    txtInstruction.setVisibility(View.INVISIBLE);
-                    txtAddress.setText(fullAddress);
-                    //Saving location to the database
-                    ReportLeakModel report = new ReportLeakModel();
-                    String id = m.Read("person.txt", ",")[0];
-                    report.PersonID = Integer.parseInt(id);
-                    report.Latitude = ""+latitude;
-                    report.Longitude = ""+longitude;
-                    report.Location = ""+fullAddress;
-                    Date date = new Date();
-                    db.MobAddLeak(report);
-                    if(bitmapImage!=null){
-                        String uploadImageName= "leak"+ new SimpleDateFormat("yyyyMMddHHmmss'.PNG'").format(new Date());
-                        new UploadImage(uploadImageName,bitmapImage).doInBackground();
-                    }
+                    AlertDialog.Builder takePic = new AlertDialog.Builder(view.getContext());
+                    takePic.setTitle("Take leak picture! ");
+                    takePic.setMessage("Do you want to take a picture of leak?")
+                            .setCancelable(true)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    onTakePicture(view);
+                                }
+                            })
+                            .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SaveLeak(longitude.toString(),latitude.toString(), fullAddress, Integer.parseInt(id));
+                                }
+                            });
+                    AlertDialog b = takePic.create();
+                    b.show();
                 }
                 else{
                     Toast.makeText(view.getContext(), " Geo location not found!", Toast.LENGTH_LONG).show();
@@ -167,6 +163,18 @@ public class ReportLeakClass extends Fragment {
             Toast.makeText(view.getContext(), "Geo location not found!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
         }
     }
+    public void SaveLeak(String longitude,String latitude,String fullAddress, int id){
+        txtHead.setVisibility(View.VISIBLE);
+        txtAddress.setVisibility(View.VISIBLE);
+        txtInstruction.setVisibility(View.INVISIBLE);
+        txtAddress.setText(fullAddress);
+
+        ReportLeakModel report = new ReportLeakModel();
+        report.PersonID = id;
+        report.Latitude = ""+latitude;
+        report.Longitude = ""+longitude;
+        db.MobAddLeak(report);
+    }
     public void ViewReportedLeaks(){
         Intent rLeaks = new Intent(getContext(), ReportedLeaks.class);
         startActivity(rLeaks);
@@ -176,8 +184,16 @@ public class ReportLeakClass extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==10 && data!=null){
             bitmapImage = (Bitmap) data.getExtras().get("data");
-            leakPic.setImageBitmap(bitmapImage);
-            leakPic.setVisibility(View.VISIBLE);
+            if(bitmapImage!=null){
+                uploadImageName = "leak"+ new SimpleDateFormat("yyyyMMddHHmmss'.PNG'").format(new Date());
+                new UploadImage(uploadImageName,bitmapImage).doInBackground();
+                ReportLeakModel report = new ReportLeakModel();
+                report.PersonID = Integer.parseInt(id);
+                report.Latitude = ""+latitude;
+                report.Longitude = ""+longitude;
+                report.picPath = uploadImageName;
+                db.MobAddLeak(report);
+            }
         }
     }
 }
