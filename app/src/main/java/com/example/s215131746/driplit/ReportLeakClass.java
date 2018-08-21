@@ -112,8 +112,8 @@ public class ReportLeakClass extends Fragment {
                 Location location = lm.getLastKnownLocation(GPS_PROVIDER);
                 Geocoder geocoder;
                 List<Address> addresses;
-                final Double longitude = location.getLongitude();
-                final Double latitude = location.getLatitude();
+         longitude = location.getLongitude();
+         latitude = location.getLatitude();
                 //Finding the IDs for the TextViews
                 txtAddress = (TextView) getView().findViewById(R.id.txtAddress);
                 txtHead = (TextView) getView().findViewById(R.id.txtHead);
