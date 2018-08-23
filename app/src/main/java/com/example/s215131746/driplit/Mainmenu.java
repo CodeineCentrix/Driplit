@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import viewmodels.PersonModel;
+
 public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -49,8 +51,8 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         }
         TextView tvFullName = (TextView) header.findViewById(R.id.nav_tvFullName);
         TextView tvEmail = header.findViewById(R.id.nav_tvEmail);
-        tvEmail.setText(details[2]);
-        tvFullName.setText(details[1]);
+        tvEmail.setText(details[PersonModel.EMAIL]);
+        tvFullName.setText(details[PersonModel.FULLNAME]);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -113,7 +115,6 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         }
         else {
             startActivity(in);
-            finish();
         }
 
     }
@@ -129,19 +130,19 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         if (id == R.id.nav_signout) {
             Intent signOut = new Intent(getApplicationContext(),Login.class);
             startActivity(signOut);
-            finish();
+
         }
         else if(id == R.id.nav_help)
         {
             Intent help = new Intent (getApplicationContext(), HelpScreen.class);
             startActivity(help);
-            finish();
+
         }
         else if(id == R.id.nav_aboutus)
         {
             Intent aboutUs = new Intent (getApplicationContext(), AboutUs.class);
             startActivity(aboutUs);
-            finish();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

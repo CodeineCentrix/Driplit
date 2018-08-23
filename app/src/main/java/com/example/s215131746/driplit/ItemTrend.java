@@ -44,7 +44,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
         final GeneralMethods m = new GeneralMethods(rootView.getContext());
         cvDate.setVisibility(View.INVISIBLE);
-        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.UspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
+        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
         cvDate.setMaxDate(cvDate.getDate());
         int i = ItemUsages.size();
 

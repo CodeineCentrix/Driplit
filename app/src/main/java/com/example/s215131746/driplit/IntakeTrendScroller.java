@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import viewmodels.PersonModel;
 import viewmodels.UspMobGetPersonItemTotal;
 import viewmodels.UspMobGetPersonTotalUsage;
 
@@ -42,7 +44,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     CalendarView cvDate = null;
     Button btnSelectDate ;
     //end
-
+     GeneralMethods m;
     //from trends
     final List<BarEntry> entries = new ArrayList<>();
     final ArrayList<Entry> lineEntry = new ArrayList<>();
@@ -57,9 +59,9 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         tvNodata = rootView.findViewById(R.id.tvNoData);
         barChart =  rootView.findViewById(R.id.bcT);
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
-        final GeneralMethods m = new GeneralMethods(rootView.getContext());
+        m = new GeneralMethods(rootView.getContext());
         cvDate.setVisibility(View.INVISIBLE);
-        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.UspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
+        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
         cvDate.setMaxDate(cvDate.getDate());
         int i = ItemUsages.size();
 
@@ -234,7 +236,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
 
 
-    public class MyBarDataSet extends BarDataSet {
+    private class MyBarDataSet extends BarDataSet {
 
         BarDataSet set;
         public MyBarDataSet(List<BarEntry> yVals, String label, BarDataSet set) {
@@ -245,7 +247,8 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         @Override
         public int getColor(int index) {
            try {
-               if(this.getEntryForIndex(index).getY() < 60) // less than 95 green
+               int target = Integer.parseInt(m.Read("person.txt",",")[PersonModel.USAGETARGET]);
+               if(this.getEntryForIndex(index).getY() < target) // less than 95 green
                    return mColors.get(0);
                else // greater or equal than 100 red
                    return mColors.get(1);

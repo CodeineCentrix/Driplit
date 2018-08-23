@@ -15,4 +15,5 @@ public class TipModel {
     public  String FullName;
     public Date DatePosted;
     public  String TipDescription;
+    public boolean Approved;
 }

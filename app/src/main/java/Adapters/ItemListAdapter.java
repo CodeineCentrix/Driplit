@@ -29,21 +29,22 @@ import java.util.Calendar;
 
 import Interfaces.ImplementChange;
 import viewmodels.ItemUsageModel;
+import viewmodels.PersonModel;
 import viewmodels.ResidentUsageModel;
 import viewmodels.UspMobGetPersonItemTotal;
 
 public class ItemListAdapter extends BaseAdapter {
-    private GeneralMethods m;
+    private GeneralMethods generalMethods;
     private ArrayList<ItemUsageModel> ItemUsage;
+    private ArrayList<UspMobGetPersonItemTotal> PreviousUsage;
     private float[] personUsage;
     private String[] stringsQTY;
     private LinearLayout[] LoDropHides;
     private LinearLayout[] loHeading;
-    private Context context;
     private LayoutInflater mInflater;
     private ImplementChange parentCange;
-    private ArrayList<UspMobGetPersonItemTotal> PreviousUsage;
     private TextView[] tvUsed;
+    private Context context;
     public ItemListAdapter(Context c, RecordWaterIntakeClass rwic, ArrayList<ItemUsageModel> itemUsage,
                            ArrayList<UspMobGetPersonItemTotal> previousUsage){
         context = c;
@@ -67,7 +68,7 @@ public class ItemListAdapter extends BaseAdapter {
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
         loHeading = new LinearLayout[getCount()];
-        m = new GeneralMethods(c);
+        generalMethods = new GeneralMethods(c);
     }
     @Override
     public int getCount() {
@@ -76,15 +77,6 @@ public class ItemListAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return ItemUsage.get(position).ItemDescription;
-    }
-    public String getItemAvg(int position) {
-        return ""+ItemUsage.get(position).ItemAverage;
-    }
-    public float getUsage(int position,float TotalQty){
-       float qty = Float.parseFloat (stringsQTY[position]);
-        qty = qty*ItemUsage.get(position).ItemAverage;
-        qty = qty + TotalQty;
-        return  qty;
     }
     @Override
     public long getItemId(int position) {
@@ -156,8 +148,6 @@ public class ItemListAdapter extends BaseAdapter {
         });
         return v;
     }
-
-
     public void setVisibility(int position ){
         if(LoDropHides[position].getVisibility()==View.GONE){
             LoDropHides[position].setVisibility(View.VISIBLE);
@@ -166,13 +156,6 @@ public class ItemListAdapter extends BaseAdapter {
             loHeading[position].setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
             LoDropHides[position].setVisibility(View.GONE);
         }
-    }
-    private float GetAllUsage(){
-        float all=0;
-        for (UspMobGetPersonItemTotal res: PreviousUsage) {
-            all+=res.UsageAmount;
-        }
-        return all;
     }
     private void SetUsageEditText(EditText txtItemUsage,int position,int Quatity){
         DecimalFormat df = new DecimalFormat();
@@ -189,7 +172,7 @@ public class ItemListAdapter extends BaseAdapter {
         txtItemUsage.setText(v);
     }
     private void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed ){
-        m.writeToFile("do","Recording.txt");
+        generalMethods.writeToFile("do","Recording.txt");
         final int duration = 3000;
         final float Used = Float.parseFloat(txtItemUsage.getText().toString());
         if(Used>0){
@@ -222,14 +205,14 @@ public class ItemListAdapter extends BaseAdapter {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String[] person = m.Read("person.txt",",");
-            resUsing.PersonID = Integer.parseInt(person[0]);
+            String[] person = generalMethods.Read("person.txt",",");
+            resUsing.PersonID = Integer.parseInt(person[PersonModel.ID]);
             Handler h = new Handler();
             Snackbar mySnackbar = Snackbar.make(v,R.string.record_successful, duration);
             mySnackbar.setAction(R.string.undo, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    m.writeToFile("undo","Recording.txt");
+                    generalMethods.writeToFile("undo","Recording.txt");
                     String value = dc.format(Float.parseFloat(parentCange.GetValue())-Used);
                     parentCange.DoChanges(value);
                     value = Used+"";
@@ -246,7 +229,7 @@ public class ItemListAdapter extends BaseAdapter {
            h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(m.readFromFile("Recording.txt").equals("do")){
+                    if(generalMethods.readFromFile("Recording.txt").equals("do")){
                         business.MobAddResidentUsage(resUsing);
                     }
 

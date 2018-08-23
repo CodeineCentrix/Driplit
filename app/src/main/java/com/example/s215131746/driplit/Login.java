@@ -38,7 +38,7 @@ public class Login extends AppCompatActivity {
     String[] details;
     TextView txtFeedback;
     Bitmap bitmapImage;
-
+    int usage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +49,12 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.txtUsername);
         password = findViewById(R.id.txtPassword);
         RemeberMe();
+        usage = 60;
         if(cbRemeber.isChecked()){
             details = m.Read("person.txt",",");
-            email.setText(details[2]);
-            password.setText(details[3]);
+            email.setText(details[PersonModel.EMAIL]);
+            password.setText(details[PersonModel.PASSWORD]);
+         usage =Integer.parseInt(details[PersonModel.USAGETARGET]);
         }
         business = new DBAccess();
     }
@@ -82,13 +84,18 @@ public class Login extends AppCompatActivity {
         else
             RemeberMe("no");
         PersonModel person = new PersonModel();
+       person.isAdmin =false;
         person.email = email.getText().toString();
+        person.Usagetarget = usage;
+        if(person.email.contains("@driplit.drip")){
+            person.isAdmin = true;
+        }
         person.userPassword = password.getText().toString();
         boolean wifi = true;
         try {
             person = business.LoginPerson(person);
             //writes the persons details to a screen which gets continually used
-            m.writeToFile(person.id+","+ person.toString(),"person.txt");
+            m.writeToFile(person.toString(),"person.txt");
         }catch (NullPointerException e){
             wifi = false;
         }
@@ -96,7 +103,10 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
         }
         else if(person.fullName!=null && !person.fullName.equals("")){
-            Toast.makeText(this,    "Hello "+person.fullName,Toast.LENGTH_LONG).show();
+            if(person.isAdmin){
+                Toast.makeText(this,"Its good to see you admin",Toast.LENGTH_SHORT).show();
+            }else
+            Toast.makeText(this,    "Hello "+person.fullName,Toast.LENGTH_SHORT).show();
             fodScreen = new Intent(getApplicationContext(), FODScreen.class);
             startActivity(fodScreen);
         }else{

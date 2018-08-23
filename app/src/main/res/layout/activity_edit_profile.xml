@@ -64,6 +64,15 @@
             tools:targetApi="lollipop" />
 
         <EditText
+            android:id="@+id/txtUsageTarget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Usage Target"
+            android:inputType="number"
+            android:textAlignment="center" />
+
+        <EditText
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,40 +110,19 @@
             tools:layout_editor_absoluteX="63dp"
             tools:targetApi="lollipop" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btnDone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnDone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@color/darkerblue"
-                android:elevation="0dp"
-                android:onClick="ToUpdatePerson"
-                android:text="@string/done"
-                tools:targetApi="lollipop" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@color/cardview_dark_background"
-                android:onClick="ToHome"
-                android:text="@string/home"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@color/darkerblue"
+            android:elevation="0dp"
+            android:onClick="ToUpdatePerson"
+            android:text="@string/done"
+            tools:targetApi="lollipop" />
 
     </LinearLayout>
 

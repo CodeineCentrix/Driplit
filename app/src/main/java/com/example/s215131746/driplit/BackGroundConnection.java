@@ -56,7 +56,7 @@ public class BackGroundConnection extends AsyncTask<String,String,String>  {
 
 
     }
-    public String[] conntion()
+    public String[] ConnectionProperties()
     {
         return doInBackground().split(",");
     }

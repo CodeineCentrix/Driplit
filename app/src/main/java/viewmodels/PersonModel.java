@@ -1,17 +1,27 @@
 package viewmodels;
 
+import android.app.Application;
+
 /**
  * Created by s216127904 on 2018/06/01.
  */
 
-public class PersonModel {
+public class PersonModel extends Application {
+    public static final int ID = 0;
+    public static final int FULLNAME=1;
+    public static final int EMAIL=2;
+    public static final int PASSWORD=3;
+    public static final int ISAMDIN=4;
+    public static final int USAGETARGET=5;
     public int id;
     public String fullName;
     public String email;
     public String userPassword;
+    public boolean isAdmin;
+    public int Usagetarget ;
 
     @Override
     public String toString() {
-        return fullName+","+email+","+userPassword;
+        return id+","+fullName+","+email+","+userPassword+","+isAdmin +","+Usagetarget;
     }
 }

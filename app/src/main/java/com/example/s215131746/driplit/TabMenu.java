@@ -52,6 +52,10 @@ public class TabMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -61,8 +65,8 @@ public class TabMenu extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         Bundle tab = getIntent().getExtras();
         String tabName = tab.getString("Tab");
-//        String[] tabs = {"ItemTrend","Trend","Tips","Report","Record","Edit"};
-        String[] tabs = {"Record","Report","Tips","Trend","ItemTrend","Edit"};
+//        String[] tabs = {"Record","Report","Tips","Trend","ItemTrend","Edit"};
+        String[] tabs = {"Record","Report","Tips","ItemTrend",""};
         DBAccess business = new DBAccess();
         boolean wifi = true;
         try {
@@ -73,7 +77,7 @@ public class TabMenu extends AppCompatActivity {
         if(!wifi){
             Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
         }else {
-            for(int i = 0; i <tabs.length-1;i++){
+            for(int i = 0; i <tabs.length;i++){
                 if(tabName.equalsIgnoreCase(tabs[i]) ){
                     mViewPager.setCurrentItem(i);
                 }
@@ -85,6 +89,7 @@ public class TabMenu extends AppCompatActivity {
         for(int i = 0; i <tabs.length-1;i++){
             if(tabName.equalsIgnoreCase(tabs[i]) ){
                 mViewPager.setCurrentItem(i);
+
             }
         }
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -109,11 +114,7 @@ public class TabMenu extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        finish();
         return super.onOptionsItemSelected(item);
     }
 

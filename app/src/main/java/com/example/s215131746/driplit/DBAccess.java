@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -39,7 +37,7 @@ public class  DBAccess{
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             try {
-                String[] properties = connectionProperties.conntion();
+                String[] properties = connectionProperties.ConnectionProperties();
                 conString = properties[0];
                 forName =  properties[1];
                 us =  properties[2];
@@ -152,7 +150,6 @@ public class  DBAccess{
             }
         }
     }
-
     public PersonModel LoginPerson(PersonModel person){
        //this object acts like a sqlparameter like in c#
         Object[] paras = {person.email,person.userPassword};
@@ -196,23 +193,6 @@ public class  DBAccess{
             e.printStackTrace();
         }
         return itemUsageModel;
-    }
-    public ArrayList<UspMobGetPersonItemTotal> UspMobGetPersonItemTotal(String email){
-        ArrayList<UspMobGetPersonItemTotal> usages = new ArrayList<>();
-        try{
-            Object[] paras = {email};
-            outerResultSet = DBHelper.SelectPara("[UspMobGetPersonItemTotal] ",paras);
-            while(outerResultSet.next()){
-                UspMobGetPersonItemTotal usage = new UspMobGetPersonItemTotal();
-                usage.ItemName = outerResultSet.getString("Item");
-                usage.UsageAmount = outerResultSet.getFloat("TotalUsageForItem");
-                usages.add(usage);
-            }
-            DBHelper.Close();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return usages;
     }
     public ArrayList<UspMobGetPersonTotalUsage> GetPersonTotalUsageGetItems(String email){
         ArrayList<UspMobGetPersonTotalUsage> usages = new ArrayList<>();
@@ -282,17 +262,44 @@ public class  DBAccess{
                 tip.DatePosted = outerResultSet.getDate("DatePosted");
                 tip.FullName = outerResultSet.getString("FullName");
                 tip.TipDescription = outerResultSet.getString("TTdescription");
+
                 //item.ItemIcon = resultSet.getByte();
                 Tips.add(tip);
             }
             DBHelper.Close();
         }
+
         catch (SQLException e){
             e.printStackTrace();
         }
         return Tips;
     }
-    public boolean uspMobUpdatePerson(PersonModel person ){
+    public ArrayList<TipModel> GetAdminTips(){
+        ArrayList<TipModel> Tips = new ArrayList<>();
+        try{
+            outerResultSet = DBHelper.Select("{CALL uspMobAdminGetTips}");
+            while(outerResultSet.next()){
+                TipModel tip = new TipModel();
+                tip.ID = outerResultSet.getInt("TTID");
+                tip.PersonName = "Adim";
+                tip.CatID = outerResultSet.getInt("CatID");
+                tip.PersonID =outerResultSet.getInt("PersonID");
+                tip.DatePosted = outerResultSet.getDate("DatePosted");
+                tip.FullName = outerResultSet.getString("FullName");
+                tip.TipDescription = outerResultSet.getString("TTdescription");
+                tip.Approved = outerResultSet.getBoolean("Approved");
+                //item.ItemIcon = resultSet.getByte();
+                Tips.add(tip);
+            }
+            DBHelper.Close();
+        }
+
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return Tips;
+    }
+    public boolean MobUpdatePerson(PersonModel person ){
         Object[] paras = {person.id,person.fullName,person.userPassword};
         boolean isWorking = DBHelper.NonQuery(" uspMobUpdatePerson ",paras);
         DBHelper.Close();
@@ -304,9 +311,9 @@ public class  DBAccess{
         DBHelper.Close();
         return isWorking;
     }
-    public boolean MobUpdatePerson(PersonModel person ){
-        Object[] paras = {person.fullName,person.email,person.userPassword};
-        boolean isWorking = DBHelper.NonQuery(" uspMobAddPerson",paras);
+    public boolean Test(int personID,String image ){
+        Object[] paras = {personID,image};
+        boolean isWorking = DBHelper.NonQuery(" uspMobTest",paras);
         DBHelper.Close();
         return isWorking;
     }
@@ -349,8 +356,7 @@ public class  DBAccess{
         }
         return tip;
     }
-    public ArrayList<ReportLeakModel> GetReportedLeaks()
-    {
+    public ArrayList<ReportLeakModel> GetReportedLeaks(){
         Location location = null;
         Geocoder geocoder;
         ArrayList<ReportLeakModel> leaks = new ArrayList<>();
@@ -389,7 +395,12 @@ public class  DBAccess{
         }
         return leaks;
     }
-
+    public boolean MobApproveTip(TipModel tip ){
+        Object[] paras = {tip.ID,tip.Approved};
+        boolean isWorking = DBHelper.NonQuery(" uspMobApproveTip ",paras);
+        DBHelper.Close();
+        return isWorking;
+    }
     public Business GetBusiness(){
         Business business = new Business();
 
