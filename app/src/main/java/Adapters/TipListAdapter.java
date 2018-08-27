@@ -78,7 +78,7 @@ public class TipListAdapter extends BaseAdapter {
 //        llTipContainer.setLayoutParams(lp);
 
          return v;
-    }
+}
     public boolean approveTip(int position){
         if(tipsList.get(position).Approved==true){
             approve[position].setBackgroundColor(context.getResources().getColor(R.color.red));

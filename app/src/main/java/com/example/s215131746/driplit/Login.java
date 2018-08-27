@@ -54,7 +54,8 @@ public class Login extends AppCompatActivity {
             details = m.Read("person.txt",",");
             email.setText(details[PersonModel.EMAIL]);
             password.setText(details[PersonModel.PASSWORD]);
-         usage =Integer.parseInt(details[PersonModel.USAGETARGET]);
+            if(details.length >PersonModel.USAGETARGET)
+                usage =Integer.parseInt(details[PersonModel.USAGETARGET]);
         }
         business = new DBAccess();
     }

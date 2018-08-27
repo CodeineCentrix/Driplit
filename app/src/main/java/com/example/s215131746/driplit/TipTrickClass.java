@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import Adapters.TipListAdapter;
+import viewmodels.PersonModel;
 import viewmodels.TipModel;
 
 /**
@@ -34,7 +35,7 @@ public class TipTrickClass extends Fragment {
         business = new DBAccess();
         ArrayList<TipModel> tips;
         final String [] fuck = m.Read("person.txt",",");
-        if(fuck[fuck.length - 1].equals("true"))
+        if(fuck[PersonModel.ISAMDIN].equals("true"))
             tips =  business.GetAdminTips();
         else
             tips = business.GetTips();
@@ -84,7 +85,7 @@ public class TipTrickClass extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //after an item has been clicked the the following line will either make the bottom controllers visible or invisible
-                if(fuck[fuck.length - 1].equals("true")) {
+                if(fuck[PersonModel.ISAMDIN].equals("true")) {
                     la.approveTip(view,i);
                 }
             }
