@@ -10,7 +10,6 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarEntry;
 
@@ -30,19 +29,20 @@ public class ItemTrend extends android.support.v4.app.Fragment {
     TextView tvNodata;
     HorizontalBarChart barChart;
     ArrayList<BarEntry> Itementries;
-    final DBAccess business = new DBAccess();
+    final TabMenu.DBAccess business = new TabMenu.DBAccess();
+    float averageUsage;
     SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     CalendarView cvDate = null;
     Button btnSelectDate ;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_item_trend, container, false);
-
+        averageUsage =0;
         cvDate  = rootView.findViewById(R.id.cvDate);
         tvNodata = rootView.findViewById(R.id.tvNoData);
         barChart =  rootView.findViewById(R.id.bcT);
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
-        final GeneralMethods m = new GeneralMethods(rootView.getContext());
+        final TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(rootView.getContext());
         cvDate.setVisibility(View.INVISIBLE);
         ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
         cvDate.setMaxDate(cvDate.getDate());
@@ -54,9 +54,11 @@ public class ItemTrend extends android.support.v4.app.Fragment {
             Itementries = new ArrayList<>();
             for (UspMobGetPersonItemTotal usage : ItemUsages) {
                 Itemlabels[i] = usage.ItemName;
+                averageUsage+=usage.UsageAmount;
                 Itementries.add(new BarEntry(i, usage.UsageAmount));
                 i++;
             }
+            averageUsage/=i;
             in.SetUpGraph(barChart, Itementries, Itemlabels);
             Date date = new Date();
             date.setTime(cvDate.getDate());
@@ -99,9 +101,11 @@ public class ItemTrend extends android.support.v4.app.Fragment {
                 ArrayList<BarEntry> Itementries = new ArrayList<>();
                 for(UspMobGetPersonItemTotal usage : ItemUsages) {
                    Itemlabels[x] = usage.ItemName;
+                    averageUsage+=usage.UsageAmount;
                    Itementries.add(new BarEntry(x, usage.UsageAmount));
                    x++;
                 }
+                averageUsage/=x;
                 if(Itemlabels.length > 0) {
                   in.SetUpGraph(barChart, Itementries, Itemlabels);
                 }

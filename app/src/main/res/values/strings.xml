@@ -165,7 +165,7 @@
     </string>
     <string name="retry">ReTry</string>
     <string name="connection_error">No WIFI connection</string>
-    <string name="title_activity_register2">Register2</string>
+    <string name="title_activity_register2">Register</string>
     <string name="re_enter_password">Re-enter password</string>
     <string name="flushing_5_times_uses_55_litres">Flushing 5 times uses 55 litres!</string>
     <string name="title_activity_intake_helper">IntakeHelper</string>
@@ -197,5 +197,10 @@
         <item>02-04-2018</item>
         <item>05-04-2018</item>
     </string-array>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="house_number">HOUSE NUMBER</string>
+    <string name="street_name">STREET NAME</string>
+    <string name="city">CITY</string>
+    <string name="suburb">SUBURB</string>
 
 </resources>

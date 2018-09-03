@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import Helpers.BackgroundTip;
+import Helpers.tipNotifier;
 import viewmodels.TipModel;
 
 public class FODScreen extends AppCompatActivity{
@@ -16,9 +17,9 @@ public class FODScreen extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_fodscreen);
         TextView txtTod = findViewById(R.id.txtTod);
-        DBAccess business = new DBAccess();
+        TabMenu.DBAccess business = new TabMenu.DBAccess();
 
-        GeneralMethods m = new GeneralMethods(getApplicationContext());
+        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getApplicationContext());
         String oldDate =m.Read("Tip.txt",",")[0], todayDate =  m.GetDate();
 
         if(oldDate.equals("") || !oldDate.equals(todayDate)){
@@ -31,8 +32,11 @@ public class FODScreen extends AppCompatActivity{
 
     }
     public void ToHome(View v){
+        Intent back = new Intent(this, BackgroundTip.class);
+        startService(back);
         Intent mainMenu = new Intent(getApplicationContext(), Mainmenu.class);
         startActivity(mainMenu);
         finish();
     }
+
 }

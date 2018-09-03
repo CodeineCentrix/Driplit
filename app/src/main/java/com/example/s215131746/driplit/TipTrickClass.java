@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import Adapters.TipListAdapter;
 import viewmodels.PersonModel;
@@ -25,14 +24,14 @@ import viewmodels.TipModel;
  */
 
 public class TipTrickClass extends Fragment {
-    DBAccess business;
+    TabMenu.DBAccess business;
     EditText txtTip;
-    GeneralMethods m;
+    TabMenu.GeneralMethods m;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.tip_trick, container, false);
         final ListView postedItems = rootView.findViewById(R.id.lvPostedTips);
-        m = new GeneralMethods(getContext());
-        business = new DBAccess();
+        m = new TabMenu.GeneralMethods(getContext());
+        business = new TabMenu.DBAccess();
         ArrayList<TipModel> tips;
         final String [] fuck = m.Read("person.txt",",");
         if(fuck[PersonModel.ISAMDIN].equals("true"))
@@ -65,9 +64,10 @@ public class TipTrickClass extends Fragment {
             @Override
             public void onClick(View v) {
                 String tipd = txtTip.getText().toString();
-                if(tipd.length()<8){
+                if(tipd.length()<10){
                     Toast.makeText(rootView.getContext(),"Tip not descriptive enough",Toast.LENGTH_LONG).show();
                 }else if(!tipd.equals("")){
+                    Toast.makeText(rootView.getContext(),"your tip will wait for approval",Toast.LENGTH_LONG).show();
                     TipModel tip = new TipModel();
                     tip.PersonID =Integer.parseInt( m.Read("person.txt",",")[0]);
                     tip.TipDescription = tipd;
@@ -92,4 +92,5 @@ public class TipTrickClass extends Fragment {
         });
         return rootView;
     }
+
 }

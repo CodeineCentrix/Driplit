@@ -9,5 +9,7 @@ public class ReportLeakModel {
     public Date date;
     public String picPath;
     public int PersonID ;
+    public int status;
+    public int LeakID;
 }
 

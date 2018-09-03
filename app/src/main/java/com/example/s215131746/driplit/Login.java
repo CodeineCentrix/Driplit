@@ -33,16 +33,16 @@ public class Login extends AppCompatActivity {
     public  EditText email;
     public  EditText password;
     public CheckBox cbRemeber;
-    DBAccess business;
-    GeneralMethods m;
+    TabMenu.DBAccess business;
+    TabMenu.GeneralMethods m;
     String[] details;
     TextView txtFeedback;
     Bitmap bitmapImage;
-    int usage;
+    int usage,oldTips;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m = new GeneralMethods(getApplicationContext());
+        m = new TabMenu.GeneralMethods(getApplicationContext());
         txtFeedback = findViewById(R.id.txtFeedback);
         setContentView(R.layout.activity_login);
         cbRemeber = findViewById(R.id.cbRememberMe);
@@ -50,14 +50,20 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.txtPassword);
         RemeberMe();
         usage = 60;
+        oldTips =0;
         if(cbRemeber.isChecked()){
             details = m.Read("person.txt",",");
             email.setText(details[PersonModel.EMAIL]);
             password.setText(details[PersonModel.PASSWORD]);
-            if(details.length >PersonModel.USAGETARGET)
+            try{
                 usage =Integer.parseInt(details[PersonModel.USAGETARGET]);
+                oldTips = Integer.parseInt(details[PersonModel.OLDAPPROVED]);
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+
         }
-        business = new DBAccess();
+        business = new TabMenu.DBAccess();
     }
     public void RemeberMe(String answ){
         m.writeToFile(answ,"Remember.txt");
@@ -71,13 +77,13 @@ public class Login extends AppCompatActivity {
     public void ToRegisterScreen(View view){
         //m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Resources/View/log_in.php?from=mobile");
 
-       Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
+    /*   Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if ( intent.resolveActivity(getPackageManager()) != null) {
            startActivity( intent);
-       }
-       // registerScreen = new Intent(getApplicationContext(), Register2.class);
-       // startActivity(registerScreen);
+       }*/
+        registerScreen = new Intent(getApplicationContext(), Register2.class);
+        startActivity(registerScreen);
     }
     public void ToFODScreen(View view){
         if(cbRemeber.isChecked())
@@ -88,6 +94,7 @@ public class Login extends AppCompatActivity {
        person.isAdmin =false;
         person.email = email.getText().toString();
         person.Usagetarget = usage;
+        person.getOldapproved = oldTips;
         if(person.email.contains("@driplit.drip")){
             person.isAdmin = true;
         }

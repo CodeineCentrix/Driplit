@@ -7,8 +7,8 @@
         <item android:id="@+id/nav_Dam"
             android:title="View level of Dams"/>
         <item
-            android:id="@+id/nav_news"
-            android:title="View water news"/>
+            android:id="@+id/nav_leaderBoard"
+            android:title="Leader Board"/>
 
         <item
             android:id="@+id/nav_aboutus"

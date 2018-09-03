@@ -52,7 +52,11 @@
         <!-- android:name=".IntakeTrendScroller" -->
         <!-- android:label="@string/title_activity_intake_trend_scroller" -->
         <!-- android:theme="@style/AppTheme"></activity> -->
-        <activity android:name=".ReportedLeaks"></activity>
+        <activity android:name=".ReportedLeaks" />
+
+        <service
+            android:name="Helpers.BackgroundTip"
+            android:exported="false"></service>
     </application>
 
 </manifest>

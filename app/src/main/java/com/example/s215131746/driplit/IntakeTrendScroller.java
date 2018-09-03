@@ -39,12 +39,13 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     TextView tvNodata;
     HorizontalBarChart barChart;
     ArrayList<BarEntry> Itementries;
-    final DBAccess business = new DBAccess();
+    final TabMenu.DBAccess business = new TabMenu.DBAccess();
     SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     CalendarView cvDate = null;
     Button btnSelectDate ;
+    float averageUsage;
     //end
-     GeneralMethods m;
+     TabMenu.GeneralMethods m;
     //from trends
     final List<BarEntry> entries = new ArrayList<>();
     final ArrayList<Entry> lineEntry = new ArrayList<>();
@@ -59,22 +60,24 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         tvNodata = rootView.findViewById(R.id.tvNoData);
         barChart =  rootView.findViewById(R.id.bcT);
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
-        m = new GeneralMethods(rootView.getContext());
+        m = new TabMenu.GeneralMethods(rootView.getContext());
         cvDate.setVisibility(View.INVISIBLE);
         ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
         cvDate.setMaxDate(cvDate.getDate());
         int i = ItemUsages.size();
-
+        averageUsage =0;
         final String[] Itemlabels = new String[i];
         if(i>0){
             i = 0;
             Itementries = new ArrayList<>();
             for (UspMobGetPersonItemTotal usage : ItemUsages) {
                 Itemlabels[i] = usage.ItemName;
+                averageUsage+=usage.UsageAmount;
                 Itementries.add(new BarEntry(i, usage.UsageAmount));
                 i++;
             }
-            SetUpGraph(barChart, Itementries, Itemlabels);
+            averageUsage/=i;
+            SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
             Date date = new Date();
             date.setTime(cvDate.getDate());
             SetUp(Itemlabels, df.format(date));
@@ -109,6 +112,9 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
                 btnSelectDate.setVisibility(View.VISIBLE);
 
+                averageUsage =0;
+
+
                 ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotalDate(index2, dateV);
                 int x = ItemUsages.size();
                 final String[] Itemlabels = new String[x];
@@ -116,11 +122,13 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 ArrayList<BarEntry> Itementries = new ArrayList<>();
                 for(UspMobGetPersonItemTotal usage : ItemUsages) {
                     Itemlabels[x] = usage.ItemName;
+                    averageUsage+=usage.UsageAmount;
                     Itementries.add(new BarEntry(x, usage.UsageAmount));
                     x++;
                 }
+                averageUsage/=x;
                 if(Itemlabels.length > 0) {
-                    SetUpGraph(barChart, Itementries, Itemlabels);
+                    SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
                 }
 
                 SetUp(Itemlabels, dateV);
@@ -131,7 +139,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
         //from trends
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
-        DBAccess business = new DBAccess();
+        TabMenu.DBAccess business = new TabMenu.DBAccess();
 
         String index2 = m.Read("person.txt",",")[2];
 
@@ -141,15 +149,18 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         if(i>0) {
             final String[] labels = new String[i];
             i = 0;
+            averageUsage=0;
             entries.clear();
             lineEntry.clear();
             for (UspMobGetPersonTotalUsage usage : usages) {
                 labels[i] = usage.UsageDay;
+                averageUsage+=usage.UsageAmount;
                 entries.add(new BarEntry(i, usage.UsageAmount));
                 lineEntry.add(new Entry(i, usage.UsageAmount));
                 i++;
             }
-                SetUpGraph(bcTrend, entries, labels);
+            averageUsage/=i;
+                SetUpGraph(bcTrend, entries, labels,averageUsage);
                 //Line chart___________________________________________________________
 
                 // creating list of entry
@@ -203,12 +214,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
     }
     //Bar graph set up
-    public void SetUpGraph(BarChart bcTrend , List<BarEntry> entries, String[] Labels ){
+    public void SetUpGraph(BarChart bcTrend , List<BarEntry> entries, String[] Labels ,float avg){
         if(entries.size()>0) {
             IAxisValueFormatter formatter = setYaxis(Labels);
             BarDataSet set = new BarDataSet(entries, "50 liters is the daily recommendation");
 
-            MyBarDataSet setColor = new MyBarDataSet(entries,"",set);
+            MyBarDataSet setColor = new MyBarDataSet(entries,"Average water usage: "+avg,set);
             setColor.setColors(new int[]{ContextCompat.getColor(getContext(), R.color.green),
                     ContextCompat.getColor(getContext(), R.color.red)});
             ArrayList<BarDataSet> dataSets = new ArrayList<>();

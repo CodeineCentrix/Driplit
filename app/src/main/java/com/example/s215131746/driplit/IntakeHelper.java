@@ -1,14 +1,9 @@
 package com.example.s215131746.driplit;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 public class IntakeHelper extends AppCompatActivity {
@@ -42,7 +37,7 @@ public class IntakeHelper extends AppCompatActivity {
                 R.drawable.record_intake6,
                 R.drawable.record_intake7,
         };
-        GeneralMethods m = new GeneralMethods(getApplicationContext());
+        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getApplicationContext());
         for (int i=0;i<intakeHelp.length;i++){
             intakeHelp[i].setImageBitmap(m.ScaleImg(pic[i],getResources()));
         }

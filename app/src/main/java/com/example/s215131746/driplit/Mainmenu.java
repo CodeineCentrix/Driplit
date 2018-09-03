@@ -1,7 +1,5 @@
 package com.example.s215131746.driplit;
 
-import android.arch.lifecycle.ReportFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,7 +8,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +33,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        GeneralMethods m = new GeneralMethods(getApplicationContext());
+        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getApplicationContext());
         String[] details = m.Read("person.txt",",");
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -99,7 +96,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         i.putString("Tab", tabName);
         in.putExtras(i);
         in.putExtras(getIntent());
-        DBAccess business = new DBAccess();
+        TabMenu.DBAccess business = new TabMenu.DBAccess();
         boolean wifi = true;
         try {
             business.GetTips();
@@ -130,20 +127,25 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         if (id == R.id.nav_signout) {
             Intent signOut = new Intent(getApplicationContext(),Login.class);
             startActivity(signOut);
-
+            finish();
         }
         else if(id == R.id.nav_help)
         {
             Intent help = new Intent (getApplicationContext(), HelpScreen.class);
             startActivity(help);
 
-        }
-        else if(id == R.id.nav_aboutus)
+        }  else if(id == R.id.nav_aboutus)
         {
             Intent aboutUs = new Intent (getApplicationContext(), AboutUs.class);
             startActivity(aboutUs);
 
+        }  else if(id == R.id.nav_leaderBoard)
+        {
+            Toast.makeText(this,"UNDER CONSTRUCTION!!!",Toast.LENGTH_LONG).show();
+
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

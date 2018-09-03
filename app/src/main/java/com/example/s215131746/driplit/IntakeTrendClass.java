@@ -5,12 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -19,12 +17,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
 import java.util.List;
 
 import viewmodels.UspMobGetPersonTotalUsage;
@@ -37,14 +30,15 @@ public class IntakeTrendClass extends Fragment {
 
     final List<BarEntry> entries = new ArrayList<>();
     final ArrayList<Entry> lineEntry = new ArrayList<>();
+    float averageUsage;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.intake_trend, container, false);
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
-        DBAccess business = new DBAccess();
-        GeneralMethods m = new GeneralMethods(getContext());
+        TabMenu.DBAccess business = new TabMenu.DBAccess();
+        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getContext());
         String index2 = m.Read("person.txt",",")[2];
-
+        averageUsage =0;
         ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(index2);
         int i = usages.size();
         if(i>0){
@@ -52,10 +46,12 @@ public class IntakeTrendClass extends Fragment {
             i = 0;
             for (UspMobGetPersonTotalUsage usage:usages) {
                 labels[i] = usage.UsageDay;
+                averageUsage+=usage.UsageAmount;
                 entries.add(new BarEntry(i,usage.UsageAmount));
                 lineEntry.add(new Entry(i,usage.UsageAmount));
                 i++;
             }
+            averageUsage/=i;
             SetUpGraph(bcTrend,entries,labels);
             //Line chart___________________________________________________________
             LineChart lineChart = rootView.findViewById(R.id.lineChart);
@@ -92,9 +88,11 @@ public class IntakeTrendClass extends Fragment {
             BarDataSet set = new BarDataSet(entries, "50 liters is the daily recommendation");
             set.setColor(R.color.black);// not sure if this worsks it sts the font color black
             BarData b = new BarData(set);
+
             b.setBarWidth(0.5f);//bar width
             bcTrend.setData(b);
             bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
+            bcTrend.getXAxis().setTextSize(10f);
             bcTrend.getAxisLeft().setAxisMinimum(0f);
             bcTrend.getAxisLeft().setDrawGridLines(false);//removes the grid lines of the bar graph
             bcTrend.invalidate();

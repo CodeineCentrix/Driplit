@@ -5,9 +5,6 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +36,7 @@ public class Register extends AppCompatActivity {
         person.userPassword = txtPassword.getText().toString();
 
         //Validation missing
-        DBAccess bus_logic = new DBAccess();
+        TabMenu.DBAccess bus_logic = new TabMenu.DBAccess();
 
             //validate EditText if they are not empty
             if (ValidPerson(person))
