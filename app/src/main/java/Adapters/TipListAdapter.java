@@ -7,24 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.s215131746.driplit.DBAccess;
-import com.example.s215131746.driplit.GeneralMethods;
 import com.example.s215131746.driplit.R;
+import com.example.s215131746.driplit.TabMenu;
 
-import java.nio.channels.GatheringByteChannel;
-import java.sql.Time;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
-import viewmodels.ResidentUsageModel;
 import viewmodels.TipModel;
 
 /**
@@ -89,13 +79,13 @@ public class TipListAdapter extends BaseAdapter {
         }
     }
     public void approveTip(View v, final int position ){
-        final GeneralMethods m = new GeneralMethods(v.getContext());
+        final TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(v.getContext());
         m.writeToFile("do","approve.txt");
         final int duration = 3000;
         approveTip(position);
-        final DBAccess business = new DBAccess();
+        final TabMenu.DBAccess business = new TabMenu.DBAccess();
         Handler h = new Handler();
-        Snackbar mySnackbar = Snackbar.make(v,R.string.record_successful, duration);
+        Snackbar mySnackbar = Snackbar.make(v,"Tip Status Changed", duration);
         mySnackbar.setAction(R.string.undo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,4 +108,5 @@ public class TipListAdapter extends BaseAdapter {
         },duration);
 
     }
+
 }

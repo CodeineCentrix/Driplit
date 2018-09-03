@@ -5,45 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/txtTipTrick"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="32dp"
-        android:elevation="5dp"
-        android:ems="10"
-        android:hint="@string/enter_tip"
-        android:inputType="textMultiLine"
-        android:textAlignment="center"
-        android:textColorHint="@color/lightOrange"
-        android:textColorLink="@color/blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgbtnPost"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ImageButton
-        android:id="@+id/imgbtnPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:clickable="false"
-        android:elevation="5dp"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txtTipTrick"
-        app:srcCompat="@drawable/ic_menu_send" />
-
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -52,12 +20,47 @@
 
         <ListView
             android:id="@+id/lvPostedTips"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
             android:stackFromBottom="true"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="-54dp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <EditText
+            android:id="@+id/txtTipTrick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elevation="5dp"
+            android:ems="10"
+            android:hint="@string/enter_tip"
+            android:inputType="textMultiLine"
+            android:textAlignment="center"
+            android:textColorHint="@color/lightOrange"
+            android:textColorLink="@color/blue"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="591dp" />
+
+        <ImageButton
+            android:id="@+id/imgbtnPost"
+            android:layout_width="100dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:elevation="5dp"
+            android:focusable="true"
+            app:srcCompat="@drawable/ic_menu_send"
+            tools:layout_editor_absoluteX="336dp"
+            tools:layout_editor_absoluteY="19dp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

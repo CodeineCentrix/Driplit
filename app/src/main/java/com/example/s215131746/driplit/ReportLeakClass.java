@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,35 +39,31 @@ import static android.location.LocationManager.*;
 
 public class ReportLeakClass extends Fragment {
     ImageButton btnReport;
-    Button btnReported,btnTakePic;
-    Intent mainMenu;
+    Button btnReported;
     TextView txtAddress;
     TextView txtHead;
     TextView txtInstruction;
-    DBAccess db = new DBAccess();
-    GeneralMethods m ;
+    TabMenu.DBAccess db = new TabMenu.DBAccess();
+    TabMenu.GeneralMethods m ;
     Bitmap bitmapImage;
      Double longitude;
      Double latitude ;
-     String fullAddress;
      String id;
     String uploadImageName;
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.report_leak, container, false);
 
-        GeneralMethods m = new GeneralMethods(rootView.getContext());
+        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(rootView.getContext());
         Bitmap image = m.ScaleImg(R.drawable.report,rootView.getResources());
             btnReport = (ImageButton)rootView.findViewById(R.id.imgReportLeak);
             btnReport.setImageBitmap(image);
-
             btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     GetLocation(v);
                 }
             });
-
         btnReported = (Button) rootView.findViewById(R.id.btnReported);
         btnReported.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +101,7 @@ public class ReportLeakClass extends Fragment {
             return;
         }
         if(lm.getProvider(GPS_PROVIDER) != null){
-            m = new GeneralMethods(view.getContext());
+            m = new TabMenu.GeneralMethods(view.getContext());
             try{
                 //Getting the last known location of the device
                 Location location = lm.getLastKnownLocation(GPS_PROVIDER);
@@ -186,7 +181,7 @@ public class ReportLeakClass extends Fragment {
             bitmapImage = (Bitmap) data.getExtras().get("data");
             if(bitmapImage!=null){
                 uploadImageName = "leak"+ new SimpleDateFormat("yyyyMMddHHmmss'.PNG'").format(new Date());
-                new UploadImage(uploadImageName,bitmapImage).doInBackground();
+                new TabMenu.UploadImage(uploadImageName,bitmapImage).doInBackground();
                 ReportLeakModel report = new ReportLeakModel();
                 report.PersonID = Integer.parseInt(id);
                 report.Latitude = ""+latitude;

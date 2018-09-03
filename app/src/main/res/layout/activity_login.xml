@@ -35,13 +35,8 @@
         android:layout_width="309dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/shade4"
-        android:drawableLeft="@drawable/padlock"
-        android:drawableStart="@drawable/padlock"
-        android:hint="@string/password"
         android:inputType="textPassword"
         android:textAlignment="center"
-        android:textCursorDrawable="@color/darkerblue"
         android:textSize="20sp" />
 
     <CheckBox
