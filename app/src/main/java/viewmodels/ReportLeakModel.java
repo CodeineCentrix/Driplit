@@ -1,5 +1,7 @@
 package viewmodels;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 public class ReportLeakModel {
@@ -11,5 +13,6 @@ public class ReportLeakModel {
     public int PersonID ;
     public int status;
     public int LeakID;
+    public Bitmap image;
 }
 

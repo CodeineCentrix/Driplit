@@ -39,13 +39,13 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     TextView tvNodata;
     HorizontalBarChart barChart;
     ArrayList<BarEntry> Itementries;
-    final TabMenu.DBAccess business = new TabMenu.DBAccess();
+    final DBAccess business = new DBAccess();
     SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     CalendarView cvDate = null;
     Button btnSelectDate ;
     float averageUsage;
     //end
-     TabMenu.GeneralMethods m;
+     GeneralMethods m;
     //from trends
     final List<BarEntry> entries = new ArrayList<>();
     final ArrayList<Entry> lineEntry = new ArrayList<>();
@@ -60,7 +60,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         tvNodata = rootView.findViewById(R.id.tvNoData);
         barChart =  rootView.findViewById(R.id.bcT);
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
-        m = new TabMenu.GeneralMethods(rootView.getContext());
+        m = new GeneralMethods(rootView.getContext());
         cvDate.setVisibility(View.INVISIBLE);
         ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
         cvDate.setMaxDate(cvDate.getDate());
@@ -139,7 +139,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
         //from trends
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
-        TabMenu.DBAccess business = new TabMenu.DBAccess();
+        DBAccess business = new DBAccess();
 
         String index2 = m.Read("person.txt",",")[2];
 

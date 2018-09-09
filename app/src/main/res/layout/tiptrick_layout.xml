@@ -10,7 +10,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="@color/own_tips"
         android:orientation="vertical"
@@ -27,12 +27,13 @@
             android:layout_weight="1"
             android:text="@string/tip_trick_description"
             android:textAlignment="center" />
+
         <View
             android:id="@+id/view"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/colorAccent"/>
+            android:background="@color/colorAccent" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

@@ -35,8 +35,8 @@ public class IntakeTrendClass extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.intake_trend, container, false);
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
-        TabMenu.DBAccess business = new TabMenu.DBAccess();
-        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getContext());
+        DBAccess business = new DBAccess();
+        GeneralMethods m = new GeneralMethods(getContext());
         String index2 = m.Read("person.txt",",")[2];
         averageUsage =0;
         ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(index2);

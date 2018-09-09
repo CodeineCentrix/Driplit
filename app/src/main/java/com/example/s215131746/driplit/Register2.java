@@ -1,14 +1,10 @@
 package com.example.s215131746.driplit;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -34,10 +30,10 @@ public class Register2 extends AppCompatActivity {
     EditText txtNewPassword;
     String city,type;
     int suburb;
-    TabMenu.GeneralMethods m;
+    GeneralMethods m;
     RadioButton rdMain,rdResident;
     PersonModel person = new PersonModel();
-    TabMenu.DBAccess dbAccess = new TabMenu.DBAccess();
+    DBAccess dbAccess = new DBAccess();
     Handler h = new Handler();
     boolean isRegistered;
     @Override
@@ -54,7 +50,7 @@ public class Register2 extends AppCompatActivity {
         final ArrayList<Surburb> surburb = dbAccess.WEBSuburbs();
         final ArrayList<Surburb> cities = dbAccess.WEBCities();
 
-         m = new TabMenu.GeneralMethods(getApplicationContext());
+         m = new GeneralMethods(getApplicationContext());
 
         String[] details = m.Read("person.txt",",");
         final ArrayAdapter<Surburb> cityAdapter = new ArrayAdapter<Surburb>(

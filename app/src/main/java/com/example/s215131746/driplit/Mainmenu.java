@@ -33,7 +33,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getApplicationContext());
+        GeneralMethods m = new GeneralMethods(getApplicationContext());
         String[] details = m.Read("person.txt",",");
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -96,7 +96,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         i.putString("Tab", tabName);
         in.putExtras(i);
         in.putExtras(getIntent());
-        TabMenu.DBAccess business = new TabMenu.DBAccess();
+        DBAccess business = new DBAccess();
         boolean wifi = true;
         try {
             business.GetTips();
@@ -141,6 +141,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
 
         }  else if(id == R.id.nav_leaderBoard)
         {
+
             Toast.makeText(this,"UNDER CONSTRUCTION!!!",Toast.LENGTH_LONG).show();
 
         }

@@ -29,17 +29,17 @@ import viewmodels.UspMobGetPersonItemTotal;
  *
 **/
 public class RecordWaterIntakeClass extends Fragment implements ImplementChange {
-    TabMenu.GeneralMethods m ;
+    GeneralMethods m ;
     TextView tvTotal;
     ArrayList<ItemUsageModel> listOfItem;
-    TabMenu.DBAccess business = new TabMenu.DBAccess();
+    DBAccess business = new DBAccess();
     ArrayList<UspMobGetPersonItemTotal> usagForItem;
     String[] value;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //this line inflate this class with the record water intake layout
         final View rootView = inflater.inflate(R.layout.activity_record_water_intake, container, false);
-        m = new TabMenu.GeneralMethods(getContext());
+        m = new GeneralMethods(getContext());
         ScaleImg(R.id.imgView);
         listOfItem = business.GetItems();
         value = m.Read("person.txt",",");

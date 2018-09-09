@@ -36,7 +36,7 @@ public class Register extends AppCompatActivity {
         person.userPassword = txtPassword.getText().toString();
 
         //Validation missing
-        TabMenu.DBAccess bus_logic = new TabMenu.DBAccess();
+        DBAccess bus_logic = new DBAccess();
 
             //validate EditText if they are not empty
             if (ValidPerson(person))

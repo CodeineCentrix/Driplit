@@ -1,23 +1,19 @@
 package Helpers;
 
 import android.app.IntentService;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.Context;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
+import com.example.s215131746.driplit.DBAccess;
+import com.example.s215131746.driplit.GeneralMethods;
 import com.example.s215131746.driplit.Login;
 import com.example.s215131746.driplit.R;
-import com.example.s215131746.driplit.TabMenu;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 import viewmodels.PersonModel;
 import viewmodels.TipModel;
@@ -65,8 +61,8 @@ public class BackgroundTip extends IntentService {
 
     }
     public void Notification() {
-        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getApplicationContext());
-        TabMenu.DBAccess business = new TabMenu.DBAccess();
+        GeneralMethods m = new GeneralMethods(getApplicationContext());
+        DBAccess business = new DBAccess();
         ArrayList<TipModel> tips;
         final String[] personDetails = m.Read("person.txt", ",");
 

@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.s215131746.driplit.DBAccess;
+import com.example.s215131746.driplit.GeneralMethods;
 import com.example.s215131746.driplit.R;
-import com.example.s215131746.driplit.TabMenu;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,11 +80,11 @@ public class TipListAdapter extends BaseAdapter {
         }
     }
     public void approveTip(View v, final int position ){
-        final TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(v.getContext());
+        final GeneralMethods m = new GeneralMethods(v.getContext());
         m.writeToFile("do","approve.txt");
         final int duration = 3000;
         approveTip(position);
-        final TabMenu.DBAccess business = new TabMenu.DBAccess();
+        final DBAccess business = new DBAccess();
         Handler h = new Handler();
         Snackbar mySnackbar = Snackbar.make(v,"Tip Status Changed", duration);
         mySnackbar.setAction(R.string.undo, new View.OnClickListener() {

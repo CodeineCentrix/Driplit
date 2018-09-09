@@ -4,11 +4,10 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_Dam"
-            android:title="View level of Dams"/>
+
         <item
             android:id="@+id/nav_leaderBoard"
-            android:title="Leader Board"/>
+            android:title="Snitch Board"/>
 
         <item
             android:id="@+id/nav_aboutus"

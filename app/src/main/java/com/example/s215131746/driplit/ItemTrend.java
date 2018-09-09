@@ -29,7 +29,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
     TextView tvNodata;
     HorizontalBarChart barChart;
     ArrayList<BarEntry> Itementries;
-    final TabMenu.DBAccess business = new TabMenu.DBAccess();
+    final DBAccess business = new DBAccess();
     float averageUsage;
     SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     CalendarView cvDate = null;
@@ -42,7 +42,7 @@ public class ItemTrend extends android.support.v4.app.Fragment {
         tvNodata = rootView.findViewById(R.id.tvNoData);
         barChart =  rootView.findViewById(R.id.bcT);
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
-        final TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(rootView.getContext());
+        final GeneralMethods m = new GeneralMethods(rootView.getContext());
         cvDate.setVisibility(View.INVISIBLE);
         ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
         cvDate.setMaxDate(cvDate.getDate());

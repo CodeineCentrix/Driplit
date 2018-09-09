@@ -7,23 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.s215131746.driplit.DBAccess;
+import com.example.s215131746.driplit.GeneralMethods;
 import com.example.s215131746.driplit.R;
-import com.example.s215131746.driplit.TabMenu;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import viewmodels.ReportLeakModel;
-import viewmodels.ReportedLeaks;
 
 /**
  * Created by s215131746 on 2018/08/11.
  */
 
 public class ReportedLeaksAdapter extends BaseAdapter {
-
+    Switch[] switches;
+    ImageView[] leakpic;
     LayoutInflater mInflater;
     String[] location;
     ArrayList<ReportLeakModel> leak;
@@ -38,8 +40,10 @@ public class ReportedLeaksAdapter extends BaseAdapter {
         int i = l.size();
         location = new String[i];
         date = new java.sql.Date[i];
+        switches = new Switch[i];
         leak = l;
         i=0;
+        leakpic = new ImageView[l.size()];
         approve = new View[l.size()];
         for(ReportLeakModel leak :l )
         {
@@ -68,44 +72,57 @@ public class ReportedLeaksAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v = mInflater.inflate(R.layout.activity_reported_leaks, null);
-        TextView longitude =(TextView) v.findViewById(R.id.LeakAddress);
-        TextView day = (TextView) v.findViewById(R.id.LeakDate);
-
-        String loc = location[position];
-        String lon = location[position];
+        TextView longitude =v.findViewById(R.id.LeakAddress);
+        TextView day =  v.findViewById(R.id.LeakDate);
+        leakpic[position] = v.findViewById(R.id.imageView);
+        if(leak.get(position).image!=null){
+            leakpic[position].setImageBitmap(leak.get(position).image);
+        }
         java.sql.Date leakDate = date[position];
         approve[position] = v.findViewById(R.id.view);
+         switches[position] = v.findViewById(R.id.switch1);
+         switches[position].setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 approveLeak(v,position);
+             }
+         });
         if(!isAdmin){
-            approve[position].setVisibility(View.GONE);
-        }else if(leak.get(position).status==0){
+
+            switches[position].setVisibility(View.GONE);
+        }else {
+
+        }
+        if(leak.get(position).status==0){
             approve[position].setBackgroundColor(v.getResources().getColor(R.color.red));
         } else if(leak.get(position).status==1) {
             approve[position].setBackgroundColor(v.getResources().getColor(R.color.green));
+            switches[position].setChecked(true);
         }
-        //address.setText(loc);
         longitude.setText(leak.get(position).Location);
         day.setText(""+leakDate);
         return v;
     }
 
     public int approveLeak(int position){
-        if(leak.get(position).status==1){
+        if(!switches[position].isChecked()){
             approve[position].setBackgroundColor(context.getResources().getColor(R.color.red));
             return leak.get(position).status=0;
+
         }else{
             approve[position].setBackgroundColor(context.getResources().getColor(R.color.green));
             return leak.get(position).status=1;
         }
     }
     public void approveLeak(View v, final int position ){
-        final TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(v.getContext());
+        final GeneralMethods m = new GeneralMethods(v.getContext());
         m.writeToFile("do","approve.txt");
         final int duration = 3000;
         approveLeak(position);
-        final TabMenu.DBAccess business = new TabMenu.DBAccess();
+        final DBAccess business = new DBAccess();
         Handler h = new Handler();
         Snackbar mySnackbar = Snackbar.make(v,"Leak Fixed", duration);
         mySnackbar.setAction(R.string.undo, new View.OnClickListener() {

@@ -37,7 +37,7 @@ public class IntakeHelper extends AppCompatActivity {
                 R.drawable.record_intake6,
                 R.drawable.record_intake7,
         };
-        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(getApplicationContext());
+        GeneralMethods m = new GeneralMethods(getApplicationContext());
         for (int i=0;i<intakeHelp.length;i++){
             intakeHelp[i].setImageBitmap(m.ScaleImg(pic[i],getResources()));
         }

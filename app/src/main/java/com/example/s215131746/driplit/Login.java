@@ -10,7 +10,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -33,8 +32,8 @@ public class Login extends AppCompatActivity {
     public  EditText email;
     public  EditText password;
     public CheckBox cbRemeber;
-    TabMenu.DBAccess business;
-    TabMenu.GeneralMethods m;
+    DBAccess business;
+    GeneralMethods m;
     String[] details;
     TextView txtFeedback;
     Bitmap bitmapImage;
@@ -42,7 +41,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m = new TabMenu.GeneralMethods(getApplicationContext());
+        m = new GeneralMethods(getApplicationContext());
         txtFeedback = findViewById(R.id.txtFeedback);
         setContentView(R.layout.activity_login);
         cbRemeber = findViewById(R.id.cbRememberMe);
@@ -63,8 +62,10 @@ public class Login extends AppCompatActivity {
             }
 
         }
-        business = new TabMenu.DBAccess();
+        business = new DBAccess();
+
     }
+   
     public void RemeberMe(String answ){
         m.writeToFile(answ,"Remember.txt");
     }
@@ -222,4 +223,5 @@ public class Login extends AppCompatActivity {
             bitmapImage = (Bitmap) data.getExtras().get("data");
         }
     }
+
 }

@@ -24,14 +24,14 @@ import viewmodels.TipModel;
  */
 
 public class TipTrickClass extends Fragment {
-    TabMenu.DBAccess business;
+    DBAccess business;
     EditText txtTip;
-    TabMenu.GeneralMethods m;
+    GeneralMethods m;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.tip_trick, container, false);
         final ListView postedItems = rootView.findViewById(R.id.lvPostedTips);
-        m = new TabMenu.GeneralMethods(getContext());
-        business = new TabMenu.DBAccess();
+        m = new GeneralMethods(getContext());
+        business = new DBAccess();
         ArrayList<TipModel> tips;
         final String [] fuck = m.Read("person.txt",",");
         if(fuck[PersonModel.ISAMDIN].equals("true"))

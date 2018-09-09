@@ -14,9 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.s215131746.driplit.DBAccess;
+import com.example.s215131746.driplit.GeneralMethods;
 import com.example.s215131746.driplit.R;
 import com.example.s215131746.driplit.RecordWaterIntakeClass;
-import com.example.s215131746.driplit.TabMenu;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -33,7 +34,7 @@ import viewmodels.ResidentUsageModel;
 import viewmodels.UspMobGetPersonItemTotal;
 
 public class ItemListAdapter extends BaseAdapter {
-    private TabMenu.GeneralMethods generalMethods;
+    private GeneralMethods generalMethods;
     private ArrayList<ItemUsageModel> ItemUsage;
     private ArrayList<UspMobGetPersonItemTotal> PreviousUsage;
     private float[] personUsage;
@@ -67,7 +68,7 @@ public class ItemListAdapter extends BaseAdapter {
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
         loHeading = new LinearLayout[getCount()];
-        generalMethods = new TabMenu.GeneralMethods(c);
+        generalMethods = new GeneralMethods(c);
     }
     @Override
     public int getCount() {
@@ -178,7 +179,7 @@ public class ItemListAdapter extends BaseAdapter {
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             String date = df.format(Calendar.getInstance().getTime());
             final DecimalFormat dc = new DecimalFormat("0.0");
-            final TabMenu.DBAccess business = new TabMenu.DBAccess();
+            final DBAccess business = new DBAccess();
             final ResidentUsageModel resUsing = new ResidentUsageModel();
             resUsing.ItemID =ItemUsage.get(position).ItemID;
             resUsing.AmountUsed = Used;

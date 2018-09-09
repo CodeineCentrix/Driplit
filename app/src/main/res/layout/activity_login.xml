@@ -63,7 +63,6 @@
         android:onClick="ToFODScreen"
         android:text="@string/login"
         android:textAlignment="center"
-        android:textColor="?attr/colorPrimary"
         android:textSize="25sp" />
 
     <TextView

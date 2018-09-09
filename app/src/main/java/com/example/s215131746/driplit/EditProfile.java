@@ -11,10 +11,10 @@ import android.widget.Toast;
 import viewmodels.PersonModel;
 
 public class EditProfile extends AppCompatActivity {
-    TabMenu.GeneralMethods m;
+    GeneralMethods m;
     EditText txtFullname;
     EditText txtEmail;
-    TabMenu.DBAccess business;
+    DBAccess business;
     EditText txtPassword;
     EditText txtUsageTarget;
     EditText txtNewPassword;
@@ -32,14 +32,14 @@ public class EditProfile extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         person = new PersonModel();
-        m = new TabMenu.GeneralMethods(getApplicationContext());
+        m = new GeneralMethods(getApplicationContext());
         txtFullname = findViewById(R.id.txtUsername);
         txtEmail = findViewById(R.id.txtUserEmail);
         txtNewPassword = findViewById(R.id.txtNewPassword);
         txtPassword = findViewById(R.id.txtPassword);
         txtUsageTarget = findViewById(R.id.txtUsageTarget);
 
-        business = new TabMenu.DBAccess();
+        business = new DBAccess();
 
         String[] p = m.Read("person.txt",",");
         txtFullname.setText(p[PersonModel.FULLNAME]);

@@ -43,8 +43,8 @@ public class ReportLeakClass extends Fragment {
     TextView txtAddress;
     TextView txtHead;
     TextView txtInstruction;
-    TabMenu.DBAccess db = new TabMenu.DBAccess();
-    TabMenu.GeneralMethods m ;
+    DBAccess db = new DBAccess();
+    GeneralMethods m ;
     Bitmap bitmapImage;
      Double longitude;
      Double latitude ;
@@ -54,7 +54,7 @@ public class ReportLeakClass extends Fragment {
                              Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.report_leak, container, false);
 
-        TabMenu.GeneralMethods m = new TabMenu.GeneralMethods(rootView.getContext());
+        GeneralMethods m = new GeneralMethods(rootView.getContext());
         Bitmap image = m.ScaleImg(R.drawable.report,rootView.getResources());
             btnReport = (ImageButton)rootView.findViewById(R.id.imgReportLeak);
             btnReport.setImageBitmap(image);
@@ -64,14 +64,6 @@ public class ReportLeakClass extends Fragment {
                     GetLocation(v);
                 }
             });
-        btnReported = (Button) rootView.findViewById(R.id.btnReported);
-        btnReported.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewReportedLeaks();
-            }
-        });
-
         return rootView;
     }
     public void onTakePicture(View view){
@@ -101,7 +93,7 @@ public class ReportLeakClass extends Fragment {
             return;
         }
         if(lm.getProvider(GPS_PROVIDER) != null){
-            m = new TabMenu.GeneralMethods(view.getContext());
+            m = new GeneralMethods(view.getContext());
             try{
                 //Getting the last known location of the device
                 Location location = lm.getLastKnownLocation(GPS_PROVIDER);
@@ -170,10 +162,6 @@ public class ReportLeakClass extends Fragment {
         report.Longitude = ""+longitude;
         db.MobAddLeak(report);
     }
-    public void ViewReportedLeaks(){
-        Intent rLeaks = new Intent(getContext(), ReportedLeaks.class);
-        startActivity(rLeaks);
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -181,7 +169,7 @@ public class ReportLeakClass extends Fragment {
             bitmapImage = (Bitmap) data.getExtras().get("data");
             if(bitmapImage!=null){
                 uploadImageName = "leak"+ new SimpleDateFormat("yyyyMMddHHmmss'.PNG'").format(new Date());
-                new TabMenu.UploadImage(uploadImageName,bitmapImage).doInBackground();
+                new UploadImage(uploadImageName,bitmapImage).doInBackground();
                 ReportLeakModel report = new ReportLeakModel();
                 report.PersonID = Integer.parseInt(id);
                 report.Latitude = ""+latitude;
