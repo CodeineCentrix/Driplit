@@ -1,10 +1,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.s215131746.driplit.MenuTab">
+    tools:context="com.example.s215131746.driplit.ReportedLeaks">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_fixed"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Fixed"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_waiting"
+        android:orderInCategory="100"
+        android:title="Waiting"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_withPic"
+        android:orderInCategory="100"
+        android:title="With pictures"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_today"
+        android:orderInCategory="100"
+        android:title="Reported Today"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_selectDay"
+        android:orderInCategory="100"
+        android:title="Select a day"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_all"
+        android:orderInCategory="100"
+        android:title="All"
         app:showAsAction="never" />
 </menu>

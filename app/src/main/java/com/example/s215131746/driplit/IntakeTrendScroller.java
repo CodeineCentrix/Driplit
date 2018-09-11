@@ -1,8 +1,12 @@
 package com.example.s215131746.driplit;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +44,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     TextView tvNodata;
     HorizontalBarChart barChart;
     ArrayList<BarEntry> Itementries;
-    final DBAccess business = new DBAccess();
+    DBAccess business = new DBAccess();
     SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     CalendarView cvDate = null;
     Button btnSelectDate ;
@@ -52,6 +56,10 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     final ArrayList<Entry> lineEntry = new ArrayList<>();
     //end
     public View rootView;
+    Handler h = new Handler();
+    ArrayList<UspMobGetPersonItemTotal> IitemUsages;
+    ArrayList<UspMobGetPersonTotalUsage> usages;
+    ArrayList<UspMobGetPersonItemTotal> ItemUsages;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_intake_trend_scroller, container, false);
@@ -63,9 +71,15 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         barChart =  rootView.findViewById(R.id.bcT);
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
         m = new GeneralMethods(rootView.getContext());
+        helpThread h = new helpThread(true,rootView.getContext());
+        new Thread(h).start();
+
+        return rootView;
+    }
+    public void afterConnection(final View rootView){
         cvDate.setVisibility(View.INVISIBLE);
-        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(
-                m.Read(this.getString(R.string.person_file_name),",")[PersonModel.EMAIL]);
+
+
         cvDate.setMaxDate(cvDate.getDate());
         int i = ItemUsages.size();
         averageUsage =0;
@@ -120,12 +134,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 averageUsage =0;
 
 
-                ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotalDate(index2, dateV);
-                int x = ItemUsages.size();
+
+                int x = IitemUsages.size();
                 final String[] Itemlabels = new String[x];
                 x = 0;
                 ArrayList<BarEntry> Itementries = new ArrayList<>();
-                for(UspMobGetPersonItemTotal usage : ItemUsages) {
+                for(UspMobGetPersonItemTotal usage : IitemUsages) {
                     Itemlabels[x] = usage.ItemName;
                     averageUsage+=usage.UsageAmount;
                     Itementries.add(new BarEntry(x, usage.UsageAmount));
@@ -146,10 +160,8 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
         DBAccess business = new DBAccess();
 
-        String index2 = m.Read(this.getString(R.string.person_file_name),",")[PersonModel.EMAIL];
 
-        ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(index2);
-       i = usages.size();
+        i = usages.size();
         LineChart lineChart = rootView.findViewById(R.id.lineChart);
         if(i>0) {
             final String[] labels = new String[i];
@@ -165,28 +177,27 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 i++;
             }
             averageUsage/=i;
-                SetUpGraph(bcTrend, entries, labels,averageUsage);
-                //Line chart___________________________________________________________
+            SetUpGraph(bcTrend, entries, labels,averageUsage);
+            //Line chart___________________________________________________________
 
-                // creating list of entry
+            // creating list of entry
 
-                LineDataSet dataset = new LineDataSet(lineEntry, "line water usage");//loading the top labels and setting the bottom label
-                lineChart.setData(new LineData(dataset)); // set the data and list of labels into chart
-                IAxisValueFormatter formatter = setYaxis(labels);
-                //lineChart.getAxisLeft().setAxisMinimum(0f);
-                lineChart.getAxisRight().setEnabled(false);
-                lineChart.getXAxis().setEnabled(false);
-                lineChart.getXAxis().setValueFormatter(formatter);
-                lineChart.getXAxis().setLabelCount(labels.length - 1);
-                dataset.setDrawFilled(true);
-                //end
+            LineDataSet dataset = new LineDataSet(lineEntry, "line water usage");//loading the top labels and setting the bottom label
+            lineChart.setData(new LineData(dataset)); // set the data and list of labels into chart
+            IAxisValueFormatter formatter = setYaxis(labels);
+            //lineChart.getAxisLeft().setAxisMinimum(0f);
+            lineChart.getAxisRight().setEnabled(false);
+            lineChart.getXAxis().setEnabled(false);
+            lineChart.getXAxis().setValueFormatter(formatter);
+            lineChart.getXAxis().setLabelCount(labels.length - 1);
+            dataset.setDrawFilled(true);
+            //end
 
 
         }else{
             lineChart.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             bcTrend.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         }
-        return rootView;
     }
     //from item trend
     public void SetUp(String[] l,String date){
@@ -250,7 +261,60 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     //end
 
 
+    class helpThread implements Runnable {
+        Context context;
+        boolean onCreate;
+        boolean isConnecting;
+        Snackbar mySnackbar;
+        public helpThread() {
 
+        }
+
+        public helpThread(boolean onCreate,Context context) {
+            this.onCreate = onCreate;
+            this.context = context;
+        }
+
+
+        @Override
+        public void run() {
+            if(onCreate){
+
+                isConnecting = business.isConnecting();
+                if(isConnecting) {
+                    Calendar calendar = Calendar.getInstance();
+
+                    Date date = calendar.getTime();
+                    String index2 = m.Read(context.getString(R.string.person_file_name),",")[PersonModel.EMAIL];
+
+
+                    String dateV = df.format(date);
+                    ItemUsages = business.uspMobGetPersonItemTotal(index2);
+                    IitemUsages = business.uspMobGetPersonItemTotalDate(index2, dateV);
+                    usages = business.GetPersonTotalUsageGetItems(index2);
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            afterConnection(rootView);
+                        }
+                    });
+                }else {
+                    mySnackbar = Snackbar.make(tvNodata,"No Connection", 8000);
+                    mySnackbar.getView().setBackgroundColor(Color.RED);
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mySnackbar.show();
+
+                        }
+                    });
+
+                }
+            }else {
+
+            }
+        }
+    }
 
 
     private class MyBarDataSet extends BarDataSet {

@@ -439,7 +439,135 @@ public class DBAccess {
         }
         return leaks;
     }
+    public ArrayList<ReportLeakModel> GetReportedTodayLeaks(int personID) {
 
+        ArrayList<ReportLeakModel> leaks = new ArrayList<>();
+        try {
+            Object[] para = {personID};
+            outerResultSet = DBHelper.SelectPara(" uspMobGetLeaks ",para);
+            while (outerResultSet.next()) {
+                ReportLeakModel leak = new ReportLeakModel();
+                leak.Location = outerResultSet.getString("Location");
+                //leak.Latitude = outerResultSet.getString("Latitude");
+                //leak.Longitude = outerResultSet.getString("Longitude");
+                leak.status = outerResultSet.getInt("StatusID");
+                leak.date = outerResultSet.getDate("DateReported");
+                leak.picPath = outerResultSet.getString("PicPath");
+                leak.PersonID = outerResultSet.getInt("PersonID");
+                if(leak.picPath!=null){
+                    DownLoadPicture DownPic = new DownLoadPicture("icon/" +leak.picPath.trim());
+                    leak.image = DownPic.doInBackground();
+                }else {
+                    DownLoadPicture DownPic = new DownLoadPicture("icon/leak101");
+                    leak.image = DownPic.doInBackground();
+                }
+                //Double longitude = location.getLongitude();
+                //Double latitude = location.getLatitude();
+
+
+                //This section gets the address from the longitude and latitude.
+                //geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                //ddresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                //String address = addresses.get(0).getAddressLine(0);
+
+                //String fullAddress = address;
+
+                leaks.add(leak);
+            }
+            DBHelper.Close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return leaks;
+    }
+    public ArrayList<ReportLeakModel> GetReportedLeaks(int personID,boolean withPic) {
+
+        ArrayList<ReportLeakModel> leaks = new ArrayList<>();
+        try {
+            Object[] para = {personID};
+            outerResultSet = DBHelper.SelectPara(" uspMobGetLeaks ",para);
+            while (outerResultSet.next()) {
+                ReportLeakModel leak = new ReportLeakModel();
+                leak.Location = outerResultSet.getString("Location");
+                //leak.Latitude = outerResultSet.getString("Latitude");
+                //leak.Longitude = outerResultSet.getString("Longitude");
+                leak.status = outerResultSet.getInt("StatusID");
+                leak.date = outerResultSet.getDate("DateReported");
+                leak.picPath = outerResultSet.getString("PicPath");
+                leak.PersonID = outerResultSet.getInt("PersonID");
+                if(leak.picPath!=null){
+                    DownLoadPicture DownPic = new DownLoadPicture("icon/" +leak.picPath.trim());
+                    leak.image = DownPic.doInBackground();
+                }else {
+                    DownLoadPicture DownPic = new DownLoadPicture("icon/leak101");
+                    leak.image = DownPic.doInBackground();
+                }
+                //Double longitude = location.getLongitude();
+                //Double latitude = location.getLatitude();
+
+
+                //This section gets the address from the longitude and latitude.
+                //geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                //ddresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                //String address = addresses.get(0).getAddressLine(0);
+
+                //String fullAddress = address;
+
+                leaks.add(leak);
+            }
+            DBHelper.Close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return leaks;
+    }
+    public ArrayList<ReportLeakModel> GetFixedReportedLeaks(int personID,boolean thatAreFix) {
+
+        ArrayList<ReportLeakModel> leaks = new ArrayList<>();
+        try {
+            Object[] para = {personID};
+            outerResultSet = DBHelper.SelectPara(" uspMobGetLeaks ",para);
+            while (outerResultSet.next()) {
+                ReportLeakModel leak = new ReportLeakModel();
+                leak.Location = outerResultSet.getString("Location");
+                //leak.Latitude = outerResultSet.getString("Latitude");
+                //leak.Longitude = outerResultSet.getString("Longitude");
+                leak.status = outerResultSet.getInt("StatusID");
+                leak.date = outerResultSet.getDate("DateReported");
+                leak.picPath = outerResultSet.getString("PicPath");
+                leak.PersonID = outerResultSet.getInt("PersonID");
+                if(leak.picPath!=null){
+                    DownLoadPicture DownPic = new DownLoadPicture("icon/" +leak.picPath.trim());
+                    leak.image = DownPic.doInBackground();
+                }else {
+                    DownLoadPicture DownPic = new DownLoadPicture("icon/leak101");
+                    leak.image = DownPic.doInBackground();
+                }
+                //Double longitude = location.getLongitude();
+                //Double latitude = location.getLatitude();
+
+
+                //This section gets the address from the longitude and latitude.
+                //geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                //ddresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                //String address = addresses.get(0).getAddressLine(0);
+
+                //String fullAddress = address;
+
+                leaks.add(leak);
+            }
+            DBHelper.Close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return leaks;
+    }
     public boolean MobApproveTip(TipModel tip) {
         Object[] paras = {tip.ID, tip.Approved};
         boolean isWorking = DBHelper.NonQuery(" uspMobApproveTip ", paras);

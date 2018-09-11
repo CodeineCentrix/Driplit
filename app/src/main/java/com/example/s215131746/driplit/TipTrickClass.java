@@ -1,6 +1,10 @@
 package com.example.s215131746.driplit;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Adapters.TipListAdapter;
 import viewmodels.PersonModel;
@@ -24,22 +29,24 @@ import viewmodels.TipModel;
  */
 
 public class TipTrickClass extends Fragment {
+    TipListAdapter la;
     DBAccess business;
     EditText txtTip;
     GeneralMethods m;
+    ArrayList<TipModel> tips;
+    ListView postedItems;
+    Handler h = new Handler();
+     String [] fuck ;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.tip_trick, container, false);
-        final ListView postedItems = rootView.findViewById(R.id.lvPostedTips);
+        postedItems = rootView.findViewById(R.id.lvPostedTips);
         m = new GeneralMethods(getContext());
         business = new DBAccess();
-        ArrayList<TipModel> tips;
-        final String [] fuck = m.Read(this.getString(R.string.person_file_name),",");
-        if(fuck[PersonModel.ISAMDIN].equals("true"))
-            tips =  business.GetAdminTips();
-        else
-            tips = business.GetTips();
+        fuck = m.Read(this.getString(R.string.person_file_name),",");
 
-        final TipListAdapter la = new TipListAdapter(getContext(),tips);
+        helpThread helpThread = new helpThread(true, rootView.getContext());
+        new Thread(helpThread).start();
+
         txtTip = rootView.findViewById(R.id.txtTipTrick);
         final ImageButton btnPost = rootView.findViewById(R.id.imgbtnPost);
         txtTip.addTextChangedListener(new TextWatcher() {
@@ -58,7 +65,7 @@ public class TipTrickClass extends Fragment {
              public void afterTextChanged(Editable s) {
              }
          });
-        postedItems.setAdapter(la);
+
 
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,5 +101,54 @@ public class TipTrickClass extends Fragment {
         });
         return rootView;
     }
+    class helpThread implements Runnable {
+        Context context;
+        boolean onCreate;
+        boolean isConnecting;
+        Snackbar mySnackbar;
+        public helpThread() {
 
+        }
+
+        public helpThread(boolean onCreate,Context context) {
+            this.onCreate = onCreate;
+            this.context = context;
+        }
+
+
+        @Override
+        public void run() {
+            if(onCreate){
+
+                isConnecting = business.isConnecting();
+                if(isConnecting) {
+
+                    if(fuck[PersonModel.ISAMDIN].equals("true"))
+                        tips =  business.GetAdminTips();
+                    else
+                        tips = business.GetTips();
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            final TipListAdapter la = new TipListAdapter(getContext(),tips);
+                            postedItems.setAdapter(la);
+                        }
+                    });
+                }else {
+                    mySnackbar = Snackbar.make(txtTip,"No Connection", 8000);
+                    mySnackbar.getView().setBackgroundColor(Color.RED);
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mySnackbar.show();
+
+                        }
+                    });
+
+                }
+            }else {
+
+            }
+        }
+    }
 }
