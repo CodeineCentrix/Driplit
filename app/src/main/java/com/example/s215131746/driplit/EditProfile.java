@@ -41,7 +41,7 @@ public class EditProfile extends AppCompatActivity {
 
         business = new DBAccess();
 
-        String[] p = m.Read("person.txt",",");
+        String[] p = m.Read(this.getString(R.string.person_file_name),",");
         txtFullname.setText(p[PersonModel.FULLNAME]);
         txtEmail.setText(p[PersonModel.EMAIL]);
         txtUsageTarget.setText(p[PersonModel.USAGETARGET]);

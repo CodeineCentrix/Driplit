@@ -7,4 +7,24 @@
         android:orderInCategory="100"
         android:title="Reported Leaks"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_edit_profile"
+        android:orderInCategory="100"
+        android:title="Eidt profile"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_snitch_board"
+        android:orderInCategory="100"
+        android:title="Snitch board"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:title="Help"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sign_out"
+        android:orderInCategory="100"
+        android:title="Sign out"
+        app:showAsAction="never" />
 </menu>

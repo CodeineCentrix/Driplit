@@ -3,10 +3,11 @@ package com.example.s215131746.driplit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import Helpers.BackgroundTip;
 import viewmodels.TipModel;
 
 public class FODScreen extends AppCompatActivity{
@@ -20,7 +21,13 @@ public class FODScreen extends AppCompatActivity{
 
         GeneralMethods m = new GeneralMethods(getApplicationContext());
         String oldDate =m.Read("Tip.txt",",")[0], todayDate =  m.GetDate();
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //code for back button
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         if(oldDate.equals("") || !oldDate.equals(todayDate)){
             TipModel ranTip = business.GetRandomTips();
             m.writeToFile(todayDate+","+ranTip.TipDescription,"Tip.txt");
@@ -31,11 +38,18 @@ public class FODScreen extends AppCompatActivity{
 
     }
     public void ToHome(View v){
-        Intent back = new Intent(this, BackgroundTip.class);
-        startService(back);
-        Intent mainMenu = new Intent(getApplicationContext(), Mainmenu.class);
-        startActivity(mainMenu);
+       /* Intent back = new Intent(this, BackgroundTip.class);
+        startService(back);*/
+        Bundle tab = getIntent().getExtras();
+        if(tab==null){
+
+            Intent mainMenu = new Intent(getApplicationContext(), Mainmenu.class);
+            startActivity(mainMenu);
+        }
         finish();
     }
-
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
 }

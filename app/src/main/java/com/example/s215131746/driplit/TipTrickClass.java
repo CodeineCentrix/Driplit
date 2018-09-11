@@ -33,7 +33,7 @@ public class TipTrickClass extends Fragment {
         m = new GeneralMethods(getContext());
         business = new DBAccess();
         ArrayList<TipModel> tips;
-        final String [] fuck = m.Read("person.txt",",");
+        final String [] fuck = m.Read(this.getString(R.string.person_file_name),",");
         if(fuck[PersonModel.ISAMDIN].equals("true"))
             tips =  business.GetAdminTips();
         else
@@ -69,7 +69,9 @@ public class TipTrickClass extends Fragment {
                 }else if(!tipd.equals("")){
                     Toast.makeText(rootView.getContext(),"your tip will wait for approval",Toast.LENGTH_LONG).show();
                     TipModel tip = new TipModel();
-                    tip.PersonID =Integer.parseInt( m.Read("person.txt",",")[0]);
+                    tip.PersonID =Integer.parseInt(
+                            m.Read(rootView.getContext().getString(R.string.person_file_name)
+                                    ,",")[PersonModel.ID]);
                     tip.TipDescription = tipd;
                     business.MobAddTip(tip);
                     ArrayList<TipModel> tips =  business.GetTips();

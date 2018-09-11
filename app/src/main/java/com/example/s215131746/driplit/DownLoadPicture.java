@@ -24,17 +24,22 @@ public class DownLoadPicture extends AsyncTask<Void,Void,Bitmap> {
     @Override
     public Bitmap doInBackground(Void... voids) {
         String login_url = "http://sict-iis.nmmu.ac.za/codecentrix/MobileConnectionString/"+name.trim()+".png";
+        HttpURLConnection httpURLConnection =null;
         try {
             URL url = new URL(login_url);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setConnectTimeout(1000 * 30);
             httpURLConnection.setReadTimeout(1000 * 30);
 //            String header = "Basic " + new String(android.util.Base64.encode("codecentrix:password".getBytes(), android.util.Base64.NO_WRAP));
 //            String type = ""+httpURLConnection.getResponseCode();
 //            InputStream error = httpURLConnection.getErrorStream();
 //            httpURLConnection.addRequestProperty("Authorization", header);
-            return BitmapFactory.decodeStream((InputStream) httpURLConnection.getContent(),null,null);
+
+            Bitmap pictureBitmap = BitmapFactory.decodeStream((InputStream) httpURLConnection.getContent(), null, null);
+            httpURLConnection.disconnect();
+            return pictureBitmap;
         }catch (Exception e){
+            httpURLConnection.disconnect();
             e.printStackTrace();
             return  null;
         }

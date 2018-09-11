@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import viewmodels.PersonModel;
 import viewmodels.ReportLeakModel;
 
 import static android.location.LocationManager.*;
@@ -50,7 +51,10 @@ public class ReportLeakClass extends Fragment {
      Double latitude ;
      String id;
     String uploadImageName;
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    String address;
+    private int TakePicRequestCode;
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.report_leak, container, false);
 
@@ -68,7 +72,8 @@ public class ReportLeakClass extends Fragment {
     }
     public void onTakePicture(View view){
         Intent showCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(showCamera, 10);
+        TakePicRequestCode = 10;
+        startActivityForResult(showCamera, TakePicRequestCode);
 
     }
     public void GetLocation(final View view){
@@ -99,8 +104,8 @@ public class ReportLeakClass extends Fragment {
                 Location location = lm.getLastKnownLocation(GPS_PROVIDER);
                 Geocoder geocoder;
                 List<Address> addresses;
-         longitude = location.getLongitude();
-         latitude = location.getLatitude();
+                 longitude = location.getLongitude();
+                 latitude = location.getLatitude();
                 //Finding the IDs for the TextViews
                 txtAddress = (TextView) getView().findViewById(R.id.txtAddress);
                 txtHead = (TextView) getView().findViewById(R.id.txtHead);
@@ -108,9 +113,10 @@ public class ReportLeakClass extends Fragment {
                 //This section gets the address from the longitude and latitude.
                 geocoder = new Geocoder(getContext(), Locale.getDefault());
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                String address = addresses.get(0).getAddressLine(0);
+                address = addresses.get(0).getAddressLine(0);
                 final String fullAddress = address;
-             id = m.Read("person.txt", ",")[0];
+
+             id = m.Read(this.getString(R.string.person_file_name), ",")[PersonModel.ID];
                 if(address != null){
                     AlertDialog.Builder takePic = new AlertDialog.Builder(view.getContext());
                     takePic.setTitle("Take leak picture! ");
@@ -160,12 +166,13 @@ public class ReportLeakClass extends Fragment {
         report.PersonID = id;
         report.Latitude = ""+latitude;
         report.Longitude = ""+longitude;
+        report.Location = address;
         db.MobAddLeak(report);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==10 && data!=null){
+        if(requestCode==TakePicRequestCode && data!=null){
             bitmapImage = (Bitmap) data.getExtras().get("data");
             if(bitmapImage!=null){
                 uploadImageName = "leak"+ new SimpleDateFormat("yyyyMMddHHmmss'.PNG'").format(new Date());
@@ -174,6 +181,7 @@ public class ReportLeakClass extends Fragment {
                 report.PersonID = Integer.parseInt(id);
                 report.Latitude = ""+latitude;
                 report.Longitude = ""+longitude;
+                report.Location = address;
                 report.picPath = uploadImageName;
                 db.MobAddLeak(report);
             }

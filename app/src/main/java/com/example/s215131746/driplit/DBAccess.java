@@ -97,7 +97,7 @@ public class DBAccess {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                return i == 0;
+            return i == 1;
             } else {
                 return false;
             }
@@ -106,9 +106,10 @@ public class DBAccess {
 
         static ResultSet Select(String sql) {
             try {
-                Connect();
-                st = connection.prepareStatement(sql);
-                innerResultSet = st.executeQuery();
+                if(Connect()) {
+                    st = connection.prepareStatement(sql);
+                    innerResultSet = st.executeQuery();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -117,14 +118,15 @@ public class DBAccess {
 
         static ResultSet SelectPara(String sql, Object[] parameters) {
             try {
-                Connect();
-                st = connection.prepareStatement(SetParaToPass(sql, parameters));
-                int i = 1;
-                for (Object para : parameters) {
-                    BindParameter(i, para, st);
-                    i++;
+                if(Connect()) {
+                    st = connection.prepareStatement(SetParaToPass(sql, parameters));
+                    int i = 1;
+                    for (Object para : parameters) {
+                        BindParameter(i, para, st);
+                        i++;
+                    }
+                    innerResultSet = st.executeQuery();
                 }
-                innerResultSet = st.executeQuery();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -372,7 +374,7 @@ public class DBAccess {
 
     public boolean MobAddLeak(ReportLeakModel leak) {
         Object[] paras = {leak.Latitude, leak.Longitude, leak.PersonID, leak.picPath, leak.Location};
-        boolean isWorking = DBHelper.NonQuery(" uspAddLeak", paras);
+        boolean isWorking = DBHelper.NonQuery(" uspMobAddLeak", paras);
         DBHelper.Close();
         return isWorking;
     }
@@ -381,11 +383,13 @@ public class DBAccess {
         TipModel tip = new TipModel();
         try {
             outerResultSet = DBHelper.Select(" uspMobGetRandomTips");
-            outerResultSet.next();
-            tip.ID = outerResultSet.getInt("TTID");
-            tip.TipDescription = outerResultSet.getString("TTdescription");
-            //item.ItemIcon = resultSet.getByte();
-            DBHelper.Close();
+            if(outerResultSet!=null) {
+                outerResultSet.next();
+                tip.ID = outerResultSet.getInt("TTID");
+                tip.TipDescription = outerResultSet.getString("TTdescription");
+                //item.ItemIcon = resultSet.getByte();
+                DBHelper.Close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

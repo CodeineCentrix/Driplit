@@ -56,8 +56,9 @@
         <activity android:name=".ReportedLeaks" />
 
         <service
-            android:name="Helpers.BackgroundTip"
-            android:exported="false"></service>
+            android:name="helpers.BackgroundTip"
+            android:exported="false" />
+
     </application>
 
 </manifest>

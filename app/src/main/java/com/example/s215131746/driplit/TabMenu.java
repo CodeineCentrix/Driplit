@@ -42,7 +42,7 @@ public class TabMenu extends AppCompatActivity {
         setContentView(R.layout.activity_tab_menu);
 
         m = new GeneralMethods(this);
-        String[] p = m.Read("person.txt",",");
+        String[] p = m.Read(this.getString(R.string.person_file_name),",");
         person.fullName = p[PersonModel.FULLNAME];
         person.email = p[PersonModel.EMAIL];
         person.Usagetarget = Integer.parseInt(p[PersonModel.USAGETARGET]);
@@ -127,11 +127,40 @@ public class TabMenu extends AppCompatActivity {
                 rLeaks.putExtras(getIntent());
                 startActivity(rLeaks);
                 return super.onOptionsItemSelected(item);
-                
 
+            case R.id.action_edit_profile:
+
+                Intent ed = new Intent(this.getApplicationContext(), EditProfile.class);
+                startActivity(ed);
+                return super.onOptionsItemSelected(item);
+            case R.id.action_help:
+
+                Intent ih = new Intent(this.getApplicationContext(), IntakeHelper.class);
+                startActivity(ih);
+                return super.onOptionsItemSelected(item);
+            case R.id.action_sign_out:
+                Bundle z = new Bundle();
+                Intent lo = new Intent(this.getApplicationContext(), Login.class);
+                z.putString("out","out");
+                lo.putExtras(z);
+                lo.putExtras(getIntent());
+                lo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(lo);
+                finish();
+
+                return super.onOptionsItemSelected(item);
+            case R.id.action_snitch_board:
+                Toast.makeText(this,"UNDER CONSTRUCTION!!!",Toast.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+            case R.id.homeAsUp:
+                finish();
+                return super.onOptionsItemSelected(item);
+                default:
+                    finish();
+                    return super.onOptionsItemSelected(item);
         }
-        finish();
-        return super.onOptionsItemSelected(item);
+
+
     }
 
     /**

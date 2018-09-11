@@ -1,9 +1,9 @@
 package com.example.s215131746.driplit;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,7 +15,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,10 +22,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import Helpers.BackgroundTip;
-import Helpers.tipNotifier;
+import java.util.Calendar;
+
+import helpers.BackgroundTip;
 
 public class MainActivity extends AppCompatActivity {
 private static final String TAG = "MainActivity";
@@ -49,6 +48,17 @@ private static  int timeOUt = 2000;
         tvLoadError = findViewById(R.id.tvLoadError);
         pb = findViewById(R.id.progressBar);
         LaunchMain();
+        Intent back = new Intent(this, BackgroundTip.class);
+        //startService(back);
+        PendingIntent pii = PendingIntent.getService(this, 2222, back,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        //getting current time and add 5 seconds to it
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, 5);
+        //registering our pending intent with alarmmanager
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(), pii);
+
 
     }
     public void LaunchMain()

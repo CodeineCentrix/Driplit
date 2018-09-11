@@ -52,7 +52,7 @@ public class Register2 extends AppCompatActivity {
 
          m = new GeneralMethods(getApplicationContext());
 
-        String[] details = m.Read("person.txt",",");
+        String[] details = m.Read(this.getString(R.string.person_file_name),",");
         final ArrayAdapter<Surburb> cityAdapter = new ArrayAdapter<Surburb>(
                 this,android.R.layout.simple_spinner_item,cities){
             @Override

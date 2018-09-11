@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,11 +51,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     final List<BarEntry> entries = new ArrayList<>();
     final ArrayList<Entry> lineEntry = new ArrayList<>();
     //end
+    public View rootView;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_intake_trend_scroller, container, false);
+        rootView = inflater.inflate(R.layout.activity_intake_trend_scroller, container, false);
 
-
+        final DecimalFormat dc = new DecimalFormat("0.0");
         //from item trend
         cvDate  = rootView.findViewById(R.id.cvDate);
         tvNodata = rootView.findViewById(R.id.tvNoData);
@@ -62,7 +64,8 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
         m = new GeneralMethods(rootView.getContext());
         cvDate.setVisibility(View.INVISIBLE);
-        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(m.Read("person.txt",",")[2]);
+        ArrayList<UspMobGetPersonItemTotal> ItemUsages = business.uspMobGetPersonItemTotal(
+                m.Read(this.getString(R.string.person_file_name),",")[PersonModel.EMAIL]);
         cvDate.setMaxDate(cvDate.getDate());
         int i = ItemUsages.size();
         averageUsage =0;
@@ -108,7 +111,9 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 calendar.set(year, month, day);
                 Date date = calendar.getTime();
                 //String de = String.valueOf(d.getGregorianChange());
-                String dateV = df.format(date), index2 = m.Read("person.txt", ",")[2];
+                String dateV = df.format(date), index2 =
+                        m.Read(rootView.getContext().getString(R.string.person_file_name)
+                                , ",")[PersonModel.EMAIL];
 
                 btnSelectDate.setVisibility(View.VISIBLE);
 
@@ -141,7 +146,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
         DBAccess business = new DBAccess();
 
-        String index2 = m.Read("person.txt",",")[2];
+        String index2 = m.Read(this.getString(R.string.person_file_name),",")[PersonModel.EMAIL];
 
         ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(index2);
        i = usages.size();
@@ -219,7 +224,8 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             IAxisValueFormatter formatter = setYaxis(Labels);
             BarDataSet set = new BarDataSet(entries, "50 liters is the daily recommendation");
 
-            MyBarDataSet setColor = new MyBarDataSet(entries,"Average water usage: "+avg,set);
+            final DecimalFormat dc = new DecimalFormat("0.0");
+            MyBarDataSet setColor = new MyBarDataSet(entries,"Average water usage: "+dc.format(avg),set);
             setColor.setColors(new int[]{ContextCompat.getColor(getContext(), R.color.green),
                     ContextCompat.getColor(getContext(), R.color.red)});
             ArrayList<BarDataSet> dataSets = new ArrayList<>();
@@ -258,7 +264,9 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         @Override
         public int getColor(int index) {
            try {
-               int target = Integer.parseInt(m.Read("person.txt",",")[PersonModel.USAGETARGET]);
+               int target = Integer.parseInt(
+                       m.Read(rootView.getContext().getString(R.string.person_file_name)
+                               ,",")[PersonModel.USAGETARGET]);
                if(this.getEntryForIndex(index).getY() < target) // less than 95 green
                    return mColors.get(0);
                else // greater or equal than 100 red

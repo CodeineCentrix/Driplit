@@ -1,4 +1,4 @@
-package Helpers;
+package helpers;
 
 import android.app.Service;
 import android.content.Intent;

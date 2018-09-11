@@ -20,6 +20,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import viewmodels.PersonModel;
 import viewmodels.UspMobGetPersonTotalUsage;
 
 /**
@@ -37,7 +38,7 @@ public class IntakeTrendClass extends Fragment {
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
         DBAccess business = new DBAccess();
         GeneralMethods m = new GeneralMethods(getContext());
-        String index2 = m.Read("person.txt",",")[2];
+        String index2 = m.Read(this.getString(R.string.person_file_name),",")[PersonModel.EMAIL];
         averageUsage =0;
         ArrayList<UspMobGetPersonTotalUsage> usages = business.GetPersonTotalUsageGetItems(index2);
         int i = usages.size();

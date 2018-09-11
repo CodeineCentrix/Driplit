@@ -171,11 +171,17 @@ public class ItemListAdapter extends BaseAdapter {
         v =""+i;
         txtItemUsage.setText(v);
     }
+    float Used;
     private void RecordUsage(View v, final int position, EditText txtItemUsage, final TextView tvUsed ){
         generalMethods.writeToFile("do","Recording.txt");
         final int duration = 3000;
-        final float Used = Float.parseFloat(txtItemUsage.getText().toString());
-        if(Used>0){
+
+        try {
+            Used = Float.parseFloat(txtItemUsage.getText().toString());
+        }catch (NumberFormatException e){
+            Used =0;
+        }
+        if(Used>0 ){
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             String date = df.format(Calendar.getInstance().getTime());
             final DecimalFormat dc = new DecimalFormat("0.0");

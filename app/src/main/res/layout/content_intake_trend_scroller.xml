@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/graph_back"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="287dp">
 
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="5dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/graph_back"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="287dp">
 
@@ -70,7 +70,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:background="@color/colorPrimary">
+                android:background="@color/graph_back">
 
                 <TextView
                     android:id="@+id/textView"

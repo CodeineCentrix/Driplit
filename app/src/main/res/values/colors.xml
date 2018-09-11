@@ -26,4 +26,6 @@
     <color name="others_tips">#73869b</color>
     <color name="green">#32fa00</color>
     <color name="red">#fa0d00</color>
+    <!--trend color-->
+    <color name="graph_back">#CFD8DC</color>
 </resources>

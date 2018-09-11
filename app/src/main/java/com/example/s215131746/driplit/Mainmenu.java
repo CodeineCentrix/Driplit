@@ -34,7 +34,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         GeneralMethods m = new GeneralMethods(getApplicationContext());
-        String[] details = m.Read("person.txt",",");
+        String[] details = m.Read(this.getString(R.string.person_file_name),",");
         NavigationView navigationView = findViewById(R.id.nav_view);
 
 
@@ -88,7 +88,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
     public void FactOfTheDayScreen(View view)
     {
         Intent showFOD = new Intent(getApplicationContext(),FODScreen.class);
-        startActivity(showFOD);
+        SetBundel(showFOD,"fod");
     }
     public void SetBundel(Intent in,String tabName)
     {
@@ -125,9 +125,15 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         int id = item.getItemId();
 
         if (id == R.id.nav_signout) {
-            Intent signOut = new Intent(getApplicationContext(),Login.class);
-            startActivity(signOut);
+            Bundle z = new Bundle();
+            Intent lo = new Intent(this.getApplicationContext(), Login.class);
+            z.putString("out","out");
+            lo.putExtras(z);
+            lo.putExtras(getIntent());
+            lo.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(lo);
             finish();
+
         }
         else if(id == R.id.nav_help)
         {

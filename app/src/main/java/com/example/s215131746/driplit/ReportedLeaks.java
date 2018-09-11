@@ -51,14 +51,16 @@ public class ReportedLeaks extends AppCompatActivity {
         personID = Integer.parseInt(tab.getString("personID"));
         //Trying to link the properties in the GetReportedLeaks/ReportedLeak class to the Adapter to display.
         GeneralMethods m = new GeneralMethods(reportedLeaks.getContext());
-        isAdmin = m.Read("person.txt",",")[PersonModel.ISAMDIN].equals("true");
+        isAdmin = m.Read(this.getString(R.string.person_file_name),",")[PersonModel.ISAMDIN].equals("true");
         progressDialog = new ProgressDialog(ReportedLeaks.this,
                 R.style.Theme_AppCompat_Dialog);
 
         helpThread r = new helpThread(this);
         new Thread(r).start();
         progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(true);
         progressDialog.setCancelable(false);
+
        /* reportedLeaks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.s215131746.driplit.DBAccess;
@@ -15,7 +16,9 @@ import com.example.s215131746.driplit.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
+import viewmodels.PersonModel;
 import viewmodels.TipModel;
 
 /**
@@ -27,10 +30,15 @@ public class TipListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context context;
     View approve[];
+    String fullName;
+    LinearLayout[] llTipContainer;
     public TipListAdapter(Context context,ArrayList<TipModel> tipsList){
+        GeneralMethods m = new GeneralMethods(context);
+        fullName = m.Read(context.getString(R.string.person_file_name),",")[PersonModel.FULLNAME];
         this.context = context;
         this.tipsList = tipsList;
-        approve = new View[tipsList.size()];
+        llTipContainer = new LinearLayout[this.getCount()];
+        approve = new View[this.getCount()];
         mInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -61,9 +69,15 @@ public class TipListAdapter extends BaseAdapter {
         }
         SimpleDateFormat df = new SimpleDateFormat("MMM dd");
         tipDescription.setText(tipsList.get(position).TipDescription);
-        tvPerson.setText("By: "+tipsList.get(position).FullName);
+        llTipContainer[position] = v.findViewById(R.id.llTipContainer);
+        if(!fullName.equals(tipsList.get(position).FullName)) {
+            tvPerson.setText("By: " + tipsList.get(position).FullName);
+        }else {
+            llTipContainer[position].setBackground(context.getDrawable(R.color.darkgrey));
+            tvPerson.setText("By: You");
+        }
         tvDate.setText(df.format( tipsList.get(position).DatePosted));
-//        LinearLayout llTipContainer = v.findViewById(R.id.llTipContainer);
+
 //        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //        lp.setMargins(0,16,8,4);
 //        llTipContainer.setLayoutParams(lp);

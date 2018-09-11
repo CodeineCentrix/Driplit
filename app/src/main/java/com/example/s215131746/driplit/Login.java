@@ -10,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -50,20 +51,23 @@ public class Login extends AppCompatActivity {
         RemeberMe();
         usage = 60;
         oldTips =0;
-        if(cbRemeber.isChecked()){
-            details = m.Read("person.txt",",");
+        if(cbRemeber.isChecked()) {
+            details = m.Read(this.getString(R.string.person_file_name), ",");
             email.setText(details[PersonModel.EMAIL]);
             password.setText(details[PersonModel.PASSWORD]);
-            try{
-                usage =Integer.parseInt(details[PersonModel.USAGETARGET]);
+            try {
+                usage = Integer.parseInt(details[PersonModel.USAGETARGET]);
                 oldTips = Integer.parseInt(details[PersonModel.OLDAPPROVED]);
-            }catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
-
+            Bundle tab = getIntent().getExtras();
+            if(tab==null) {
+                Intent fod = new Intent(getApplicationContext(), FODScreen.class);
+                startActivity(fod);
+            }
         }
         business = new DBAccess();
-
     }
    
     public void RemeberMe(String answ){
@@ -78,13 +82,13 @@ public class Login extends AppCompatActivity {
     public void ToRegisterScreen(View view){
         //m.openWebPage("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Resources/View/log_in.php?from=mobile");
 
-    /*   Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
+       Uri webpage = Uri.parse("http://sict-iis.nmmu.ac.za/codecentrix/IT2/Controller/MainController.php?action=register_page&from=mobile");
        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if ( intent.resolveActivity(getPackageManager()) != null) {
            startActivity( intent);
-       }*/
-        registerScreen = new Intent(getApplicationContext(), Register2.class);
-        startActivity(registerScreen);
+       }
+      /*  registerScreen = new Intent(getApplicationContext(), Register2.class);
+        startActivity(registerScreen);*/
     }
     public void ToFODScreen(View view){
         if(cbRemeber.isChecked())

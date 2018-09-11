@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import Adapters.ItemListAdapter;
 import Interfaces.ImplementChange;
 import viewmodels.ItemUsageModel;
+import viewmodels.PersonModel;
 import viewmodels.UspMobGetPersonItemTotal;
 
 /**
@@ -42,8 +43,8 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         m = new GeneralMethods(getContext());
         ScaleImg(R.id.imgView);
         listOfItem = business.GetItems();
-        value = m.Read("person.txt",",");
-        usagForItem = business.uspMobGetPersonItemTotal(value[2]);
+        value = m.Read(this.getString(R.string.person_file_name),",");
+        usagForItem = business.uspMobGetPersonItemTotal(value[PersonModel.EMAIL]);
         float totalUsage =0;
         for (UspMobGetPersonItemTotal prev:usagForItem) {
                 totalUsage += prev.UsageAmount;
@@ -63,14 +64,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
                 listAdapter.setVisibility(i);
             }
         });
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabInfo);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent showHelp = new Intent(rootView.getContext(),IntakeHelper.class);
-                startActivity(showHelp);
-            }
-        });
+
         return rootView;
     }
     public Bitmap ScaleImg(int pic){

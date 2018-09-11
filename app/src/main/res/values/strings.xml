@@ -17,7 +17,7 @@
     <string name="main_menu">Main Menu</string>
     <string name="title_activity_menu_tab">MenuTab</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_tab_menu">TabMenu</string>
+    <string name="title_activity_tab_menu">Menu</string>
     <string name="record_intake">Record Intake</string>
     <string name="tab_text_2">Tips</string>
     <string name="tab_text_3">Edit Profile</string>
@@ -202,5 +202,6 @@
     <string name="street_name">STREET NAME</string>
     <string name="city">CITY</string>
     <string name="suburb">SUBURB</string>
+    <string name="person_file_name">person.txt</string>
 
 </resources>
