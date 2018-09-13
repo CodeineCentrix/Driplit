@@ -203,5 +203,7 @@
     <string name="city">CITY</string>
     <string name="suburb">SUBURB</string>
     <string name="person_file_name">person.txt</string>
+    <string name="fixed">Fixed</string>
+    <string name="usage_target">Usage Target</string>
 
 </resources>

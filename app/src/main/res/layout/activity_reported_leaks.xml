@@ -110,22 +110,23 @@
                     android:contentDescription="@string/todo"
                     app:srcCompat="@drawable/ic_launcher_background" />
             </LinearLayout>
+
             <View
                 android:id="@+id/view"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_marginStart="350dp"
+                android:layout_marginLeft="350dp"
 
                 android:layout_marginTop="58dp"
                 android:background="@color/colorAccent"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.461"
-                android:layout_marginLeft="350dp"
-                />
+                app:layout_constraintVertical_bias="0.461" />
 
             <Switch
                 android:id="@+id/switch1"
@@ -134,7 +135,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Fixed"
+                android:text="@string/fixed"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.85"
