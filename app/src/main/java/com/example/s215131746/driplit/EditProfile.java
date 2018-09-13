@@ -1,7 +1,12 @@
 package com.example.s215131746.driplit;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import viewmodels.PersonModel;
 
@@ -88,6 +97,61 @@ public class EditProfile extends AppCompatActivity {
         m.writeToFile(person.toString(),"person.txt");
         Toast.makeText(getApplicationContext(),"Updated Profile",Toast.LENGTH_SHORT).show();
         finish();
+    }
+    public void onImageGalleryClicked(View v) {
+        // invoke the image gallery using an implict intent.
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+
+        // where do we want to find the data?
+        File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String pictureDirectoryPath = pictureDirectory.getPath();
+        // finally, get a URI representation
+        Uri data = Uri.parse(pictureDirectoryPath);
+
+        // set the data and type.  Get all image types.
+        photoPickerIntent.setDataAndType(data, "image/*");
+
+        // we will invoke this activity, and get something back from it.
+        startActivityForResult(photoPickerIntent, 10);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+       /* if(requestCode==10 && data!=null){
+            bitmapImage = (Bitmap) data.getExtras().get("data");
+            imgRacer.setImageBitmap(bitmapImage);
+            loImage.setVisibility(navigationView.VISIBLE);
+
+        }else*/
+        if(resultCode == RESULT_OK) {
+
+            // if we are here, everything processed successfully.
+            if (requestCode == 10) {
+                // if we are here, we are hearing back from the image gallery.
+
+                // the address of the image on the SD Card.
+                Uri imageUri = data.getData();
+
+                // declare a stream to read the image data from the SD Card.
+                InputStream inputStream;
+
+                // we are getting an input stream, based on the URI of the image.
+                try {
+                    inputStream = getContentResolver().openInputStream(imageUri);
+
+                    // get a bitmap from the stream.
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+
+                    // show the image to the user
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    // show a message to the user indictating that the image is unavailable.
+                    Toast.makeText(this, "Unable to open image", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

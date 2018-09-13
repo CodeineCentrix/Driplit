@@ -184,6 +184,10 @@ public class ReportLeakClass extends Fragment {
                 report.Location = address;
                 report.picPath = uploadImageName;
                 db.MobAddLeak(report);
+                txtHead.setVisibility(View.VISIBLE);
+                txtAddress.setVisibility(View.VISIBLE);
+                txtInstruction.setVisibility(View.INVISIBLE);
+                txtAddress.setText(address);
             }
         }
     }
