@@ -153,7 +153,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
                         }
                     });
                 }else {
-                    mySnackbar = Snackbar.make(tvTotal,"No Connection", 8000);
+                    mySnackbar = Snackbar.make(mainView,"No Connection", 8000);
                     mySnackbar.getView().setBackgroundColor(Color.RED);
                     handler.post(new Runnable() {
                         @Override

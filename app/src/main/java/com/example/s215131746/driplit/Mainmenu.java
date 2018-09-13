@@ -1,7 +1,16 @@
 package com.example.s215131746.driplit;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,9 +24,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import viewmodels.PersonModel;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private int PERMISSION_REQUST_CODE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +60,8 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         View header = navigationView.getHeaderView(0);
         ImageView profile = header.findViewById(R.id.nav_imgIcon);
         try {
-          //  DownLoadPicture d = new DownLoadPicture("meter");
-          //  profile.setImageBitmap(d.doInBackground());
+            DownLoadPicture d = new DownLoadPicture(details[PersonModel.ID]);
+            profile.setImageBitmap(d.doInBackground());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -56,8 +75,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
     }
 
     //Trying to link onClick of EditProfile button to Fragment EditProfile to display EditProfile intent.
-    public void EditProfileScreen(View view)
-    {
+    public void EditProfileScreen(View view){
 
         Intent showEditProfile = new Intent(getApplicationContext(),EditProfile.class);
         //SetBundel(showEditProfile,"Edit");
@@ -65,33 +83,27 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         startActivity(showEditProfile);
 
     }
-    public void TrendScreen(View view)
-    {
+    public void TrendScreen(View view){
         Intent showTrend = new Intent(getApplicationContext(),TabMenu.class);
         SetBundel(showTrend,"ItemTrend");
     }
-    public void TipScreen(View view)
-    {
+    public void TipScreen(View view){
         Intent showTips = new Intent(getApplicationContext(),TabMenu.class);
         SetBundel(showTips,"Tips");
     }
-    public void RecordScreen(View view)
-    {
+    public void RecordScreen(View view){
         Intent showRecord = new Intent(getApplicationContext(),TabMenu.class);
         SetBundel(showRecord,"Record");
     }
-    public void ReportScreen(View view)
-    {
+    public void ReportScreen(View view){
         Intent showReport = new Intent(getApplicationContext(),TabMenu.class);
         SetBundel(showReport,"Report");
     }
-    public void FactOfTheDayScreen(View view)
-    {
+    public void FactOfTheDayScreen(View view){
         Intent showFOD = new Intent(getApplicationContext(),FODScreen.class);
         SetBundel(showFOD,"fod");
     }
-    public void SetBundel(Intent in,String tabName)
-    {
+    public void SetBundel(Intent in,String tabName){
         Bundle i = new Bundle();
         i.putString("Tab", tabName);
         in.putExtras(i);
@@ -115,9 +127,6 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         }
 
     }
-
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -190,5 +199,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

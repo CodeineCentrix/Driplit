@@ -28,12 +28,19 @@ public class FODScreen extends AppCompatActivity{
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        if(oldDate.equals("") || !oldDate.equals(todayDate)){
+        String tip;
+        try {
+             tip= m.Read("Tip.txt", ",")[1];
+        }catch (Exception e)
+        {
+            tip=null;
+        }
+        if(oldDate.equals("") || !oldDate.equals(todayDate) || tip.equals("null") ){
             TipModel ranTip = business.GetRandomTips();
             m.writeToFile(todayDate+","+ranTip.TipDescription,"Tip.txt");
             txtTod.setText(ranTip.TipDescription);
         }else if(oldDate.equals(todayDate)){
-            txtTod.setText(m.Read("Tip.txt",",")[1]);
+            txtTod.setText(tip);
         }
 
     }

@@ -1,5 +1,9 @@
 package com.example.s215131746.driplit;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,11 +23,11 @@ public class EditProfile extends AppCompatActivity {
     EditText txtUsageTarget;
     EditText txtNewPassword;
     PersonModel person = new PersonModel();
+    Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //code for back button
@@ -72,21 +76,66 @@ public class EditProfile extends AppCompatActivity {
         else {
             error = true;
         }
-
         if(!error){
-            business.MobUpdatePerson(person);
+            helpThread h = new helpThread(true,this);
+            new Thread(h).start();
 
-            m.writeToFile(person.toString(),"person.txt");
-            Toast.makeText(getApplicationContext(),"Updated Profile",Toast.LENGTH_SHORT).show();
-          finish();
         }else {
             Toast.makeText(getApplicationContext(),"No Changes",Toast.LENGTH_SHORT).show();
         }
-
+    }
+    public void afterConnection(View v){
+        m.writeToFile(person.toString(),"person.txt");
+        Toast.makeText(getApplicationContext(),"Updated Profile",Toast.LENGTH_SHORT).show();
+        finish();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return super.onOptionsItemSelected(item);
+    }
+    class helpThread implements Runnable {
+        Context context;
+        boolean onCreate;
+        boolean isConnecting;
+        Snackbar mySnackbar;
+        public helpThread() {
+
+        }
+
+        public helpThread(boolean onCreate,Context context) {
+            this.onCreate = onCreate;
+            this.context = context;
+        }
+
+
+        @Override
+        public void run() {
+            if(onCreate){
+
+                isConnecting = business.isConnecting();
+                if(isConnecting) {
+
+                    business.MobUpdatePerson(person);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            afterConnection(txtNewPassword);
+                        }
+                    });
+                }else {
+                    mySnackbar = Snackbar.make(txtNewPassword,"No Connection", 8000);
+                    mySnackbar.getView().setBackgroundColor(Color.RED);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mySnackbar.show();
+
+                        }
+                    });
+
+                }
+            }
+        }
     }
 }
