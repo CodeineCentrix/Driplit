@@ -121,7 +121,7 @@ public class ReportedLeaks extends AppCompatActivity {
         cvDate.setVisibility(View.INVISIBLE);
     }
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        if(leaks!=null)
         switch (item.getItemId()){
            case R.id.action_fixed:
                ArrayList<ReportLeakModel> fixed = new ArrayList<>();

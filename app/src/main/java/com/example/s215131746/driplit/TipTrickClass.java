@@ -130,7 +130,7 @@ public class TipTrickClass extends Fragment {
                     h.post(new Runnable() {
                         @Override
                         public void run() {
-                            final TipListAdapter la = new TipListAdapter(getContext(),tips);
+                            la = new TipListAdapter(getContext(),tips);
                             postedItems.setAdapter(la);
                         }
                     });
