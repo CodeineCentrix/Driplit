@@ -89,9 +89,13 @@ public class EditProfile extends AppCompatActivity {
             helpThread h = new helpThread(true,this);
             new Thread(h).start();
 
+        }else if(txtPassword.getText().length()<1){
+                Toast.makeText(getApplicationContext(),"Enter Old Password ",Toast.LENGTH_SHORT).show();
+                txtPassword.requestFocus();
         }else {
             Toast.makeText(getApplicationContext(),"No Changes",Toast.LENGTH_SHORT).show();
         }
+
     }
     public void afterConnection(View v){
         m.writeToFile(person.toString(),"person.txt");

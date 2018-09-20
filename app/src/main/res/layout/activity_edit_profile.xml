@@ -23,14 +23,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
+        android:onClick="onImageGalleryClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.072"
-        app:srcCompat="@drawable/ic_menu_camera"
-        android:onClick="onImageGalleryClicked"/>
+        app:srcCompat="@drawable/ic_menu_gallery" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -86,6 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:drawableEnd="@drawable/ic_edit_24dp"
+            android:drawableRight="@drawable/ic_edit_24dp"
             android:hint="Usage Target"
             android:inputType="number"
             android:textAlignment="center" />

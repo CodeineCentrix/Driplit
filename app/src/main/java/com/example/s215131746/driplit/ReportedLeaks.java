@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,10 +38,7 @@ import viewmodels.ReportLeakModel;
 import viewmodels.UspMobGetPersonItemTotal;
 
 public class ReportedLeaks extends AppCompatActivity {
-    public static final int FIXED = 1;
-    public static final int WAITING = 2;
-    public static final int WITHPIC = 3;
-    public static final int TODAY = 4;
+
     DBAccess access;
     ListView reportedLeaks;
     boolean isAdmin;
@@ -50,6 +49,8 @@ public class ReportedLeaks extends AppCompatActivity {
     Handler h = new Handler();
     private ProgressBar bar;
     CalendarView cvDate;
+    Snackbar mySnackbar;
+    Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,9 +90,6 @@ public class ReportedLeaks extends AppCompatActivity {
         cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-
-
-
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -121,58 +119,61 @@ public class ReportedLeaks extends AppCompatActivity {
         cvDate.setVisibility(View.INVISIBLE);
     }
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(leaks!=null)
-        switch (item.getItemId()){
-           case R.id.action_fixed:
-               ArrayList<ReportLeakModel> fixed = new ArrayList<>();
-               for (ReportLeakModel reported:leaks){
-                   if(reported.status==1){
-                       fixed.add(reported);
-                   }
-               }
+        if(leaks!=null) {
+            switch (item.getItemId()) {
+                case R.id.action_fixed:
+                    ArrayList<ReportLeakModel> fixed = new ArrayList<>();
+                    for (ReportLeakModel reported : leaks) {
+                        if (reported.status == 1) {
+                            fixed.add(reported);
+                        }
+                    }
 
-               onCallBackGround(fixed);
-               break;
-           case R.id.action_waiting:
-               ArrayList<ReportLeakModel> waiting = new ArrayList<>();
-               for (ReportLeakModel reported:leaks){
-                   if(reported.status==0){
-                       waiting.add(reported);
-                   }
-               }
-               onCallBackGround(waiting);
-               break;
-           case R.id.action_withPic:
-               ArrayList<ReportLeakModel> withPic = new ArrayList<>();
-               for (ReportLeakModel reported:leaks){
-                   if(reported.picPath!=null){
-                       withPic.add(reported);
-                   }
-               }
-               onCallBackGround(withPic);
-               break;
-           case R.id.action_today:
-               SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-               String date = df.format(Calendar.getInstance().getTime());
-               ArrayList<ReportLeakModel> today = new ArrayList<>();
-               for (ReportLeakModel reported:leaks){
-                   if(reported.date.toString().equals(date)){
-                       today.add(reported);
-                   }
-               }
-               onCallBackGround(today);
-               break;
-            case R.id.action_selectDay:
-                cvDate.setVisibility(View.VISIBLE);
-                reportedLeaks.setVisibility(View.INVISIBLE);
-                break;
-            case R.id.action_all:
-                onCallBackGround(leaks);
-                break;
-           default:
-               finish();
-               break;
-       }
+                    onCallBackGround(fixed);
+                    break;
+                case R.id.action_waiting:
+                    ArrayList<ReportLeakModel> waiting = new ArrayList<>();
+                    for (ReportLeakModel reported : leaks) {
+                        if (reported.status == 0) {
+                            waiting.add(reported);
+                        }
+                    }
+                    onCallBackGround(waiting);
+                    break;
+                case R.id.action_withPic:
+                    ArrayList<ReportLeakModel> withPic = new ArrayList<>();
+                    for (ReportLeakModel reported : leaks) {
+                        if (reported.picPath != null) {
+                            withPic.add(reported);
+                        }
+                    }
+                    onCallBackGround(withPic);
+                    break;
+                case R.id.action_today:
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String date = df.format(Calendar.getInstance().getTime());
+                    ArrayList<ReportLeakModel> today = new ArrayList<>();
+                    for (ReportLeakModel reported : leaks) {
+                        if (reported.date.toString().equals(date)) {
+                            today.add(reported);
+                        }
+                    }
+                    onCallBackGround(today);
+                    break;
+                case R.id.action_selectDay:
+                    cvDate.setVisibility(View.VISIBLE);
+                    reportedLeaks.setVisibility(View.INVISIBLE);
+                    break;
+                case R.id.action_all:
+                    onCallBackGround(leaks);
+                    break;
+                default:
+                    finish();
+                    break;
+            }
+        }else {
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -195,6 +196,8 @@ public class ReportedLeaks extends AppCompatActivity {
     class helpThread implements Runnable {
         Context c;
         int id;
+
+        boolean isConnecting;
         public helpThread(Context c) {
             this.c = c;
         }
@@ -205,36 +208,48 @@ public class ReportedLeaks extends AppCompatActivity {
 
         @Override
         public void run() {
-
-            try {
-                if(isAdmin){
-                    leaks = access.GetAdminReportedLeaks();
-                }else {
-                    leaks = access.GetReportedLeaks(personID);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            h.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        bar.setVisibility(View.GONE);
-                        if(leaks.size()>0) {
-                            leaksAdapter = new ReportedLeaksAdapter(c, leaks, isAdmin);
-                            reportedLeaks.setAdapter(leaksAdapter);
-                        }else {
-                            TextView txtNoLeak = findViewById(R.id.txtNoLeak);
-                            txtNoLeak.setVisibility(View.VISIBLE);
-                            txtNoLeak.setText("NO LEAKS RECORDED");
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            isConnecting = access.isConnecting();
+            if(isConnecting) {
+                try {
+                    if(isAdmin){
+                        leaks = access.GetAdminReportedLeaks();
+                    }else {
+                        leaks = access.GetReportedLeaks(personID);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            bar.setVisibility(View.GONE);
+                            if(leaks.size()>0) {
+                                leaksAdapter = new ReportedLeaksAdapter(c, leaks, isAdmin);
+                                reportedLeaks.setAdapter(leaksAdapter);
+                            }else {
+                                TextView txtNoLeak = findViewById(R.id.txtNoLeak);
+                                txtNoLeak.setVisibility(View.VISIBLE);
+                                txtNoLeak.setText("NO LEAKS RECORDED");
+
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }else{
+                mySnackbar = Snackbar.make(reportedLeaks,"No Connection", 10000);
+                mySnackbar.getView().setBackgroundColor(Color.RED);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mySnackbar.show();
+                        bar.setVisibility(View.GONE);
+                    }
+                });
+            }
         }
     }
     @Override

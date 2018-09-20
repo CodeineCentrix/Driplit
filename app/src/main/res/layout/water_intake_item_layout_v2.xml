@@ -58,7 +58,8 @@
             android:orientation="vertical">
 
             <EditText
-
+                android:drawableEnd="@drawable/ic_glass_of_water"
+                android:drawableRight="@drawable/ic_glass_of_water"
                 android:id="@+id/txtItemUsage"
                 android:layout_width="97dp"
                 android:layout_height="wrap_content"
@@ -95,7 +96,8 @@
                 android:fontFamily="cursive"
                 android:text="@string/litre"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tvUsedToday"

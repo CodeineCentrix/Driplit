@@ -6,12 +6,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +42,7 @@ public class Login extends AppCompatActivity {
     TextView txtFeedback;
     Bitmap bitmapImage;
     int usage,oldTips;
+    Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +100,7 @@ public class Login extends AppCompatActivity {
         else
             RemeberMe("no");
         PersonModel person = new PersonModel();
-       person.isAdmin =false;
+        person.isAdmin =false;
         person.email = email.getText().toString();
         person.Usagetarget = usage;
         person.getOldapproved = oldTips;
@@ -104,30 +108,9 @@ public class Login extends AppCompatActivity {
             person.isAdmin = true;
         }
         person.userPassword = password.getText().toString();
-        boolean wifi = true;
-        try {
-            person = business.LoginPerson(person);
-            //writes the persons details to a screen which gets continually used
-            m.writeToFile(person.toString(),"person.txt");
-        }catch (NullPointerException e){
-            wifi = false;
-        }
-        if(!wifi)        {
-            Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
-        }
-        else if(person.fullName!=null && !person.fullName.equals("")){
-            if(person.isAdmin){
-                Toast.makeText(this,"Its good to see you admin",Toast.LENGTH_SHORT).show();
-            }else
-            Toast.makeText(this,    "Hello "+person.fullName,Toast.LENGTH_SHORT).show();
-            fodScreen = new Intent(getApplicationContext(), FODScreen.class);
-            startActivity(fodScreen);
-        }else{
-            TextView tvError = findViewById(R.id.tvError);
-            tvError.setText(R.string.login_error);
-            Toast.makeText(this,"Invalide email or password",Toast.LENGTH_SHORT).show();
-        }
 
+       helpThread h = new helpThread(person);
+       new Thread(h).start();
     }
     public void GetLocation(final View view) {
         TextView txtFeedback;
@@ -197,7 +180,7 @@ public class Login extends AppCompatActivity {
 
                 }
                 else{
-                    Toast.makeText(view.getContext(), "OOPS! geo location not found!", Toast.LENGTH_LONG);
+                    Toast.makeText(view.getContext(), R.string.geo, Toast.LENGTH_LONG);
                 }
 
             }catch (IOException e){
@@ -206,7 +189,7 @@ public class Login extends AppCompatActivity {
         }else{
             /*txtFeedback = findViewById(R.id.txtFeedback);
             txtFeedback.setText("OOPS! Something went wrong!\n Please Make Sure Your Location Is On");*/
-            Toast.makeText(this, "Geo location not found!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.geo+"\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
 
         }
 
@@ -220,6 +203,20 @@ public class Login extends AppCompatActivity {
         startActivityForResult(showCamera, 10);
 
     }
+    public void afterConnection(PersonModel person){
+        if(person.fullName!=null && !person.fullName.equals("")){
+            if(person.isAdmin){
+                Toast.makeText(this,"Its good to see you admin",Toast.LENGTH_SHORT).show();
+            }else
+                Toast.makeText(this,    "Hello "+person.fullName,Toast.LENGTH_SHORT).show();
+            fodScreen = new Intent(getApplicationContext(), FODScreen.class);
+            startActivity(fodScreen);
+        }else{
+            TextView tvError = findViewById(R.id.tvError);
+            tvError.setText(R.string.login_error);
+            Toast.makeText(this,"Invalide email or password",Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -227,5 +224,37 @@ public class Login extends AppCompatActivity {
             bitmapImage = (Bitmap) data.getExtras().get("data");
         }
     }
+    class helpThread implements Runnable {
+        boolean isConnecting;
+        Snackbar mySnackbar;
+        PersonModel person;
+        public helpThread(PersonModel person) {
+            this.person = person;
+        }
 
+        @Override
+        public void run() {
+            isConnecting = business.isConnecting();
+            if(isConnecting) {
+                person = business.LoginPerson(person);
+                //writes the persons details to a screen which gets continually used
+                m.writeToFile(person.toString(),"person.txt");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        afterConnection(person);
+                    }
+                });
+            }else{
+                mySnackbar = Snackbar.make(email,"No Connection", 10000);
+                mySnackbar.getView().setBackgroundColor(Color.RED);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mySnackbar.show();
+                    }
+                });
+            }
+        }
+    }
 }

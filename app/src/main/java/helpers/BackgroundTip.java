@@ -106,7 +106,7 @@ public class BackgroundTip extends IntentService {
                     Title = "New Tip";
                     text = new StringBuilder("You have " + adminNewTips + " unread tips");
                 }
-                if (adminNewTips > 0 || personNewTips > old) {
+                if ((adminNewTips > 0 && admin.equals("true"))|| (personNewTips > old && admin.equals("false"))) {
                     PersonModel person = new PersonModel();
                     person.userPassword = personDetails[PersonModel.PASSWORD];
                     person.email = personDetails[PersonModel.EMAIL];

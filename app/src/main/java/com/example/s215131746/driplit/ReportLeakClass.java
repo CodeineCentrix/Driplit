@@ -144,16 +144,16 @@ public class ReportLeakClass extends Fragment {
                     b.show();
                 }
                 else{
-                    Toast.makeText(view.getContext(), " Geo location not found!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), R.string.geo, Toast.LENGTH_LONG).show();
                 }
 
             }catch (IOException e){
                 e.printStackTrace();
             }catch (Exception e){
-                Toast.makeText(view.getContext(), "Geo location not found!", Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(), R.string.geo, Toast.LENGTH_LONG).show();
             }
         }else{
-            Toast.makeText(view.getContext(), "Geo location not found!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
+            Toast.makeText(view.getContext(), "Your Geolocation can not be found!\n Please Make Sure Your Location Is On", Toast.LENGTH_LONG).show();
         }
     }
     public void SaveLeak(String longitude,String latitude,String fullAddress, int id){

@@ -203,5 +203,6 @@
     <string name="city">CITY</string>
     <string name="suburb">SUBURB</string>
     <string name="person_file_name">person.txt</string>
+    <string name="geo">Your Geolocation can not be found</string>
 
 </resources>

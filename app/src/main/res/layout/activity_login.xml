@@ -37,7 +37,8 @@
         android:layout_marginTop="15dp"
         android:inputType="textPassword"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:hint="@string/password"/>
 
     <CheckBox
         android:id="@+id/cbRememberMe"
