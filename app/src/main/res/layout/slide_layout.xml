@@ -9,16 +9,10 @@
         android:id="@+id/imgViewLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="285dp"
-        android:layout_marginEnd="105dp"
-        android:layout_marginRight="105dp"
-        android:layout_marginTop="107dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
         android:contentDescription="@string/todo"
-        android:scaleType="fitCenter"
         app:srcCompat="@drawable/report" />
 
     <TextView
