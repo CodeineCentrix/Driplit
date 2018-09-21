@@ -45,7 +45,7 @@ public class TabMenu extends AppCompatActivity {
         String[] p = m.Read(this.getString(R.string.person_file_name),",");
         person.fullName = p[PersonModel.FULLNAME];
         person.email = p[PersonModel.EMAIL];
-        person.Usagetarget = Integer.parseInt(p[PersonModel.USAGETARGET]);
+        //person.Usagetarget = Integer.parseInt(p[PersonModel.USAGETARGET]);
         person.id =Integer.parseInt(p[PersonModel.ID]);
         person.userPassword = p[PersonModel.PASSWORD];
         person.getOldapproved = Integer.parseInt(p[PersonModel.OLDAPPROVED]);
@@ -150,7 +150,8 @@ public class TabMenu extends AppCompatActivity {
 
                 return super.onOptionsItemSelected(item);
             case R.id.action_snitch_board:
-                Toast.makeText(this,"UNDER CONSTRUCTION!!!",Toast.LENGTH_LONG).show();
+                Intent snitchBoard = new Intent(this.getApplicationContext(), SnitchActivity.class);
+                startActivity(snitchBoard);
                 return super.onOptionsItemSelected(item);
             case R.id.homeAsUp:
                 finish();

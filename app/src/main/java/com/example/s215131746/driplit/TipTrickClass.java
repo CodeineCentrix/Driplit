@@ -74,7 +74,7 @@ public class TipTrickClass extends Fragment {
                 if(tipd.length()<10){
                     Toast.makeText(rootView.getContext(),"Tip not descriptive enough",Toast.LENGTH_LONG).show();
                 }else if(!tipd.equals("")){
-                    Toast.makeText(rootView.getContext(),"your tip will wait for approval",Toast.LENGTH_LONG).show();
+                    Toast.makeText(rootView.getContext(),"Tip submitted for approval",Toast.LENGTH_LONG).show();
                     TipModel tip = new TipModel();
                     tip.PersonID =Integer.parseInt(
                             m.Read(rootView.getContext().getString(R.string.person_file_name)
