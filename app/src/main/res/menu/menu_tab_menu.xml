@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_edit_profile"
         android:orderInCategory="100"
-        android:title="Eidt profile"
+        android:title="@string/edit_profile"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_snitch_board"
