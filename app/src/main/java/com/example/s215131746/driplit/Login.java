@@ -67,8 +67,10 @@ public class Login extends AppCompatActivity {
             }
             Bundle tab = getIntent().getExtras();
             if(tab==null) {
-                Intent fod = new Intent(getApplicationContext(), FODScreen.class);
-                startActivity(fod);
+                if(details.length>PersonModel.OLDAPPROVED) {
+                    Intent fod = new Intent(getApplicationContext(), FODScreen.class);
+                    startActivity(fod);
+                }
             }
         }
         business = new DBAccess();

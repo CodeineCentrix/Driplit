@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.example.s215131746.driplit.DBAccess;
 import com.example.s215131746.driplit.GeneralMethods;
 import com.example.s215131746.driplit.Login;
 import com.example.s215131746.driplit.R;
+import com.example.s215131746.driplit.TabMenu;
 
 import java.util.ArrayList;
 
@@ -44,7 +46,7 @@ public class BackgroundTip extends IntentService {
                     Log.i(TAG, "run: "+i);
                     Notification();
                     try {
-                        Thread.sleep(60000);
+                        Thread.sleep(6000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -116,7 +118,11 @@ public class BackgroundTip extends IntentService {
                     person.getOldapproved = personNewTips;
                     m.writeToFile(person.toString(), "person.txt");
 
-                    Intent intent = new Intent(this, Login.class);
+                    Intent intent = new Intent(this, TabMenu.class);
+                    Bundle i = new Bundle();
+                    i.putString("Tab", "Tips");
+                    intent.putExtras(i);
+                    //intent.putExtras(getIntent());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 

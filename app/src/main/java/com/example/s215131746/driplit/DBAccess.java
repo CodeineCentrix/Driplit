@@ -552,7 +552,25 @@ public class DBAccess {
         ArrayList<uspMobGetSnitches> snitches = new ArrayList<>();
         try {
             Object[] para = {sni.from,sni.to,sni.top};
-            outerResultSet = DBHelper.Select("uspMobGetSnitches");
+            outerResultSet = DBHelper.SelectPara("uspMobGetSnitches",para);
+            while (outerResultSet.next()) {
+
+                uspMobGetSnitches snitch = new uspMobGetSnitches();
+                snitch.TotalSnitches = outerResultSet.getInt("TotalSnitches");
+                snitch.FullName = outerResultSet.getString("FullName");
+                snitches.add(snitch);
+            }
+        } catch (Exception e) {
+
+        }
+
+        return snitches;
+    }
+    public ArrayList<uspMobGetSnitches> MobGetSnitches(){
+
+        ArrayList<uspMobGetSnitches> snitches = new ArrayList<>();
+        try {
+            outerResultSet = DBHelper.Select("uspMobGetAllSnitches");
             while (outerResultSet.next()) {
 
                 uspMobGetSnitches snitch = new uspMobGetSnitches();

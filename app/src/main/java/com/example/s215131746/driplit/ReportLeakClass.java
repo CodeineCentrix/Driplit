@@ -131,6 +131,9 @@ public class ReportLeakClass extends Fragment {
                             .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    txtHead.setVisibility(View.INVISIBLE);
+                                    txtAddress.setVisibility(View.INVISIBLE);
+                                    txtInstruction.setVisibility(View.VISIBLE);
 
                                 }
                             })

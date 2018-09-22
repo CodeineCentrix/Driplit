@@ -37,7 +37,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private int PERMISSION_REQUST_CODE;
-
+    private  String[] details;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,22 +53,26 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         GeneralMethods m = new GeneralMethods(getApplicationContext());
-        String[] details = m.Read(this.getString(R.string.person_file_name),",");
+   details = m.Read(this.getString(R.string.person_file_name),",");
         NavigationView navigationView = findViewById(R.id.nav_view);
 
 
         View header = navigationView.getHeaderView(0);
         ImageView profile = header.findViewById(R.id.nav_imgIcon);
-        try {
-            DownLoadPicture d = new DownLoadPicture(details[PersonModel.ID]);
-            profile.setImageBitmap(d.doInBackground());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+//            DownLoadPicture d = new DownLoadPicture(details[PersonModel.ID]);
+//            profile.setImageBitmap(d.doInBackground());
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         TextView tvFullName = (TextView) header.findViewById(R.id.nav_tvFullName);
         TextView tvEmail = header.findViewById(R.id.nav_tvEmail);
         tvEmail.setText(details[PersonModel.EMAIL]);
-        tvFullName.setText(details[PersonModel.FULLNAME]);
+        String adminMode = "";
+        if(details[PersonModel.ISAMDIN].equals("true")){
+            adminMode = "  (Admin Mode)";
+        }
+        tvFullName.setText(details[PersonModel.FULLNAME]+adminMode);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -143,22 +147,27 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
             startActivity(lo);
             finish();
 
-        }
-        else if(id == R.id.nav_help)
-        {
+        }else if(id == R.id.nav_help){
             Intent help = new Intent (getApplicationContext(), HelpScreen.class);
             startActivity(help);
 
-        }  else if(id == R.id.nav_aboutus)
-        {
+        }  else if(id == R.id.nav_aboutus){
             Intent aboutUs = new Intent (getApplicationContext(), AboutUs.class);
             startActivity(aboutUs);
 
-        }  else if(id == R.id.nav_leaderBoard)
-        {
-
+        }  else if(id == R.id.nav_leaderBoard){
+            Intent snitchBoard = new Intent (getApplicationContext(), SnitchActivity.class);
+            startActivity(snitchBoard);
             Toast.makeText(this,"UNDER CONSTRUCTION!!!",Toast.LENGTH_LONG).show();
 
+        }else if(id == R.id.action_reportedLeaks){
+            Intent rLeaks = new Intent(this.getApplicationContext(), ReportedLeaks.class);
+            Bundle i = new Bundle();
+            i.putString("personID",""+details[PersonModel.ID]);
+            rLeaks.putExtras(i);
+            rLeaks.putExtras(getIntent());
+            startActivity(rLeaks);
+            return super.onOptionsItemSelected(item);
         }
 
 
@@ -177,13 +186,13 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.fodscreen, menu);
-
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.fodscreen, menu);
+//
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

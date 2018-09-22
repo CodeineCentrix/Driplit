@@ -29,9 +29,10 @@ public class SliderAdapter extends PagerAdapter {
     }
 
     //Arrays
-    public int[] slide_images = { R.drawable.report, R.drawable.camera};
-    public String[] slide_headings = {"Report Leak", "Take Picture"};
-    public String[] slide_desc = {"Make Sure You Are Where The Leak Is.\n Click The Button Above To Report Leak \n\n Make Sure Your Location Is Turned On", "You can choose between taking a picture or just reporting the leak"};
+    public int[] slide_images = { R.drawable.report, R.drawable.take_pic_leak};
+    public String[] slide_headings = {"Report Leak", ""};
+    public String[] slide_desc = {"Make Sure You Are Where The Leak Is.\n Click The Button Above To Report Leak \n\n Make Sure Your Location Is Turned On",
+            "Click YES to take a picture\nClick NO to not take a picture\nClick CANCEL to stop reporting"};
 
     @Override
     public int getCount() {

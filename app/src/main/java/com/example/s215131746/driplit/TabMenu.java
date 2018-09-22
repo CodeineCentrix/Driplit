@@ -48,7 +48,11 @@ public class TabMenu extends AppCompatActivity {
         //person.Usagetarget = Integer.parseInt(p[PersonModel.USAGETARGET]);
         person.id =Integer.parseInt(p[PersonModel.ID]);
         person.userPassword = p[PersonModel.PASSWORD];
-        person.getOldapproved = Integer.parseInt(p[PersonModel.OLDAPPROVED]);
+        try {
+            person.getOldapproved = Integer.parseInt(p[PersonModel.OLDAPPROVED]);
+        }catch (Exception e){
+            Toast.makeText(this,"Please clear data for this app or login again",Toast.LENGTH_LONG).show();
+        }
         //_____________________
         Intent intent = getIntent();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

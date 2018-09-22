@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -15,27 +17,24 @@ import com.github.mikephil.charting.data.LineRadarDataSet;
 import Adapters.SliderAdapter;
 
 public class HelpScreen extends AppCompatActivity {
-    Button btnBack;
-    Button btnReportLeak;
 
+    Button btnReportLeak;
     private ViewPager viewPager;
     private LinearLayout dotLayout;
     private SliderAdapter sliderAdpater;
-
     private TextView[] dots;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_screen);
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BackClicked();
-            }
-        });
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //code for back button
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         dotLayout = (LinearLayout) findViewById(R.id.dotLayout);
 
@@ -46,10 +45,8 @@ public class HelpScreen extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(dotListener);
     }
-
     //Method To Create Dots On Help Screen
-    public void addDotsIndicator(int position)
-    {
+    public void addDotsIndicator(int position)    {
         dots = new TextView[2];
         dotLayout.removeAllViews(); //preventing other dots from being created
 
@@ -70,7 +67,6 @@ public class HelpScreen extends AppCompatActivity {
             dots[position].setTextColor(getResources().getColor(R.color.blue));
         }
     }
-
     ViewPager.OnPageChangeListener dotListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -89,10 +85,8 @@ public class HelpScreen extends AppCompatActivity {
 
         }
     };
-
     public void BackClicked() {
-        Intent toMenu = new Intent(getApplicationContext(), Mainmenu.class);
-        startActivity(toMenu);
+
         finish();
     }
     public void ToIntakeHelp(View view) {
@@ -100,5 +94,9 @@ public class HelpScreen extends AppCompatActivity {
         startActivity(ToIntakeHelp);
 
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -73,7 +73,44 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         m = new GeneralMethods(rootView.getContext());
         helpThread h = new helpThread(true,rootView.getContext());
         new Thread(h).start();
+        cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+                cvDate.setVisibility(View.INVISIBLE);
+                barChart.setVisibility(View.VISIBLE);
 
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+                Date date = calendar.getTime();
+                //String de = String.valueOf(d.getGregorianChange());
+                String dateV = df.format(date), index2 =
+                        m.Read(rootView.getContext().getString(R.string.person_file_name)
+                                , ",")[PersonModel.EMAIL];
+
+                btnSelectDate.setVisibility(View.VISIBLE);
+
+                averageUsage =0;
+
+                IitemUsages = business.uspMobGetPersonItemTotalDate(index2,dateV);
+
+                int x = IitemUsages.size();
+                final String[] Itemlabels = new String[x];
+                x = 0;
+                ArrayList<BarEntry> Itementries = new ArrayList<>();
+                for(UspMobGetPersonItemTotal usage : IitemUsages) {
+                    Itemlabels[x] = usage.ItemName;
+                    averageUsage+=usage.UsageAmount;
+                    Itementries.add(new BarEntry(x, usage.UsageAmount));
+                    x++;
+                }
+                averageUsage/=x;
+                if(Itemlabels.length > 0) {
+                    SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
+                }
+
+                SetUp(Itemlabels, dateV);
+            }
+        });
         return rootView;
     }
     public void afterConnection(final View rootView){
@@ -115,44 +152,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             }
         });
 
-        cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                cvDate.setVisibility(View.INVISIBLE);
-                barChart.setVisibility(View.VISIBLE);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, day);
-                Date date = calendar.getTime();
-                //String de = String.valueOf(d.getGregorianChange());
-                String dateV = df.format(date), index2 =
-                        m.Read(rootView.getContext().getString(R.string.person_file_name)
-                                , ",")[PersonModel.EMAIL];
-
-                btnSelectDate.setVisibility(View.VISIBLE);
-
-                averageUsage =0;
-
-
-
-                int x = IitemUsages.size();
-                final String[] Itemlabels = new String[x];
-                x = 0;
-                ArrayList<BarEntry> Itementries = new ArrayList<>();
-                for(UspMobGetPersonItemTotal usage : IitemUsages) {
-                    Itemlabels[x] = usage.ItemName;
-                    averageUsage+=usage.UsageAmount;
-                    Itementries.add(new BarEntry(x, usage.UsageAmount));
-                    x++;
-                }
-                averageUsage/=x;
-                if(Itemlabels.length > 0) {
-                    SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
-                }
-
-                SetUp(Itemlabels, dateV);
-            }
-        });
         //end
 
 

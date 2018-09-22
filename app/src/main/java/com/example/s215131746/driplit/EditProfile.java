@@ -55,6 +55,7 @@ public class EditProfile extends AppCompatActivity {
         business = new DBAccess();
 
         String[] p = m.Read(this.getString(R.string.person_file_name),",");
+        try{
         txtFullname.setText(p[PersonModel.FULLNAME]);
         txtEmail.setText(p[PersonModel.EMAIL]);
         txtUsageTarget.setText(p[PersonModel.USAGETARGET]);
@@ -62,7 +63,13 @@ public class EditProfile extends AppCompatActivity {
         person.fullName = txtFullname.getText().toString();
         person.email = txtEmail.getText().toString();
         person.userPassword = p[PersonModel.PASSWORD];
-        person.getOldapproved = Integer.parseInt(p[PersonModel.OLDAPPROVED]);
+
+            person.getOldapproved = Integer.parseInt(p[PersonModel.OLDAPPROVED]);
+        }catch (Exception e){
+            Toast.makeText(this,"Please clear this app data or login again",Toast.LENGTH_LONG).show();
+            Intent login = new Intent(this,Login.class);
+            startActivity(login);
+        }
         //txtPassword.setText(person[3]);
     }
     public void ToUpdatePerson(View v){
