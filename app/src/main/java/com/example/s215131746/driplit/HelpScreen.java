@@ -47,7 +47,7 @@ public class HelpScreen extends AppCompatActivity {
     }
     //Method To Create Dots On Help Screen
     public void addDotsIndicator(int position)    {
-        dots = new TextView[2];
+        dots = new TextView[4];
         dotLayout.removeAllViews(); //preventing other dots from being created
 
         for(int i  = 0; i < dots.length; i++)

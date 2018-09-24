@@ -158,7 +158,7 @@ public class Mainmenu extends AppCompatActivity implements NavigationView.OnNavi
         }  else if(id == R.id.nav_leaderBoard){
             Intent snitchBoard = new Intent (getApplicationContext(), SnitchActivity.class);
             startActivity(snitchBoard);
-            Toast.makeText(this,"UNDER CONSTRUCTION!!!",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"UNDER CONSTRUCTION!!!",Toast.LENGTH_LONG).show();
 
         }else if(id == R.id.action_reportedLeaks){
             Intent rLeaks = new Intent(this.getApplicationContext(), ReportedLeaks.class);

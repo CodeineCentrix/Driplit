@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/TipLayoutParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/llTipContainer"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
+        android:layout_width="374dp"
+        android:layout_height="86dp"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:background="@color/own_tips"
+        android:background="@color/cardview_dark_background"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.357"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -46,6 +49,10 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:gravity="start"
                 android:text="@string/name"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -59,6 +66,8 @@
                 android:layout_alignEnd="@+id/tvPostName"
                 android:layout_alignParentTop="true"
                 android:layout_alignRight="@+id/tvPostName"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="0"
                 android:gravity="left|start"
                 android:text="@string/date"

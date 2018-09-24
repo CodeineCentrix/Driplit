@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="108dp"
         android:contentDescription="@string/todo"
         app:srcCompat="@drawable/report" />
 
@@ -19,11 +19,12 @@
         android:id="@+id/txtViewHead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imgViewLocation"
+        android:layout_above="@+id/imgViewLocation"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="213dp"
+        android:layout_marginBottom="-68dp"
         android:text="@string/heading"
         android:textAlignment="center"
+        android:textColor="@color/cardview_light_background"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -31,9 +32,9 @@
         android:id="@+id/txtViewDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtViewHead"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_marginBottom="11dp"
         android:text="@string/report_leak_instruct"
         android:textAlignment="center"
         android:textSize="18sp" />
