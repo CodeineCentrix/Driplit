@@ -63,7 +63,7 @@ public class SnitchActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().equals("")&&snitches!=null){
+                if(tryParseInt(s.toString())&&snitches!=null ){
                     snitchSetting.top = Integer.parseInt(s.toString());
                     ArrayList<uspMobGetSnitches> relodaSsnitches = new ArrayList<>();
                     for(int i = 0;i<snitchSetting.top && i< snitches.size();i++){
@@ -147,6 +147,14 @@ public class SnitchActivity extends AppCompatActivity {
 
         snitchList.setAdapter(snitch);
 
+    }
+    boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
     private void Foucs(int code){
         focusFrom.setVisibility(View.INVISIBLE);

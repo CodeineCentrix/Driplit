@@ -10,29 +10,36 @@
 
     <LinearLayout
         android:id="@+id/loHeading"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/imgItemIcon"
-            android:layout_width="63dp"
-            android:layout_height="59dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/todo"
-            app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
             android:id="@+id/tvItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="@string/item_name"
             android:textSize="30sp"
             tools:layout_editor_absoluteX="77dp"
             tools:layout_editor_absoluteY="9dp" />
+
+        <ImageView
+            android:id="@+id/imgItemIcon"
+            android:layout_width="63dp"
+            android:layout_height="59dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/todo"
+            app:srcCompat="@mipmap/ic_launcher_round" />
     </LinearLayout>
 
     <LinearLayout

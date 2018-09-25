@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/cardview_dark_background"
+            android:background="@color/graph_back"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="287dp">
 
@@ -34,30 +34,37 @@
         </com.github.mikephil.charting.charts.BarChart>
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/tvTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/the_bar_trend_info" />
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lineChart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="@color/cardview_dark_background"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="287dp">
+            android:text="@string/the_bar_trend_info"
+            android:textSize="18sp" />
 
-
-        </com.github.mikephil.charting.charts.LineChart>
-
-        <TextView
-            android:id="@+id/textView13"
+        <ImageView
+            android:id="@+id/imgMoreTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/the_line_graph" />
+            android:src="@drawable/more" />
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
+        <ImageView
+            android:id="@+id/imgLessTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/less" />
+
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="600dp"
             android:layout_marginTop="30dp">
@@ -115,11 +122,62 @@
                 android:textSize="24sp"
                 android:visibility="invisible" />
         </RelativeLayout>
+
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/tvBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/the_line_graph" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/the_line_graph"
+            android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/imgMoreBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/more" />
+        <ImageView
+            android:id="@+id/imgLessBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/less" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/graph_back"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="287dp">
+
+
+        </com.github.mikephil.charting.charts.LineChart>
+
+        <TextView
+            android:id="@+id/tvLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/the_line_graph"
+            android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/imgMoreLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/more" />
+
+        <ImageView
+            android:id="@+id/imgLessLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/less" />
+
     </LinearLayout>
 
 

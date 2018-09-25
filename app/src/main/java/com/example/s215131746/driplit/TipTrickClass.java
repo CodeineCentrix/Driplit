@@ -73,7 +73,10 @@ public class TipTrickClass extends Fragment {
                 String tipd = txtTip.getText().toString();
                 if(tipd.length()<10){
                     Toast.makeText(rootView.getContext(),"Tip not descriptive enough",Toast.LENGTH_LONG).show();
-                }else if(!tipd.equals("")){
+                }else if(tipd.split(" ")[0].length()>44){
+                    Toast.makeText(rootView.getContext(),"sugeza",Toast.LENGTH_LONG).show();
+                }
+                else if(!tipd.equals("")){
                     Toast.makeText(rootView.getContext(),"Tip submitted for approval",Toast.LENGTH_LONG).show();
                     TipModel tip = new TipModel();
                     tip.PersonID =Integer.parseInt(

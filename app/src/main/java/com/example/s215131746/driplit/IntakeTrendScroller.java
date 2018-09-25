@@ -13,12 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -27,6 +30,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -60,10 +65,26 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     ArrayList<UspMobGetPersonItemTotal> IitemUsages;
     ArrayList<UspMobGetPersonTotalUsage> usages;
     ArrayList<UspMobGetPersonItemTotal> ItemUsages;
+    private ImageView[] moreOrLess=null;
+    private   TextView[] desc ;
+    String []person =null;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_intake_trend_scroller, container, false);
+       moreOrLess = new ImageView[]{
+               rootView.findViewById(R.id.imgLessTop),
+               rootView.findViewById(R.id.imgMoreTop),
+               rootView.findViewById(R.id.imgLessLine),
+               rootView.findViewById(R.id.imgMoreLine),
+               rootView.findViewById(R.id.imgLessBottom),
+               rootView.findViewById(R.id.imgMoreBottom),
+       };
 
+       desc = new TextView[]{
+               rootView.findViewById(R.id.tvTop),
+               rootView.findViewById(R.id.tvLine),
+               rootView.findViewById(R.id.tvBottom)
+       };
         final DecimalFormat dc = new DecimalFormat("0.0");
         //from item trend
         cvDate  = rootView.findViewById(R.id.cvDate);
@@ -71,6 +92,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         barChart =  rootView.findViewById(R.id.bcT);
         btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
         m = new GeneralMethods(rootView.getContext());
+        try {
+            person = m.Read(rootView.getContext().getString(R.string.person_file_name)
+                    , ",");
+        }catch (Exception e){
+
+        }
         helpThread h = new helpThread(true,rootView.getContext());
         new Thread(h).start();
         cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -83,35 +110,77 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 calendar.set(year, month, day);
                 Date date = calendar.getTime();
                 //String de = String.valueOf(d.getGregorianChange());
-                String dateV = df.format(date), index2 =
-                        m.Read(rootView.getContext().getString(R.string.person_file_name)
-                                , ",")[PersonModel.EMAIL];
-
-                btnSelectDate.setVisibility(View.VISIBLE);
-
-                averageUsage =0;
-
-                IitemUsages = business.uspMobGetPersonItemTotalDate(index2,dateV);
-
-                int x = IitemUsages.size();
-                final String[] Itemlabels = new String[x];
-                x = 0;
-                ArrayList<BarEntry> Itementries = new ArrayList<>();
-                for(UspMobGetPersonItemTotal usage : IitemUsages) {
-                    Itemlabels[x] = usage.ItemName;
-                    averageUsage+=usage.UsageAmount;
-                    Itementries.add(new BarEntry(x, usage.UsageAmount));
-                    x++;
-                }
-                averageUsage/=x;
-                if(Itemlabels.length > 0) {
-                    SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
-                }
-
-                SetUp(Itemlabels, dateV);
+                dateSelected(df.format(date));
             }
         });
+        moreOrLess[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoreOrLess(v);
+            }
+        });
+        moreOrLess[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoreOrLess(v);
+            }
+        });
+        moreOrLess[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoreOrLess(v);
+            }
+        });
+        moreOrLess[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoreOrLess(v);
+            }
+        });
+        moreOrLess[4].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoreOrLess(v);
+            }
+        });
+        moreOrLess[5].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoreOrLess(v);
+            }
+        });
+        moreOrLess[1].setVisibility(View.GONE);
+        moreOrLess[3].setVisibility(View.GONE);
+        moreOrLess[5].setVisibility(View.GONE);
+
         return rootView;
+    }
+    public void dateSelected(String date){
+
+        String dateV = date, index2 = person[PersonModel.EMAIL];
+
+        btnSelectDate.setVisibility(View.VISIBLE);
+
+        averageUsage =0;
+
+        IitemUsages = business.uspMobGetPersonItemTotalDate(index2,dateV);
+
+        int x = IitemUsages.size();
+        final String[] Itemlabels = new String[x];
+        x = 0;
+        ArrayList<BarEntry> Itementries = new ArrayList<>();
+        for(UspMobGetPersonItemTotal usage : IitemUsages) {
+            Itemlabels[x] = usage.ItemName;
+            averageUsage+=usage.UsageAmount;
+            Itementries.add(new BarEntry(x, usage.UsageAmount));
+            x++;
+        }
+        averageUsage/=x;
+        if(Itemlabels.length > 0) {
+            SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
+        }
+
+        SetUp(Itemlabels, dateV);
     }
     public void afterConnection(final View rootView){
         cvDate.setVisibility(View.INVISIBLE);
@@ -178,6 +247,24 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             }
             averageUsage/=i;
             SetUpGraph(bcTrend, entries, labels,averageUsage);
+            bcTrend.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry e, Highlight h) {
+                    String date;
+                    int i =Math.round(e.getX());
+                    try {
+                        date = labels[i];
+                        dateSelected( date);
+                    }catch (Exception ex){
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected() {
+
+                }
+            });
             //Line chart___________________________________________________________
 
             // creating list of entry
@@ -188,12 +275,18 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             //lineChart.getAxisLeft().setAxisMinimum(0f);
             lineChart.getAxisRight().setEnabled(false);
             lineChart.getXAxis().setEnabled(false);
+            YAxis y = lineChart.getAxisLeft();
+           try {
+               LimitLine ll = new LimitLine(Integer.parseInt(person[PersonModel.USAGETARGET]), "My Max Target ");
+               y.addLimitLine(ll);
+           }catch (Exception e){
+
+           }
             lineChart.getXAxis().setValueFormatter(formatter);
             lineChart.getXAxis().setLabelCount(labels.length - 1);
             dataset.setDrawFilled(true);
+            lineChart.getXAxis().setTextColor(R.color.colorAccent);
             //end
-
-
         }else{
             lineChart.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             bcTrend.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -214,7 +307,6 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         }
     }
     //end
-
     //from trends
     //Label returner
     public IAxisValueFormatter setYaxis(final String[] labels){
@@ -242,11 +334,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             ArrayList<BarDataSet> dataSets = new ArrayList<>();
             dataSets.add(setColor);
             BarData b = new BarData(dataSets.get(0));
-
+            //bcTrend.getAxis(null).setTextColor(R.color.colorAccent);
             b.setBarWidth(0.5f);//bar width
             bcTrend.setData(b);
+
             bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
-           // bcTrend.getAxisLeft().setAxisMinimum(0f);
+            // bcTrend.getAxisLeft().setAxisMinimum(0f);
             bcTrend.getAxisLeft().setDrawGridLines(false);//removes the grid lines of the bar graph
             bcTrend.invalidate();
             bcTrend.getAxisRight().setEnabled(false);
@@ -254,13 +347,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             bcTrend.getXAxis().setLabelCount(Labels.length);
             bcTrend.fitScreen();//obviuosly its to make sure the graph fits the screen
             bcTrend.invalidate();
+
             bcTrend.setVisibleXRangeMaximum(5f);// sets the number of bars to be shown at a given moment
             bcTrend.moveViewToX(entries.size());
         }
     }
     //end
-
-
     class helpThread implements Runnable {
         Context context;
         boolean onCreate;
@@ -305,18 +397,13 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                         @Override
                         public void run() {
                             mySnackbar.show();
-
                         }
                     });
-
                 }
-            }else {
-
+            }else{
             }
         }
     }
-
-
     private class MyBarDataSet extends BarDataSet {
 
         BarDataSet set;
@@ -342,5 +429,42 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         return -1;
         }
 
+    }
+    public void MoreOrLess(View view){
+
+
+
+        switch(view.getId()){
+            case R.id.imgLessTop:
+                desc[0].setVisibility(View.GONE);
+                moreOrLess[0].setVisibility(View.GONE);
+                moreOrLess[1].setVisibility(View.VISIBLE);
+                break;
+            case R.id.imgMoreTop:
+                desc[0].setVisibility(View.VISIBLE);
+                moreOrLess[0].setVisibility(View.VISIBLE);
+                moreOrLess[1].setVisibility(View.GONE);
+                break;
+            case R.id.imgLessLine:
+                desc[1].setVisibility(View.GONE);
+                moreOrLess[3].setVisibility(View.VISIBLE);
+                moreOrLess[2].setVisibility(View.GONE);
+                break;
+            case R.id.imgMoreLine:
+                desc[1].setVisibility(View.VISIBLE);
+                moreOrLess[3].setVisibility(View.GONE);
+                moreOrLess[2].setVisibility(View.VISIBLE);
+                break;
+            case R.id.imgLessBottom:
+                desc[2].setVisibility(View.GONE);
+                moreOrLess[5].setVisibility(View.VISIBLE);
+                moreOrLess[4].setVisibility(View.GONE);
+                break;
+            case R.id.imgMoreBottom:
+                desc[2].setVisibility(View.VISIBLE);
+                moreOrLess[5].setVisibility(View.GONE);
+                moreOrLess[4].setVisibility(View.VISIBLE);
+                break;
+        }
     }
 }

@@ -35,7 +35,7 @@ public class TabMenu extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-
+    int i=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,9 +83,10 @@ public class TabMenu extends AppCompatActivity {
         if(!wifi){
             Toast.makeText(this,"PLEASE TURN ON WIFI",Toast.LENGTH_SHORT).show();
         }else {
-            for(int i = 0; i <tabs.length;i++){
+            for(i = 0; i <tabs.length;i++){
                 if(tabName.equalsIgnoreCase(tabs[i]) ){
                     mViewPager.setCurrentItem(i);
+                    break;
                 }
             }
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -98,23 +99,21 @@ public class TabMenu extends AppCompatActivity {
 //
 //            }
 //        }
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
     public void ToHome(View v){
         Intent showHomeMenu = new Intent(getApplicationContext(),Mainmenu.class);
         startActivity(showHomeMenu);
         finish();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_tab_menu, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -125,9 +124,9 @@ public class TabMenu extends AppCompatActivity {
             case R.id.action_reportedLeaks:
 
                 Intent rLeaks = new Intent(this.getApplicationContext(), ReportedLeaks.class);
-                Bundle i = new Bundle();
-                i.putString("personID",""+person.id);
-                rLeaks.putExtras(i);
+                Bundle bundle = new Bundle();
+                bundle.putString("personID",""+person.id);
+                rLeaks.putExtras(bundle);
                 rLeaks.putExtras(getIntent());
                 startActivity(rLeaks);
                 return super.onOptionsItemSelected(item);
@@ -139,8 +138,13 @@ public class TabMenu extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
             case R.id.action_help:
 
-                Intent ih = new Intent(this.getApplicationContext(), IntakeHelper.class);
-                startActivity(ih);
+                if(mViewPager.getCurrentItem()==0){
+                    Intent ih = new Intent(this.getApplicationContext(), IntakeHelper.class);
+                    startActivity(ih);
+                    return super.onOptionsItemSelected(item);
+                }
+                Intent report = new Intent(this.getApplicationContext(), HelpScreen.class);
+                startActivity(report);
                 return super.onOptionsItemSelected(item);
             case R.id.action_sign_out:
                 Bundle z = new Bundle();
@@ -160,14 +164,11 @@ public class TabMenu extends AppCompatActivity {
             case R.id.homeAsUp:
                 finish();
                 return super.onOptionsItemSelected(item);
-                default:
-                    finish();
-                    return super.onOptionsItemSelected(item);
+            default:
+                finish();
+                return super.onOptionsItemSelected(item);
         }
-
-
     }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -192,11 +193,11 @@ public class TabMenu extends AppCompatActivity {
 
 
     }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -216,7 +217,6 @@ public class TabMenu extends AppCompatActivity {
                             new IntakeTrendScroller(),
                             // new EditProfileClass()
                     } ;
-
             return tabs[position];
         }
 
