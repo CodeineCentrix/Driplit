@@ -115,10 +115,10 @@
             <View
                 android:id="@+id/view"
                 android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginLeft="350dp"
 
+                android:layout_height="10dp"
                 android:layout_marginStart="350dp"
+                android:layout_marginLeft="350dp"
                 android:layout_marginTop="58dp"
                 android:background="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"

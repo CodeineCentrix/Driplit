@@ -138,7 +138,7 @@ public class TabMenu extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
             case R.id.action_help:
 
-                if(mViewPager.getCurrentItem()==0){
+                if(mViewPager.getCurrentItem()==0 || mViewPager.getCurrentItem() == 3){
                     Intent ih = new Intent(this.getApplicationContext(), IntakeHelper.class);
                     startActivity(ih);
                     return super.onOptionsItemSelected(item);
