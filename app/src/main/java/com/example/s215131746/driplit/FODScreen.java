@@ -22,12 +22,12 @@ public class FODScreen extends AppCompatActivity{
         GeneralMethods m = new GeneralMethods(getApplicationContext());
         String oldDate =m.Read("Tip.txt",",")[0], todayDate =  m.GetDate();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         //code for back button
-        if(getSupportActionBar()!=null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+//        if(getSupportActionBar()!=null){
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        }
         String tip;
         try {
              tip= m.Read("Tip.txt", ",")[1];
@@ -49,9 +49,11 @@ public class FODScreen extends AppCompatActivity{
         startService(back);*/
         Bundle tab = getIntent().getExtras();
         if(tab==null){
-
-            Intent mainMenu = new Intent(getApplicationContext(), Mainmenu.class);
-            startActivity(mainMenu);
+            Intent intent = new Intent(this, TabMenu.class);
+            Bundle i = new Bundle();
+            i.putString("Tab", "Record");
+            intent.putExtras(i);
+            startActivity(intent);
         }
         finish();
     }

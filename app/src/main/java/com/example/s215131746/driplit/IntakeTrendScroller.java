@@ -2,26 +2,38 @@ package com.example.s215131746.driplit;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -44,16 +56,19 @@ import viewmodels.PersonModel;
 import viewmodels.UspMobGetPersonItemTotal;
 import viewmodels.UspMobGetPersonTotalUsage;
 
+import static android.view.View.TEXT_ALIGNMENT_CENTER;
+
 public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     //from item trend
     TextView tvNodata;
-    HorizontalBarChart barChart;
+    BarChart barChart;
     ArrayList<BarEntry> Itementries;
     DBAccess business = new DBAccess();
     SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     CalendarView cvDate = null;
-    Button btnSelectDate ;
+    ImageButton btnSelectDate ;
     float averageUsage;
+    String[] Itemlabels;
     //end
      GeneralMethods m;
     //from trends
@@ -68,6 +83,8 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     private ImageView[] moreOrLess=null;
     private   TextView[] desc ;
     String []person =null;
+    private String longestLabel;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_intake_trend_scroller, container, false);
@@ -152,6 +169,13 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         moreOrLess[1].setVisibility(View.GONE);
         moreOrLess[3].setVisibility(View.GONE);
         moreOrLess[5].setVisibility(View.GONE);
+        LinearLayout linearLayout2 = rootView.findViewById(R.id.linearLayout2);
+        Animation upToDown = AnimationUtils.loadAnimation(rootView.getContext(),R.anim.uptodown);
+        //linearLayout2.setAnimation(upToDown);
+
+        Animation anime = AnimationUtils.makeInAnimation(rootView.getContext(),false);
+        anime.setDuration(2000);
+        linearLayout2.setAnimation(anime);
 
         return rootView;
     }
@@ -178,6 +202,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         averageUsage/=x;
         if(Itemlabels.length > 0) {
             SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
+           // barChart.getXAxis().setLabelRotationAngle(90f);//rotate the labels of calender graph
         }
 
         SetUp(Itemlabels, dateV);
@@ -189,7 +214,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         cvDate.setMaxDate(cvDate.getDate());
         int i = ItemUsages.size();
         averageUsage =0;
-        final String[] Itemlabels = new String[i];
+        Itemlabels = new String[i];
         if(i>0){
             i = 0;
             Itementries = new ArrayList<>();
@@ -201,6 +226,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             }
             averageUsage/=i;
             SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
+
             Date date = new Date();
             date.setTime(cvDate.getDate());
             SetUp(Itemlabels, df.format(date));
@@ -221,7 +247,24 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             }
         });
 
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
 
+                int i =Math.round(e.getX());
+                try {
+                    Toast.makeText(rootView.getContext(),
+                            Itemlabels[i-1],Toast.LENGTH_LONG).show();
+                }catch (Exception ex){
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
         //end
 
 
@@ -246,7 +289,81 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 i++;
             }
             averageUsage/=i;
-            SetUpGraph(bcTrend, entries, labels,averageUsage);
+
+            if(entries.size()>0) {
+                IAxisValueFormatter formatter = setYaxis(labels);
+                BarDataSet set = new BarDataSet(entries, "50 liters is the daily recommendation");
+
+                final DecimalFormat dc = new DecimalFormat("0.0");
+                MyBarDataSet setColor = new MyBarDataSet(entries,"Average water usage: "+dc.format(averageUsage),set);
+                setColor.setColors(new int[]{ContextCompat.getColor(getContext(), R.color.green),
+                        ContextCompat.getColor(getContext(), R.color.red)});
+
+                ArrayList<BarDataSet> dataSets = new ArrayList<>();
+                dataSets.add(setColor);
+                BarData b = new BarData(dataSets.get(0));
+                //bcTrend.getAxis(null).setTextColor(R.color.colorAccent);
+                b.setBarWidth(0.5f);//bar width
+//                TextView xAxisName =new TextView(this.getContext());
+//                ((ViewGroup) xAxisName.getParent()).removeView(xAxisName);
+//                xAxisName.setText("Date");
+//                xAxisName.setWidth(bcTrend.getWidth());
+//                xAxisName.setGravity(Gravity.CENTER);
+//
+//                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+//                params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+//                params.setMargins(0, 10, 0, 20);
+//
+//
+//
+//                bcTrend.addView(xAxisName,params);
+                bcTrend.setData(b);
+                bcTrend.setExtraOffsets(0, 30, 10, 8);
+                bcTrend.getDescription().setText("");
+                Legend l = bcTrend.getLegend();
+                l.mNeededHeight = 200;
+                l.setForm(Legend.LegendForm.CIRCLE);
+                l.setFormSize(16);
+                l.setTextSize(16f);
+                try{
+                    l.getEntries()[0].label = "Below "+person[PersonModel.USAGETARGET]+" Litres";
+                    l.getEntries()[1].label ="Above "+person[PersonModel.USAGETARGET]+" Litres";
+
+                }catch (Exception e){}
+                l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+                l.setOrientation(Legend.LegendOrientation.VERTICAL);
+
+                l.setDrawInside(false);
+                l.setYEntrySpace(2f);
+                l.setXEntrySpace(2f);
+                l.setStackSpace(50f);
+                l.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                l.setWordWrapEnabled(true);
+
+                bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
+                // bcTrend.getAxisLeft().setAxisMinimum(0f);
+                bcTrend.getAxisLeft().setDrawGridLines(false);//removes the grid lines of the bar graph
+                bcTrend.invalidate();
+                bcTrend.getAxisLeft().setEnabled(false);
+                bcTrend.getAxisRight().setEnabled(false);
+                bcTrend.getXAxis().setValueFormatter(formatter);// uses the an interface to get labels
+                bcTrend.getXAxis().setLabelCount(labels.length);
+                bcTrend.getXAxis().setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                bcTrend.getBarData().setValueTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                bcTrend.fitScreen();//obviuosly its to make sure the graph fits the screen
+                bcTrend.invalidate();
+                bcTrend.getBarData().setValueTextSize(16f);//Set font size
+                bcTrend.setVisibleXRangeMaximum(5f);// sets the number of bars to be shown at a given moment
+                bcTrend.moveViewToX(entries.size());
+                bcTrend.getXAxis().setTextSize(16f);
+                bcTrend.getXAxis().setAxisMinimum(0);
+
+            }else {
+                bcTrend.setNoDataText("No water usage recoded");
+            }
+            //bcTrend.getXAxis().setEnabled(false); top legends
+
             bcTrend.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
@@ -270,14 +387,30 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             // creating list of entry
 
             LineDataSet dataset = new LineDataSet(lineEntry, "line water usage");//loading the top labels and setting the bottom label
+            Legend l = lineChart.getLegend();
+            l.setWordWrapEnabled(true);
+            l.setTypeface(Typeface.DEFAULT);
+            l.setFormSize(0f);
+            l.setTextSize(0f);
+
             lineChart.setData(new LineData(dataset)); // set the data and list of labels into chart
             IAxisValueFormatter formatter = setYaxis(labels);
             //lineChart.getAxisLeft().setAxisMinimum(0f);
             lineChart.getAxisRight().setEnabled(false);
             lineChart.getXAxis().setEnabled(false);
+            lineChart.getDescription().setEnabled(false);
+            lineChart.getXAxis().setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            lineChart.getAxisLeft().setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            lineChart.getAxisLeft().setTextSize(16f);
+            lineChart.getLineData().setValueTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            lineChart.getLineData().setValueTextSize(16f);
+            lineChart.getLineData().setHighlightEnabled(false);
             YAxis y = lineChart.getAxisLeft();
            try {
-               LimitLine ll = new LimitLine(Integer.parseInt(person[PersonModel.USAGETARGET]), "My Max Target ");
+               LimitLine ll = new LimitLine(Integer.parseInt(person[PersonModel.USAGETARGET]), "My "+person[PersonModel.USAGETARGET]+" Litre Target ");
+               ll.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+               ll.setTextSize(16f);
+               ll.setLineColor(ContextCompat.getColor(getContext(), R.color.red));
                y.addLimitLine(ll);
            }catch (Exception e){
 
@@ -285,8 +418,10 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             lineChart.getXAxis().setValueFormatter(formatter);
             lineChart.getXAxis().setLabelCount(labels.length - 1);
             dataset.setDrawFilled(true);
-            lineChart.getXAxis().setTextColor(R.color.colorAccent);
+            lineChart.buildDrawingCache();
+
             //end
+            lineChart.invalidate();
         }else{
             lineChart.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             bcTrend.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -296,7 +431,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     public void SetUp(String[] l,String date){
         btnSelectDate.setVisibility(View.VISIBLE);
         if(l.length>0){
-            barChart.setExtraOffsets(0f, 20f, 60f, 20f);
+            barChart.setExtraOffsets(0f, 60f, 20f, 20f);
             barChart.getAxis(YAxis.AxisDependency.LEFT).setAxisMinimum(0);
             tvNodata.setVisibility(View.INVISIBLE);
             barChart.setVisibility(View.VISIBLE);
@@ -306,9 +441,6 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             tvNodata.setVisibility(View.VISIBLE);
         }
     }
-    //end
-    //from trends
-    //Label returner
     public IAxisValueFormatter setYaxis(final String[] labels){
         return new IAxisValueFormatter() {
             @Override
@@ -322,32 +454,62 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
     }
     //Bar graph set up
-    public void SetUpGraph(BarChart bcTrend , List<BarEntry> entries, String[] Labels ,float avg){
+    public void SetUpGraph(BarChart bcTrend , List<BarEntry> entries,final String[] Labels ,float avg){
         if(entries.size()>0) {
             IAxisValueFormatter formatter = setYaxis(Labels);
             BarDataSet set = new BarDataSet(entries, "50 liters is the daily recommendation");
+            bcTrend.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry e, Highlight h) {
 
+                    int i =Math.round(e.getX());
+                    try {
+                        Toast.makeText(rootView.getContext(),
+                                Labels[i],Toast.LENGTH_LONG).show();
+                    }catch (Exception ex){
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected() {
+
+                }
+            });
             final DecimalFormat dc = new DecimalFormat("0.0");
             MyBarDataSet setColor = new MyBarDataSet(entries,"Average water usage: "+dc.format(avg),set);
-            setColor.setColors(new int[]{ContextCompat.getColor(getContext(), R.color.green),
-                    ContextCompat.getColor(getContext(), R.color.red)});
+//            setColor.setColors(new int[]{ContextCompat.getColor(getContext(), R.color.green),
+//                    ContextCompat.getColor(getContext(), R.color.red)});
+
             ArrayList<BarDataSet> dataSets = new ArrayList<>();
             dataSets.add(setColor);
             BarData b = new BarData(dataSets.get(0));
             //bcTrend.getAxis(null).setTextColor(R.color.colorAccent);
             b.setBarWidth(0.5f);//bar width
             bcTrend.setData(b);
+            Legend l = bcTrend.getLegend();
 
+            l.setForm(Legend.LegendForm.SQUARE);
+            l.setFormSize(0f);
+            l.setTextSize(11f);
+            l.setXEntrySpace(4f);
             bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
             // bcTrend.getAxisLeft().setAxisMinimum(0f);
             bcTrend.getAxisLeft().setDrawGridLines(false);//removes the grid lines of the bar graph
+            bcTrend.getXAxis().setAxisLineWidth(10f);
+            bcTrend.getXAxis().mLabelWidth = 50;
             bcTrend.invalidate();
+            bcTrend.getXAxis().setLabelRotationAngle(25);
+            longestLabel = bcTrend.getXAxis().getLongestLabel();
             bcTrend.getAxisRight().setEnabled(false);
             bcTrend.getXAxis().setValueFormatter(formatter);// uses the an interface to get labels
             bcTrend.getXAxis().setLabelCount(Labels.length);
+            bcTrend.getXAxis().setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            bcTrend.getBarData().setValueTextColor(ContextCompat.getColor(getContext(), R.color.white));
             bcTrend.fitScreen();//obviuosly its to make sure the graph fits the screen
             bcTrend.invalidate();
-
+            bcTrend.getXAxis().setTextSize(16f);
+            bcTrend.getBarData().setValueTextSize(16f);//Set font size
             bcTrend.setVisibleXRangeMaximum(5f);// sets the number of bars to be shown at a given moment
             bcTrend.moveViewToX(entries.size());
         }

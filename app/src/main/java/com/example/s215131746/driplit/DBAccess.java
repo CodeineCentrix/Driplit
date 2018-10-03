@@ -226,21 +226,24 @@ public class DBAccess {
 
     public ArrayList<UspMobGetPersonTotalUsage> GetPersonTotalUsageGetItems(String email) {
         ArrayList<UspMobGetPersonTotalUsage> usages = new ArrayList<>();
-        try {
-            Object[] paras = {email};
-            outerResultSet = DBHelper.SelectPara(" uspMobGetPersonTotalUsage ", paras);
-            while (outerResultSet.next()) {
-                UspMobGetPersonTotalUsage usage = new UspMobGetPersonTotalUsage();
-                usage.UsageDay = outerResultSet.getString("UsageDay");
-                usage.UsageAmount = outerResultSet.getFloat("UsageAmount");
-                //item.ItemIcon = resultSet.getByte();
-                usages.add(usage);
-            }
-            DBHelper.Close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+       if(!email.equals(null)) {
+           try {
+               Object[] paras = {email};
+               outerResultSet = DBHelper.SelectPara(" uspMobGetPersonTotalUsage ", paras);
+               while (outerResultSet.next()) {
+                   UspMobGetPersonTotalUsage usage = new UspMobGetPersonTotalUsage();
+                   usage.UsageDay = outerResultSet.getString("UsageDay");
+                   usage.UsageAmount = outerResultSet.getFloat("UsageAmount");
+                   //item.ItemIcon = resultSet.getByte();
+                   usages.add(usage);
+               }
+               DBHelper.Close();
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+       }
         return usages;
+
     }
 
     public ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotal(String userEmail) {

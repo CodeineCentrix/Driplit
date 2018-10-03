@@ -21,12 +21,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Date"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/bcTrends"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="449dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/graph_back"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="287dp">
 
@@ -63,21 +71,19 @@
             android:src="@drawable/less" />
 
 
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="400dp"
             android:layout_marginTop="30dp">
 
 
-            <com.github.mikephil.charting.charts.HorizontalBarChart
+            <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/bcT"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:background="@color/graph_back">
+                android:layout_alignParentTop="true">
 
                 <TextView
                     android:id="@+id/txtViewHead"
@@ -86,7 +92,7 @@
                     android:text="@string/the_line_graph"
                     android:textColor="@android:color/transparent" />
 
-            </com.github.mikephil.charting.charts.HorizontalBarChart>
+            </com.github.mikephil.charting.charts.BarChart>
 
             <CalendarView
                 android:id="@+id/cvDate"
@@ -94,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="visible" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnSelectDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,7 +112,7 @@
                 android:background="@android:drawable/screen_background_light_transparent"
                 android:backgroundTint="@android:color/transparent"
 
-                android:text="@string/select_day"
+                android:src="@drawable/calendar"
                 android:textColor="@color/blue"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -133,11 +139,13 @@
             android:layout_marginTop="5dp"
             android:text="@string/the_line_graph"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/imgMoreBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/more" />
+
         <ImageView
             android:id="@+id/imgLessBottom"
             android:layout_width="match_parent"
@@ -149,7 +157,6 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="5dp"
-            android:background="@color/graph_back"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="287dp">
 
@@ -166,6 +173,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/the_line_graph"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/imgMoreLine"
             android:layout_width="match_parent"

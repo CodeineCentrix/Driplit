@@ -13,7 +13,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -53,7 +56,10 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         ScaleImg(R.id.imgView);
         helpThread h = new helpThread(true,rootView.getContext());
         new Thread(h).start();
-
+        LinearLayout linearLayout = rootView.findViewById(R.id.linearLayout);
+        Animation anime = AnimationUtils.makeInAnimation(rootView.getContext(),true);
+        anime.setDuration(2000);
+        linearLayout.setAnimation(anime);
         return rootView;
     }
     public Bitmap ScaleImg(int pic){

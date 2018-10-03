@@ -6,8 +6,12 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -75,7 +79,17 @@ public class ReportedLeaksAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v = mInflater.inflate(R.layout.activity_reported_leaks, null);
+        Animation anime = new TranslateAnimation(360f,5f,500f,5f);
+        anime.setDuration(3000);
+        Animation anime2 = new TranslateAnimation(-360f,5f,-500f,1f);
+        anime2.setDuration(3000);
         TextView longitude =v.findViewById(R.id.LeakAddress);
+        LinearLayout linear_reported_leaks = v.findViewById(R.id.linear_reported_leaks);
+        if(position%2==0) {
+            linear_reported_leaks.setAnimation(anime);
+        }else {
+            linear_reported_leaks.setAnimation(anime2);
+        }
         TextView day =  v.findViewById(R.id.LeakDate);
         leakpic[position] = v.findViewById(R.id.imageView);
         if(leak.get(position).image!=null){

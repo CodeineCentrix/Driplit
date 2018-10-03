@@ -69,6 +69,7 @@ public class EditProfile extends AppCompatActivity {
             Toast.makeText(this,"Please clear this app data or login again",Toast.LENGTH_LONG).show();
             Intent login = new Intent(this,Login.class);
             startActivity(login);
+
         }
         //txtPassword.setText(person[3]);
     }
@@ -92,12 +93,38 @@ public class EditProfile extends AppCompatActivity {
         else {
             error = true;
         }
+        String[] p = m.Read(this.getString(R.string.person_file_name),",");
+        String newWater = txtUsageTarget.getText().toString();
         if(!error){
             helpThread h = new helpThread(true,this);
             new Thread(h).start();
 
+        }else if(!newWater.equals(p[PersonModel.USAGETARGET])){
+
+
+            person.id =Integer.parseInt(p[PersonModel.ID]);
+            person.fullName =p[PersonModel.FULLNAME];
+            person.email = p[PersonModel.EMAIL];
+            person.userPassword = p[PersonModel.PASSWORD];
+            person.isAdmin = p[PersonModel.ISAMDIN].equals("true");
+            person.getOldapproved = Integer.parseInt(p[PersonModel.OLDAPPROVED]);
+            //All the top code for this one line
+            person.Usagetarget = Integer.parseInt(newWater);
+
+            m.writeToFile(person.toString(),"person.txt");
+            if(!txtFullname.getText().toString().equals(person.fullName)) {
+                Toast.makeText(getApplicationContext(), "Only target Usage changed", Toast.LENGTH_LONG).show();
+            }else {
+                Intent intent = new Intent(this, TabMenu.class);
+                Bundle i = new Bundle();
+                i.putString("Tab", "ItemTrend");
+                intent.putExtras(i);
+                startActivity(intent);
+                finish();
+            }
+
         }else if(txtPassword.getText().length()<1){
-                Toast.makeText(getApplicationContext(),"Enter Old Password ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Enter Old Password",Toast.LENGTH_SHORT).show();
                 txtPassword.requestFocus();
         }else {
             Toast.makeText(getApplicationContext(),"No Changes",Toast.LENGTH_SHORT).show();
@@ -107,6 +134,11 @@ public class EditProfile extends AppCompatActivity {
     public void afterConnection(View v){
         m.writeToFile(person.toString(),"person.txt");
         Toast.makeText(getApplicationContext(),"Updated Profile",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, TabMenu.class);
+        Bundle i = new Bundle();
+        i.putString("Tab", "Record");
+        intent.putExtras(i);
+        startActivity(intent);
         finish();
     }
     public void onImageGalleryClicked(View v) {
@@ -166,6 +198,11 @@ public class EditProfile extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(this, TabMenu.class);
+        Bundle i = new Bundle();
+        i.putString("Tab", "Record");
+        intent.putExtras(i);
+        startActivity(intent);
         finish();
         return super.onOptionsItemSelected(item);
     }

@@ -87,6 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:drawableEnd="@drawable/lll"
+            android:drawableRight="@drawable/lll"
             android:hint="Usage Target"
             android:inputType="number"
             android:textAlignment="center" />
