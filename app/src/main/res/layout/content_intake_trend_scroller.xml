@@ -34,12 +34,12 @@
             android:id="@+id/bcTrends"
             android:layout_width="match_parent"
             android:layout_height="449dp"
-            android:layout_marginBottom="5dp"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="287dp">
-
-
-        </com.github.mikephil.charting.charts.BarChart>
+            tools:layout_editor_absoluteY="287dp"
+            android:paddingRight="20dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingEnd="20dp" />
 
         <TextView
             android:id="@+id/tvTop"
@@ -72,27 +72,39 @@
 
 
         <RelativeLayout
+            android:id="@+id/pieRelatie"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_marginTop="30dp">
 
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bcT"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pies"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true">
+                android:layout_alignParentTop="true"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingEnd="50dp"
+                android:paddingRight="50dp" />
+            <!--<com.github.mikephil.charting.charts.BarChart-->
+            <!--android:id="@+id/bcT"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:visibility="invisible">-->
 
-                <TextView
-                    android:id="@+id/txtViewHead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/the_line_graph"
-                    android:textColor="@android:color/transparent" />
+            <!--<TextView-->
+            <!--android:id="@+id/txtViewHead"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/the_line_graph"-->
+            <!--android:textColor="@android:color/transparent" />-->
 
-            </com.github.mikephil.charting.charts.BarChart>
+            <!--</com.github.mikephil.charting.charts.BarChart>-->
 
             <CalendarView
                 android:id="@+id/cvDate"

@@ -3,37 +3,31 @@ package com.example.s215131746.driplit;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -41,6 +35,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -53,20 +50,19 @@ import java.util.Date;
 import java.util.List;
 
 import viewmodels.PersonModel;
+import viewmodels.ResidentUsageModel;
 import viewmodels.UspMobGetPersonItemTotal;
 import viewmodels.UspMobGetPersonTotalUsage;
-
-import static android.view.View.TEXT_ALIGNMENT_CENTER;
 
 public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     //from item trend
     TextView tvNodata;
-    BarChart barChart;
+    //BarChart barChart;
     ArrayList<BarEntry> Itementries;
     DBAccess business = new DBAccess();
     SimpleDateFormat df = new SimpleDateFormat("MMM dd");
     CalendarView cvDate = null;
-    ImageButton btnSelectDate ;
+    ImageButton btnCalender;
     float averageUsage;
     String[] Itemlabels;
     //end
@@ -77,17 +73,56 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
     //end
     public View rootView;
     Handler h = new Handler();
-    ArrayList<UspMobGetPersonItemTotal> IitemUsages;
+    ArrayList<UspMobGetPersonItemTotal> pieChartData;
     ArrayList<UspMobGetPersonTotalUsage> usages;
     ArrayList<UspMobGetPersonItemTotal> ItemUsages;
     private ImageView[] moreOrLess=null;
     private   TextView[] desc ;
+    PieChart pie;
     String []person =null;
+    List<PieEntry> pieEntries;
     private String longestLabel;
-
+    ArrayList<Integer> colors;
+    private Legend legend;
+    ArrayList<ResidentUsageModel> MobGetPersonUsage;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_intake_trend_scroller, container, false);
+        //_______________________________________________________________
+         pie = rootView.findViewById(R.id.pies);
+         pie.setHoleColor(ContextCompat.getColor(rootView.getContext(), R.color.colorPrimaryDark));
+        pie.setUsePercentValues(false);
+        pie.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int i =Math.round(h.getDataIndex());
+                if(i>=0&&i<Itemlabels.length) {
+                    Toast.makeText(rootView.getContext(), Itemlabels[i], Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+         legend = pie.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setFormSize(16f);
+        legend.setTextSize(16f);
+        legend.setWordWrapEnabled(true);
+        legend.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.white));
+        legend.setDrawInside(false);
+
+        colors = new ArrayList<Integer>();
+
+        for (int c : GeneralMethods.MATERIAL_COLORS)
+            colors.add(c);
+
+        //______________________________________________________________
+
        moreOrLess = new ImageView[]{
                rootView.findViewById(R.id.imgLessTop),
                rootView.findViewById(R.id.imgMoreTop),
@@ -106,8 +141,8 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
         //from item trend
         cvDate  = rootView.findViewById(R.id.cvDate);
         tvNodata = rootView.findViewById(R.id.tvNoData);
-        barChart =  rootView.findViewById(R.id.bcT);
-        btnSelectDate = rootView.findViewById(R.id.btnSelectDate);
+       // barChart =  rootView.findViewById(R.id.bcT);
+        btnCalender = rootView.findViewById(R.id.btnSelectDate);
         m = new GeneralMethods(rootView.getContext());
         try {
             person = m.Read(rootView.getContext().getString(R.string.person_file_name)
@@ -121,7 +156,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 cvDate.setVisibility(View.INVISIBLE);
-                barChart.setVisibility(View.VISIBLE);
+               // barChart.setVisibility(View.VISIBLE);
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
@@ -183,37 +218,52 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 
         String dateV = date, index2 = person[PersonModel.EMAIL];
 
-        btnSelectDate.setVisibility(View.VISIBLE);
+        btnCalender.setVisibility(View.VISIBLE);
 
         averageUsage =0;
 
-        IitemUsages = business.uspMobGetPersonItemTotalDate(index2,dateV);
+        pieChartData = business.uspMobGetPersonItemTotalDate(index2,dateV);
 
-        int x = IitemUsages.size();
+        int x = pieChartData.size();
         final String[] Itemlabels = new String[x];
         x = 0;
         ArrayList<BarEntry> Itementries = new ArrayList<>();
-        for(UspMobGetPersonItemTotal usage : IitemUsages) {
+        pieEntries = new ArrayList<>();
+        float smallerSlice =99;
+        for(UspMobGetPersonItemTotal usage : pieChartData) {
             Itemlabels[x] = usage.ItemName;
             averageUsage+=usage.UsageAmount;
-            Itementries.add(new BarEntry(x, usage.UsageAmount));
+            //Itementries.add(new BarEntry(x, usage.UsageAmount));
+            smallerSlice = Math.min(smallerSlice,usage.UsageAmount);
+            pieEntries.add(new PieEntry(usage.UsageAmount,  usage.ItemName));
             x++;
         }
         averageUsage/=x;
         if(Itemlabels.length > 0) {
-            SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
+           // SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
+            PieDataSet pieSet = new PieDataSet(pieEntries, "");
+            pieSet.setColors(colors);
+            pie.setUsePercentValues(false);
+            PieData data = new PieData(pieSet);
+            if(smallerSlice<1){
+                pieSet.setSliceSpace(0f);
+            }else {
+                pieSet.setSliceSpace(10f);
+            }
+            pie.setData(data);
+            pie.getData().setValueTextSize(16f);
+            pie.getData().setValueTextColor(ContextCompat.getColor(rootView.getContext(), R.color.white));
+            pie.invalidate();
            // barChart.getXAxis().setLabelRotationAngle(90f);//rotate the labels of calender graph
         }
 
-        SetUp(Itemlabels, dateV);
+        LoadDayGraph(Itemlabels, dateV);
     }
     public void afterConnection(final View rootView){
         cvDate.setVisibility(View.INVISIBLE);
-
-
         cvDate.setMaxDate(cvDate.getDate());
-        int i = ItemUsages.size();
         averageUsage =0;
+        int i = ItemUsages.size();
         Itemlabels = new String[i];
         if(i>0){
             i = 0;
@@ -221,25 +271,28 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             for (UspMobGetPersonItemTotal usage : ItemUsages) {
                 Itemlabels[i] = usage.ItemName;
                 averageUsage+=usage.UsageAmount;
-                Itementries.add(new BarEntry(i, usage.UsageAmount));
+                //Itementries.add(new BarEntry(i, usage.UsageAmount));
                 i++;
             }
-            averageUsage/=i;
-            SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
 
+
+            averageUsage/=i;
+           // SetUpGraph(barChart, Itementries, Itemlabels,averageUsage);
             Date date = new Date();
             date.setTime(cvDate.getDate());
-            SetUp(Itemlabels, df.format(date));
+            LoadDayGraph(Itemlabels, df.format(date));
+            pie.setVisibility(View.VISIBLE);
         }
-        else {SetUp(Itemlabels,m.GetDate());}
+        else {
+            pie.setVisibility(View.GONE);}
 
-        btnSelectDate.setOnClickListener(new View.OnClickListener() {
+        btnCalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cvDate.setVisibility(View.VISIBLE);
-                btnSelectDate.setVisibility(View.INVISIBLE);
-                if (barChart.getVisibility() == View.VISIBLE) {
-                    barChart.setVisibility(View.INVISIBLE);
+                btnCalender.setVisibility(View.INVISIBLE);
+                if (pie.getVisibility() == View.VISIBLE) {
+                    pie.setVisibility(View.INVISIBLE);
                     v.setVisibility(View.INVISIBLE);
                 } else {
                     tvNodata.setVisibility(View.INVISIBLE);
@@ -247,37 +300,38 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             }
         });
 
-        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
 
-                int i =Math.round(e.getX());
-                try {
-                    Toast.makeText(rootView.getContext(),
-                            Itemlabels[i-1],Toast.LENGTH_LONG).show();
-                }catch (Exception ex){
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
+//        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+//            @Override
+//            public void onValueSelected(Entry e, Highlight h) {
+//
+//                int i =Math.round(e.getX());
+//                try {
+//                    Toast.makeText(rootView.getContext(),
+//                            Itemlabels[i-1],Toast.LENGTH_LONG).show();
+//                }catch (Exception ex){
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected() {
+//
+//            }
+//        });
         //end
 
 
         //from trends
         final BarChart bcTrend = rootView.findViewById(R.id.bcTrends);
-        DBAccess business = new DBAccess();
-
 
         i = usages.size();
         LineChart lineChart = rootView.findViewById(R.id.lineChart);
         if(i>0) {
-            final String[] labels = new String[i];
-            i = 0;
+            final String[] labels = new String[i+1];
+            labels[0]="";
+            entries.add(new BarEntry(0, 0));
+            i = 1;
             averageUsage=0;
             entries.clear();
             lineEntry.clear();
@@ -288,7 +342,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 lineEntry.add(new Entry(i, usage.UsageAmount));
                 i++;
             }
-            averageUsage/=i;
+            averageUsage/=i-1;
 
             if(entries.size()>0) {
                 IAxisValueFormatter formatter = setYaxis(labels);
@@ -302,7 +356,7 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 ArrayList<BarDataSet> dataSets = new ArrayList<>();
                 dataSets.add(setColor);
                 BarData b = new BarData(dataSets.get(0));
-                //bcTrend.getAxis(null).setTextColor(R.color.colorAccent);
+
                 b.setBarWidth(0.5f);//bar width
 //                TextView xAxisName =new TextView(this.getContext());
 //                ((ViewGroup) xAxisName.getParent()).removeView(xAxisName);
@@ -318,8 +372,10 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
 //
 //                bcTrend.addView(xAxisName,params);
                 bcTrend.setData(b);
-                bcTrend.setExtraOffsets(0, 30, 10, 8);
+                bcTrend.setExtraOffsets(10, 30, 10, 8);
+                bcTrend.setFitBars(true);
                 bcTrend.getDescription().setText("");
+
                 Legend l = bcTrend.getLegend();
                 l.mNeededHeight = 200;
                 l.setForm(Legend.LegendForm.CIRCLE);
@@ -328,7 +384,6 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 try{
                     l.getEntries()[0].label = "Below "+person[PersonModel.USAGETARGET]+" Litres";
                     l.getEntries()[1].label ="Above "+person[PersonModel.USAGETARGET]+" Litres";
-
                 }catch (Exception e){}
                 l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
                 l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
@@ -344,26 +399,26 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                 bcTrend.getXAxis().setGranularity(1f);//set the interval between labels so they do not duplicate
                 // bcTrend.getAxisLeft().setAxisMinimum(0f);
                 bcTrend.getAxisLeft().setDrawGridLines(false);//removes the grid lines of the bar graph
-                bcTrend.invalidate();
+
                 bcTrend.getAxisLeft().setEnabled(false);
                 bcTrend.getAxisRight().setEnabled(false);
                 bcTrend.getXAxis().setValueFormatter(formatter);// uses the an interface to get labels
                 bcTrend.getXAxis().setLabelCount(labels.length);
-                bcTrend.getXAxis().setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-                bcTrend.getBarData().setValueTextColor(ContextCompat.getColor(getContext(), R.color.white));
-                bcTrend.fitScreen();//obviuosly its to make sure the graph fits the screen
-                bcTrend.invalidate();
-                bcTrend.getBarData().setValueTextSize(16f);//Set font size
-                bcTrend.setVisibleXRangeMaximum(5f);// sets the number of bars to be shown at a given moment
-                bcTrend.moveViewToX(entries.size());
                 bcTrend.getXAxis().setTextSize(16f);
                 bcTrend.getXAxis().setAxisMinimum(0);
+                bcTrend.getXAxis().setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                bcTrend.getBarData().setValueTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                bcTrend.getBarData().setValueTextSize(16f);//Set font size
+                bcTrend.fitScreen();//obviuosly its to make sure the graph fits the screen
+                bcTrend.invalidate();//load graph to show data
+                bcTrend.setVisibleXRangeMaximum(5f);// sets the number of bars to be shown at a given moment
+                bcTrend.moveViewToX(entries.size());// To show last bar instead of firs
 
             }else {
+
                 bcTrend.setNoDataText("No water usage recoded");
             }
             //bcTrend.getXAxis().setEnabled(false); top legends
-
             bcTrend.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
@@ -423,20 +478,25 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             //end
             lineChart.invalidate();
         }else{
+
             lineChart.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             bcTrend.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            lineChart.setVisibility(View.GONE);
+            bcTrend.setVisibility(View.GONE);
+            RelativeLayout pieRelatie  = rootView.findViewById(R.id.pieRelatie);
+            pieRelatie.setVisibility(View.GONE);
         }
     }
     //from item trend
-    public void SetUp(String[] l,String date){
-        btnSelectDate.setVisibility(View.VISIBLE);
+    public void LoadDayGraph(String[] l, String date){
+        btnCalender.setVisibility(View.VISIBLE);
         if(l.length>0){
-            barChart.setExtraOffsets(0f, 60f, 20f, 20f);
-            barChart.getAxis(YAxis.AxisDependency.LEFT).setAxisMinimum(0);
+//            pie.setExtraOffsets(0f, 60f, 20f, 20f);
+//            pie.getAxis(YAxis.AxisDependency.LEFT).setAxisMinimum(0);
             tvNodata.setVisibility(View.INVISIBLE);
-            barChart.setVisibility(View.VISIBLE);
+            pie.setVisibility(View.VISIBLE);
         }else{
-            barChart.setVisibility(View.INVISIBLE);
+            pie.setVisibility(View.INVISIBLE);
             tvNodata.setText("The are no recordings for "+date);
             tvNodata.setVisibility(View.VISIBLE);
         }
@@ -514,6 +574,20 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             bcTrend.moveViewToX(entries.size());
         }
     }
+    public void SetUpGraph(PieChart pie , List<PieEntry> pieEntries){
+        PieDataSet pieSet = new PieDataSet(pieEntries, "");
+        pieSet.setColors(new int[]{ContextCompat.getColor(rootView.getContext(), R.color.green),
+                ContextCompat.getColor(rootView.getContext(), R.color.red),
+                ContextCompat.getColor(rootView.getContext(), R.color.blue)});
+        pie.setUsePercentValues(true);
+        PieData data = new PieData(pieSet);
+        pieSet.setSliceSpace(10f);
+        pie.setData(data);
+        pie.getData().setValueTextSize(16f);
+        pie.getData().setValueTextColor(ContextCompat.getColor(rootView.getContext(), R.color.white));
+        pie.invalidate();
+        }
+
     //end
     class helpThread implements Runnable {
         Context context;
@@ -539,13 +613,13 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                     Calendar calendar = Calendar.getInstance();
 
                     Date date = calendar.getTime();
-                    String index2 = m.Read(context.getString(R.string.person_file_name),",")[PersonModel.EMAIL];
-
-
+                    String email = m.Read(context.getString(R.string.person_file_name),",")[PersonModel.EMAIL];
                     String dateV = df.format(date);
-                    ItemUsages = business.uspMobGetPersonItemTotal(index2);
-                    IitemUsages = business.uspMobGetPersonItemTotalDate(index2, dateV);
-                    usages = business.GetPersonTotalUsageGetItems(index2);
+
+
+                    ItemUsages = business.uspMobGetPersonItemTotal(email);
+                    pieChartData = business.uspMobGetPersonItemTotalDate(email, dateV);
+                    usages = business.GetPersonTotalUsageGetItems(email);
                     h.post(new Runnable() {
                         @Override
                         public void run() {

@@ -12,6 +12,7 @@ public class ResidentUsageModel {
     public int PersonID;
     public Time ResTime;
     public Date ResDate;
+    public String dfDate;
     public float AmountUsed;
     public int ItemID;
 }

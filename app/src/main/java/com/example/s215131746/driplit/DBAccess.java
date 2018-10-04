@@ -66,6 +66,7 @@ public class DBAccess {
         }
 
         private static void Close() {
+           if(connection!=null||innerResultSet!=null)
             try {
                 innerResultSet.close();
                 st.close();
@@ -285,6 +286,28 @@ public class DBAccess {
         return TotalUsage;
     }
 
+    public ArrayList<ResidentUsageModel> MobGetPersonUsage(String userEmail) {
+        ArrayList<ResidentUsageModel> TotalUsage = new ArrayList<>();
+        try {
+            Object[] paras = {userEmail};
+            outerResultSet = DBHelper.SelectPara(" uspMobGetPersonItemTotal ", paras);
+            while (outerResultSet.next()) {
+                ResidentUsageModel use = new ResidentUsageModel();
+                use.ItemID = outerResultSet.getInt("ItemID");
+                use.AmountUsed = outerResultSet.getFloat("AmountUsed");
+                use.dfDate = outerResultSet.getString("dfDate");
+                use.PersonID = outerResultSet.getInt("PersonID");
+                use.ResTime = outerResultSet.getTime("AmountUsed");
+                use.ResDate = outerResultSet.getDate("Date");
+                TotalUsage.add(use);
+            }
+
+            DBHelper.Close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return TotalUsage;
+    }
     public ArrayList<TipModel> GetTips() {
         ArrayList<TipModel> Tips = new ArrayList<>();
         try {

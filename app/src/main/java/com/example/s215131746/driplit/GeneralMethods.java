@@ -16,12 +16,19 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
+
 /**
  * Created by s216127904 on 2018/09/06.
  */
 public class GeneralMethods {
     Context context;
-
+    public static final int[] MATERIAL_COLORS = {
+            rgb("#0D47A1"), rgb("#00838F"), rgb("#1565C0"), rgb("#42A5F5"),
+            rgb("#1E88E5"), rgb("#03A9F4"), rgb("#2196F3"), rgb("#29B6F6"),
+            rgb("#0097A7"), rgb("#00BCD4"), rgb("#26A69A"), rgb("#2196F3"),
+            rgb("#F9A825"), rgb("#f1c40f"), rgb("#FF8F00"), rgb("#EF6C00"),
+    };
     public GeneralMethods(Context c) {
         context = c;
     }
