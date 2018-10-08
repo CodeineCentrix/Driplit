@@ -166,19 +166,20 @@ public class Login extends AppCompatActivity {
                             .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    TextView txtFeedback = findViewById(R.id.txtFeedback);
+                                    txtFeedback.setText("");
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    TextView txtFeedback = findViewById(R.id.txtFeedback);
+                                    txtFeedback.setText("Leak Successfully Reported!");
                                 }
                             });
                     AlertDialog b = takePic.create();
                     b.show();
-                    txtFeedback = findViewById(R.id.txtFeedback);
-                    txtFeedback.setText("Leak Successfully Reported!");
+
 
                 }
                 else{
@@ -224,6 +225,8 @@ public class Login extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==10 && data!=null){
             bitmapImage = (Bitmap) data.getExtras().get("data");
+            TextView txtFeedback = findViewById(R.id.txtFeedback);
+            txtFeedback.setText("Leak Successfully Reported!");
         }
     }
     class helpThread implements Runnable {

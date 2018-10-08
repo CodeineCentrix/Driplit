@@ -3,7 +3,8 @@
     <color name="colorPrimary">#44b7ec</color>
     <color name="colorPrimaryDark">#2c2e33</color>
     <color name="darkgrey">#48494d</color>
-    <color name="colorAccent">#18ffff</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent2">#18ffff</color>
     <color name="primaryDark">#24312d</color>
     <color name="black">#000000</color>
     <color name="lightOrange">#fdf2df</color>
@@ -20,6 +21,8 @@
     <color name="shade4">#3298bc</color>
     <color name="shade5">#1691bd</color>
     <color name="shade6">#71bed9</color>
+    <color name="recivie">#455A64</color>
+    <color name="sent">#607D8B</color>
 
     <!--Tip color-->
     <color name="own_tips">#5a6473</color>

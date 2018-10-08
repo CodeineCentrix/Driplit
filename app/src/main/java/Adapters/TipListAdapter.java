@@ -1,6 +1,7 @@
 package Adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -56,6 +57,9 @@ public class TipListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = mInflater.inflate(R.layout.tiptrick_layout,null);
+       if(!fullName.equals(tipsList.get(position).FullName)){
+           v = mInflater.inflate(R.layout.recieded,null);
+       }
         TextView tipDescription = v.findViewById(R.id.tvDescription),
         tvPerson = v.findViewById(R.id.tvPostName),
         tvDate = v.findViewById(R.id.tvDate);
@@ -72,17 +76,21 @@ public class TipListAdapter extends BaseAdapter {
         llTipContainer[position] = v.findViewById(R.id.llTipContainer);
         if(!fullName.equals(tipsList.get(position).FullName)) {
             tvPerson.setText("By: " + tipsList.get(position).FullName);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                llTipContainer[position].setBackground(context.getDrawable(R.drawable.round_coner_chat_other));
+
+            }
         }else {
-            llTipContainer[position].setBackground(context.getDrawable(R.color.darkgrey));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                llTipContainer[position].setBackground(context.getDrawable(R.drawable.round_coner_chat));
+
+            }
             tvPerson.setText("By: You");
         }
         tvDate.setText(df.format( tipsList.get(position).DatePosted));
 
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        lp.setMargins(0,16,8,4);
-//        llTipContainer.setLayoutParams(lp);
 
-         return v;
+        return v;
 }
     public boolean approveTip(int position){
         if(tipsList.get(position).Approved==true){

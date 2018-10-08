@@ -23,7 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login" />
+        <activity android:name=".Login"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".Register" />
         <activity
             android:name=".FODScreen"
@@ -32,13 +33,15 @@
         <activity
             android:name=".TabMenu"
             android:label="@string/title_activity_tab_menu"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Mainmenu"
             android:label="@string/main_menu" />
         <activity
             android:name=".EditProfile"
-            android:label="@string/edit_profile" />
+            android:label="@string/edit_profile"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".HelpScreen" />
         <activity android:name=".AboutUs" />
         <activity

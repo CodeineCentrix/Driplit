@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,7 +33,12 @@ public class GeneralMethods {
     public GeneralMethods(Context c) {
         context = c;
     }
+    public float round(float x){
+        final DecimalFormat dc = new DecimalFormat("0.0");
 
+        float v = Float.parseFloat(dc.format(x));
+        return v;
+    }
     public void openWebPage(String url) {
         Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);

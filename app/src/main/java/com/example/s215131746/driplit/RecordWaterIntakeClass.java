@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
         new Thread(h).start();
         LinearLayout linearLayout = rootView.findViewById(R.id.linearLayout);
         Animation anime = AnimationUtils.makeInAnimation(rootView.getContext(),true);
-        anime.setDuration(2000);
+        anime.setDuration(1000);
         linearLayout.setAnimation(anime);
         return rootView;
     }
@@ -97,7 +98,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
 
         return scaledImg;
     }
-    public void afterConnection(View rootView){
+    public void afterConnection(final View rootView){
 
         float totalUsage =0;
         for (UspMobGetPersonItemTotal prev:usagForItem) {
@@ -116,6 +117,7 @@ public class RecordWaterIntakeClass extends Fragment implements ImplementChange 
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //after an item has been clicked the the following line will either make the bottom controllers visible or invisible
                 listAdapter.setVisibility(i);
+                Toast.makeText(rootView.getContext(),"Clikc",Toast.LENGTH_LONG).show();
             }
         });
     }

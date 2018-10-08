@@ -80,9 +80,9 @@ public class ReportedLeaksAdapter extends BaseAdapter {
 
         View v = mInflater.inflate(R.layout.activity_reported_leaks, null);
         Animation anime = new TranslateAnimation(360f,5f,500f,5f);
-        anime.setDuration(3000);
+        anime.setDuration(1000);
         Animation anime2 = new TranslateAnimation(-360f,5f,-500f,1f);
-        anime2.setDuration(3000);
+        anime2.setDuration(1000);
         TextView longitude =v.findViewById(R.id.LeakAddress);
         LinearLayout linear_reported_leaks = v.findViewById(R.id.linear_reported_leaks);
         if(position%2==0) {
@@ -108,7 +108,7 @@ public class ReportedLeaksAdapter extends BaseAdapter {
 
             switches[position].setVisibility(View.GONE);
         }else {
-
+            approve[position].setVisibility(View.GONE);
         }
         if(leak.get(position).status==0){
             approve[position].setBackgroundColor(v.getResources().getColor(R.color.red));

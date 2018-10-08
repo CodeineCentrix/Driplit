@@ -246,7 +246,24 @@ public class DBAccess {
         return usages;
 
     }
+    public ArrayList<UspMobGetPersonTotalUsage> MobGetOverallTrend() {
+        ArrayList<UspMobGetPersonTotalUsage> usages = new ArrayList<>();
+        try {
 
+            outerResultSet = DBHelper.Select("{CALL uspMobGetOverallTrend }");
+            while (outerResultSet.next()) {
+                UspMobGetPersonTotalUsage usage = new UspMobGetPersonTotalUsage();
+                usage.UsageDay = outerResultSet.getString("UsageDay");
+                usage.UsageAmount = outerResultSet.getFloat("UsageAmount");
+                usages.add(usage);
+            }
+            DBHelper.Close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usages;
+
+    }
     public ArrayList<UspMobGetPersonItemTotal> uspMobGetPersonItemTotal(String userEmail) {
         ArrayList<UspMobGetPersonItemTotal> TotalUsage = new ArrayList<>();
         try {
@@ -429,14 +446,11 @@ public class DBAccess {
         try {
             Object[] para = {personID};
             outerResultSet = DBHelper.SelectPara(" uspMobGetLeaks ",para);
-            DownLoadPicture DownPic;
-            DownPic = new DownLoadPicture("icon/leak101");
+            DownLoadPicture DownPic = new DownLoadPicture("icon/leak101");
             Bitmap bitPic = DownPic.doInBackground();
             while (outerResultSet.next()) {
                 ReportLeakModel leak = new ReportLeakModel();
                 leak.Location = outerResultSet.getString("Location");
-                //leak.Latitude = outerResultSet.getString("Latitude");
-                //leak.Longitude = outerResultSet.getString("Longitude");
                 leak.status = outerResultSet.getInt("StatusID");
                 leak.date = outerResultSet.getDate("DateReported");
                 leak.picPath = outerResultSet.getString("PicPath");
@@ -445,22 +459,8 @@ public class DBAccess {
                      DownPic = new DownLoadPicture("icon/" +leak.picPath.trim());
                     leak.image = DownPic.doInBackground();
                 }else {
-
                     leak.image = bitPic;
                 }
-                //Double longitude = location.getLongitude();
-                //Double latitude = location.getLatitude();
-
-
-                //This section gets the address from the longitude and latitude.
-                //geocoder = new Geocoder(getContext(), Locale.getDefault());
-
-                //ddresses = geocoder.getFromLocation(latitude, longitude, 1);
-
-                //String address = addresses.get(0).getAddressLine(0);
-
-                //String fullAddress = address;
-
                 leaks.add(leak);
             }
             DBHelper.Close();

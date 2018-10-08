@@ -1,6 +1,8 @@
 package Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -45,6 +47,9 @@ public class ItemListAdapter extends BaseAdapter {
     private ImplementChange parentCange;
     private TextView[] tvUsed;
     private Context context;
+    private EditText[] txtItemUsage;
+    private AlertDialog.Builder alert;
+    private AlertDialog alertDialog;
     public ItemListAdapter(Context c, RecordWaterIntakeClass rwic, ArrayList<ItemUsageModel> itemUsage,
                            ArrayList<UspMobGetPersonItemTotal> previousUsage){
         context = c;
@@ -53,6 +58,7 @@ public class ItemListAdapter extends BaseAdapter {
         parentCange = rwic;
         int i =itemUsage.size();
         personUsage = new float[i];
+        txtItemUsage = new EditText[i];
         tvUsed = new TextView[i];
         //Loading previous usage for specific items
         for(i =0;i<ItemUsage.size();i++) {
@@ -64,6 +70,8 @@ public class ItemListAdapter extends BaseAdapter {
                 }
             }
         }
+        alert = new AlertDialog.Builder(context);
+        alertDialog = alert.create();
         mInflater =(LayoutInflater) c.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
         stringsQTY = new String[getCount()];
         LoDropHides = new LinearLayout[getCount()];
@@ -84,69 +92,102 @@ public class ItemListAdapter extends BaseAdapter {
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        if(!alertDialog.isShowing()) {
+            View v = mInflater.inflate(R.layout.water_intake_item_layout_v2, null);
 
-        View v = mInflater.inflate(R.layout.water_intake_item_layout_v2,null);
-
-        //Icon
-        final ImageView icon = v.findViewById(R.id.imgItemIcon);
-        try {
-              icon.setImageBitmap(ItemUsage.get(position).ItemIcon);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        //text views
-        final TextView tvQty = v.findViewById(R.id.tvQty);
-        stringsQTY[position] = tvQty.getText().toString();
-        final TextView tvItemName = v.findViewById(R.id.tvItemName);
-        tvItemName.setText(ItemUsage.get(position).ItemDescription);
-        tvUsed[position] = v.findViewById(R.id.tvUsedToday);
-        String value = ""+ personUsage[position];
-        tvUsed[position].setText(value);
-        //text edits
-        final EditText txtItemUsage = v.findViewById(R.id.txtItemUsage);
-        SetUsageEditText(txtItemUsage,position,Integer.parseInt(stringsQTY[position]));
-        //imgIcons = v.findViewById(R.id.imgItemIcon);
-        //imgIcons.setImageResource(ItemIcon[position]);
-        LoDropHides[position] = v.findViewById(R.id.loDropHide);
-        loHeading[position] = v.findViewById(R.id.loHeading);
-        setVisibility(position);
-        //Buttons
-        final Button btnAdd = v.findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int increasUsage =Integer.parseInt( tvQty.getText().toString()) + 1;
-                ChangeUsage(tvQty,position,txtItemUsage,increasUsage);
+            //Icon
+            final ImageView icon = v.findViewById(R.id.imgItemIcon);
+            try {
+                icon.setImageBitmap(ItemUsage.get(position).ItemIcon);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
-        final Button btnMinus = v.findViewById(R.id.btnMinus);
-        btnMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int decreasUsage =Integer.parseInt( tvQty.getText().toString()) - 1;
-                if(decreasUsage>-1){
-                    ChangeUsage(tvQty,position,txtItemUsage,decreasUsage);
+
+            //text views
+            final TextView tvQty = v.findViewById(R.id.tvQty);
+            stringsQTY[position] = tvQty.getText().toString();
+            final TextView tvItemName = v.findViewById(R.id.tvItemName);
+            tvItemName.setText(ItemUsage.get(position).ItemDescription);
+            tvUsed[position] = v.findViewById(R.id.tvUsedToday);
+            String value = "" + personUsage[position];
+            tvUsed[position].setText(value);
+            //text edits
+            txtItemUsage[position] = v.findViewById(R.id.txtItemUsage);
+            SetUsageEditText(txtItemUsage[position], position, Integer.parseInt(stringsQTY[position]));
+            txtItemUsage[position].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final EditText edittext = new EditText(context);
+
+                    alert.setMessage("Enter your accurate liters");
+                    alert.setTitle("Actually used liters ");
+
+                    alert.setView(edittext);
+
+                    alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                        String text = edittext.getText().toString();
+                        txtItemUsage[position].setText(text);
+
+                        }
+                    });
+
+                    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // what ever you want to do with No option.
+                        }
+                    });
+                    alertDialog = alert.create();
+                    alertDialog.show();
+
                 }
-            }
-        });
-        final Button  btnRecord = v.findViewById(R.id.btnRecord);
-        btnRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecordUsage(v,position,txtItemUsage,tvUsed[position]);
-                tvQty.setText("0");
-                Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setVisibility(position);
+            });
+            //imgIcons = v.findViewById(R.id.imgItemIcon);
+            //imgIcons.setImageResource(ItemIcon[position]);
+            LoDropHides[position] = v.findViewById(R.id.loDropHide);
+            loHeading[position] = v.findViewById(R.id.loHeading);
+            setVisibility(position);
+            //Buttons
+            final Button btnAdd = v.findViewById(R.id.btnAdd);
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int increasUsage = Integer.parseInt(tvQty.getText().toString()) + 1;
+                    ChangeUsage(tvQty, position, txtItemUsage[position], increasUsage);
+                }
+            });
+            final Button btnMinus = v.findViewById(R.id.btnMinus);
+            btnMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int decreasUsage = Integer.parseInt(tvQty.getText().toString()) - 1;
+                    if (decreasUsage > -1) {
+                        ChangeUsage(tvQty, position, txtItemUsage[position], decreasUsage);
                     }
-                    //allow the user to see the recorded amount
-                },500);
-            }
-        });
-        return v;
+                }
+            });
+            final Button btnRecord = v.findViewById(R.id.btnRecord);
+            btnRecord.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RecordUsage(v, position, txtItemUsage[position], tvUsed[position]);
+                    tvQty.setText("0");
+                    Handler h = new Handler();
+                    h.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setVisibility(position);
+                        }
+                        //allow the user to see the recorded amount
+                    }, 500);
+                }
+            });
+            return v;
+        }
+        else {
+            return convertView;
+        }
     }
     public void setVisibility(int position ){
         if(LoDropHides[position].getVisibility()==View.GONE){
