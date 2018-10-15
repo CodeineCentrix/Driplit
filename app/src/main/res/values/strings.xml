@@ -210,5 +210,6 @@
     <string name="top_drip_snitchers">TOP DRIP SNITCHERS</string>
     <string name="snitch_count">SNITCH COUNT</string>
     <string name="snitch_board">Snitch Board</string>
+    <string name="shows_items_used_on_a_selected_day">Shows items used on a selected day</string>
 
 </resources>

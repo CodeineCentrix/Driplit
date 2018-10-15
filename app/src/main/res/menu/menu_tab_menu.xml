@@ -8,14 +8,13 @@
         android:title="Reported Leaks"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_snitch_board"
+        android:orderInCategory="100"
+        android:title="Snitch board" />
+    <item
         android:id="@+id/action_edit_profile"
         android:orderInCategory="100"
         android:title="@string/edit_profile"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_snitch_board"
-        android:orderInCategory="100"
-        android:title="Snitch board"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_help"

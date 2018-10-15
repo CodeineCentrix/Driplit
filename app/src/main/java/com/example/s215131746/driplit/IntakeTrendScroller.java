@@ -520,7 +520,12 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
             for (UspMobGetPersonTotalUsage usage : barAndLineData) {
                 labels[i] = usage.UsageDay;
                 averageUsage += usage.UsageAmount;
-                float off = m.round(usage.UsageAmount);
+                float off = 0;
+                try{
+                    off = m.round(usage.UsageAmount);
+                }catch (Exception In){
+
+                }
                 entries.add(new BarEntry(i, off));
 
 

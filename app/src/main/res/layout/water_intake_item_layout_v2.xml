@@ -65,8 +65,8 @@
             android:orientation="vertical">
 
             <EditText
-                android:drawableEnd="@drawable/ic_glass_of_water"
-                android:drawableRight="@drawable/ic_glass_of_water"
+                android:drawableEnd="@drawable/ic_edit_24dp"
+                android:drawableRight="@drawable/ic_edit_24dp"
                 android:id="@+id/txtItemUsage"
                 android:layout_width="97dp"
                 android:layout_height="wrap_content"
