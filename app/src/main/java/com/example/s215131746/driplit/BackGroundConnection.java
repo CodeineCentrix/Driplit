@@ -63,7 +63,7 @@ public class BackGroundConnection extends AsyncTask<String,String,String> {
         String [] dbProps = new String[] {
                 "jdbc:jtds:sqlserver://den1.mssql7.gear.host:1433/codecentrix", "net.sourceforge.jtds.jdbc.Driver",
                 "codecentrix", "Dk8r4_uxM!Ln"};
-       // return doInBackground().split(",");
+       // return doInBackground().split(","); //uncomment to take back to original statee
         return dbProps;
     }
 
