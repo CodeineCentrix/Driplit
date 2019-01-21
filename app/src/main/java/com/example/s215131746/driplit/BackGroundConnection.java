@@ -22,7 +22,7 @@ public class BackGroundConnection extends AsyncTask<String,String,String> {
     @Override
     protected String doInBackground(String... params) {
         String type = "";
-        String login_url = "http://sict-iis.nmmu.ac.za/codecentrix/MobileConnectionString/ConnectionString.php";
+        String login_url = "http://codecentrix.gearhostpreview.com/index.php";
         try {
 
             URL url = new URL(login_url);
@@ -60,7 +60,11 @@ public class BackGroundConnection extends AsyncTask<String,String,String> {
     }
     public String[] ConnectionProperties()
     {
-        return doInBackground().split(",");
+        String [] dbProps = new String[] {
+                "jdbc:jtds:sqlserver://den1.mssql7.gear.host:1433/codecentrix", "net.sourceforge.jtds.jdbc.Driver",
+                "codecentrix", "Dk8r4_uxM!Ln"};
+       // return doInBackground().split(",");
+        return dbProps;
     }
 
 
