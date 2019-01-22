@@ -321,7 +321,8 @@ public class IntakeTrendScroller extends android.support.v4.app.Fragment  {
                             person[PersonModel.EMAIL],
                             df.format(calendar.getTime())
                     );
-                    barAndLineDataAll = business.MobGetOverallTrend();
+
+                   barAndLineDataAll = business.MobGetOverallTrend();
                     barAndLineData = business.GetPersonTotalUsageGetItems(person[PersonModel.EMAIL]);
                     h.post(new Runnable() {
                         @Override
